@@ -1,22 +1,23 @@
 package com.tigra.ats.domain;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
 
-public class JobCategory {
+@Entity
+public class JobType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
-    private String taskDescription;
-    @OneToMany(mappedBy = "JobCategory")
+    private String jobName;
+    @OneToMany(mappedBy = "type")
     private List<Job> jobs;
 
-    public JobCategory() {
+    protected JobType() {
+    }
+
+    public JobType(String jobName) {
+        this.jobName = jobName;
     }
 
     public Long getId() {
@@ -27,41 +28,38 @@ public class JobCategory {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getJobName() {
+        return jobName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
     }
 
-    public String getTaskDescription() {
-        return taskDescription;
+
+    public List<Job> getJobs() {
+        return jobs;
     }
 
-    public void setTaskDescription(String taskDescription) {
-        this.taskDescription = taskDescription;
+    public void setJobs(List<Job> jobs) {
+        this.jobs = jobs;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        JobCategory jobCategory = (JobCategory) o;
-        return getName().equals(jobCategory.getName());
+        JobType jobType = (JobType) o;
+        return getJobName().equals(jobType.getJobName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName());
+        return Objects.hash(getJobName());
     }
 
     @Override
     public String toString() {
-        return "JobCategory{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", taskDescription='" + taskDescription + '\'' +
-                '}';
+        return jobName;
     }
 }

@@ -5,19 +5,19 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-public class JobLevel {
+public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String level;
-    @OneToMany(mappedBy = "level")
+    private String city;
+    @OneToMany(mappedBy = "location")
     private List<Job> jobs;
 
-    protected JobLevel() {
+    protected Location() {
     }
 
-    public JobLevel(String level) {
-        this.level = level;
+    public Location(String city) {
+        this.city = city;
     }
 
     public Long getId() {
@@ -28,12 +28,12 @@ public class JobLevel {
         this.id = id;
     }
 
-    public String getLevel() {
-        return level;
+    public String getCity() {
+        return city;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public List<Job> getJobs() {
@@ -48,12 +48,12 @@ public class JobLevel {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        JobLevel jobLevel = (JobLevel) o;
-        return getLevel().equals(jobLevel.getLevel());
+        Location location = (Location) o;
+        return getCity().equals(location.getCity());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getLevel());
+        return Objects.hash(getCity());
     }
 }
