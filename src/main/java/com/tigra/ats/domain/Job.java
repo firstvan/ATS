@@ -72,14 +72,13 @@ public class Job {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Job job = (Job) o;
-        return getOpenDate().equals(job.getOpenDate()) &&
-                getLocation().equals(job.getLocation()) &&
-                getType().equals(job.getType()) &&
-                getLevel().equals(job.getLevel());
+        return Objects.equals(getLocation(), job.getLocation()) &&
+                Objects.equals(getType(), job.getType()) &&
+                Objects.equals(getLevel(), job.getLevel());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getOpenDate(), getLocation(), getType(), getLevel());
+        return Objects.hash(getLocation(), getType(), getLevel());
     }
 }

@@ -9,7 +9,6 @@ import com.tigra.ats.repository.LocationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +26,7 @@ public class JobPropertyHandler {
     }
 
     public Optional<JobType> getType(String type) {
-        return jobTypeRepository.findByJobName(type);
+        return jobTypeRepository.findByName(type);
     }
 
     public Optional<JobLevel> getLevel(String level) {

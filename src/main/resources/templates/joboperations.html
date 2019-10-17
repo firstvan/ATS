@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymleaf.org">
+    <head>
+        <title>Pozik</title>
+        <meta charset="UTF-8">
+    </head>
+
+    <body>
+        <ul>
+            <li th:each="job : ${jobs}" th:text="${job.type.name} + ' ' + ${job.level.level} + ' ' + ${job.location.city}"></li>
+        </ul>
+    </body>
+</html>

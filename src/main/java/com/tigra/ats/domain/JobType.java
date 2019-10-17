@@ -9,15 +9,15 @@ public class JobType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String jobName;
+    private String name;
     @OneToMany(mappedBy = "type")
     private List<Job> jobs;
 
     protected JobType() {
     }
 
-    public JobType(String jobName) {
-        this.jobName = jobName;
+    public JobType(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -28,12 +28,12 @@ public class JobType {
         this.id = id;
     }
 
-    public String getJobName() {
-        return jobName;
+    public String getName() {
+        return name;
     }
 
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
+    public void setName(String name) {
+        this.name = name;
     }
 
 
@@ -50,16 +50,16 @@ public class JobType {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JobType jobType = (JobType) o;
-        return getJobName().equals(jobType.getJobName());
+        return getName().equals(jobType.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getJobName());
+        return Objects.hash(getName());
     }
 
     @Override
     public String toString() {
-        return jobName;
+        return name;
     }
 }

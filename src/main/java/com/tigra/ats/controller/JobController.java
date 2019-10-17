@@ -1,31 +1,22 @@
 package com.tigra.ats.controller;
 
-import com.tigra.ats.service.JobPropertyContainer;
+import com.tigra.ats.domain.Job;
 import com.tigra.ats.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Controller
 public class JobController {
     private JobService jobService;
-    private JobPropertyContainer properties;
 
     @Autowired
     public JobController(JobService jobService) {
         this.jobService = jobService;
-    }
-
-    @Autowired
-    public void setProperties(JobPropertyContainer properties) {
-        this.properties = properties;
-    }
-
-    @GetMapping("/job-form")
-    public String displayJobForm() {
-        return "jobform";
     }
 
     @PostMapping("/save-job-props")
@@ -38,9 +29,9 @@ public class JobController {
 
     @GetMapping("/job-creator")
     public String displayJobCreator(Model model) {
-        model.addAttribute("types", properties.getTypes());
-        model.addAttribute("levels", properties.getLevels());
-        model.addAttribute("locations", properties.getLocations());
+        model.addAttribute("types", jobService.getTypes());
+        model.addAttribute("levels", jobService.getLevels());
+        model.addAttribute("locations", jobService.getLocations());
         return "jobcreator";
     }
 
@@ -50,5 +41,12 @@ public class JobController {
                             @RequestParam("location") String location) {
         jobService.createJob(name, level, location);
         return "redirect:/job-creator";
+    }
+
+    @GetMapping("/job-operations")
+    public String getJobOperationPage(Model model) {
+        List<Job> availableJobs = jobService.getAvailableJobs();
+        model.addAttribute("jobs", availableJobs);
+        return "joboperations";
     }
 }

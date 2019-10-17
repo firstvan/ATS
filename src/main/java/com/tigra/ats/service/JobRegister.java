@@ -22,7 +22,7 @@ public class JobRegister {
         this.jobRepository = jobRepository;
     }
 
-    //TODO lecserélni egy property factoryra
+    //TODO Ne legyen kódismétlés
     public void saveType(String type) {
         if(!type.isEmpty()) {
             Optional<JobType> jobType = jobPropertyHandler.getType(type);
@@ -53,7 +53,9 @@ public class JobRegister {
         Optional<Location> location = jobPropertyHandler.getLocation(city);
 
         if(jobType.isPresent() && jobLevel.isPresent() && location.isPresent()) {
-            Job createdJob = new Job(jobType.get(), jobLevel.get(), location.get(), LocalDate.now());
+            Job createdJob = jobRepository
+                    .findByTypeAndLevelAndLocation(jobType.get(), jobLevel.get(), location.get())
+                    .orElseGet(() -> new Job(jobType.get(), jobLevel.get(), location.get(), LocalDate.now()));
             jobRepository.save(createdJob);
         }
         else

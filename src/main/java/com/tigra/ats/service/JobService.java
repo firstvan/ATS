@@ -1,17 +1,22 @@
 package com.tigra.ats.service;
 
-import com.tigra.ats.repository.JobRepository;
+import com.tigra.ats.domain.Job;
+import com.tigra.ats.domain.JobLevel;
+import com.tigra.ats.domain.JobType;
+import com.tigra.ats.domain.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class JobService {
-    private JobRepository jobRepository;
+    private JobLoader jobLoader;
     private JobRegister jobRegister;
 
     @Autowired
-    public JobService(JobRepository jobRepository, JobRegister jobRegister) {
-        this.jobRepository = jobRepository;
+    public JobService(JobLoader jobLoader, JobRegister jobRegister) {
+        this.jobLoader = jobLoader;
         this.jobRegister = jobRegister;
     }
 
@@ -25,4 +30,19 @@ public class JobService {
         jobRegister.createJob(type, level, city);
     }
 
+    public List<Job> getAvailableJobs() {
+        return jobLoader.getAllJob();
+    }
+
+    public List<JobType> getTypes() {
+        return jobLoader.getTypes();
+    }
+
+    public List<JobLevel> getLevels() {
+        return jobLoader.getLevels();
+    }
+
+    public List<Location> getLocations() {
+        return jobLoader.getLocations();
+    }
 }

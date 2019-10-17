@@ -13,5 +13,5 @@ public interface JobTypeRepository extends CrudRepository<JobType, Long> {
     @Override
     List<JobType> findAll();
 
-    Optional<JobType> findByJobName(String jobName);
+    Optional<JobType> findByName(String name);
 }

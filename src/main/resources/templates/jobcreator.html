@@ -8,7 +8,7 @@
 <form action="create-job" method="post" th:object="${job}">
     <span>Pozició neve:</span>
     <select name="job-name">
-        <option th:each="type : ${types}" th:value="${type.jobName}" th:text="${type.jobName}"></option>
+        <option th:each="type : ${types}" th:value="${type.name}" th:text="${type.name}"></option>
     </select>
     <span>Szint:</span>
     <select name="job-level">
