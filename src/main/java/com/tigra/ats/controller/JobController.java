@@ -24,29 +24,30 @@ public class JobController {
                             @RequestParam("job-level") String level,
                             @RequestParam("location") String location) {
         jobService.saveAvailableJobProperties(name, level, location);
-        return "redirect:/job-form";
+        return "redirect:/job-operations";
     }
 
-    @GetMapping("/job-creator")
-    public String displayJobCreator(Model model) {
-        model.addAttribute("types", jobService.getTypes());
-        model.addAttribute("levels", jobService.getLevels());
-        model.addAttribute("locations", jobService.getLocations());
-        return "jobcreator";
-    }
 
     @PostMapping("/create-job")
     public String createJob(@RequestParam("job-name") String name,
                             @RequestParam("job-level") String level,
                             @RequestParam("location") String location) {
         jobService.createJob(name, level, location);
-        return "redirect:/job-creator";
+        return "redirect:/job-operations";
     }
 
     @GetMapping("/job-operations")
     public String getJobOperationPage(Model model) {
-        List<Job> availableJobs = jobService.getAvailableJobs();
-        model.addAttribute("jobs", availableJobs);
+        model.addAttribute("jobs", jobService.getAvailableJobs());
+        model.addAttribute("types", jobService.getTypes());
+        model.addAttribute("levels", jobService.getLevels());
+        model.addAttribute("locations", jobService.getLocations());
         return "joboperations";
+    }
+
+    @PostMapping("/delete-job/{id}")
+    public String deleteJob(@PathVariable("id") Long id) {
+        jobService.deleteJob(id);
+        return "redirect:/job-operations";
     }
 }

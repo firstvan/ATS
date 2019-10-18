@@ -30,6 +30,10 @@ public class JobService {
         jobRegister.createJob(type, level, city);
     }
 
+    public void deleteJob(Long id) {
+        jobRegister.deleteJob(id);
+    }
+
     public List<Job> getAvailableJobs() {
         return jobLoader.getAllJob();
     }

@@ -61,4 +61,8 @@ public class JobRegister {
         else
             throw new CannotCreateJob();
     }
+
+    public void deleteJob(Long id) {
+        jobRepository.deleteById(id);
+    }
 }
