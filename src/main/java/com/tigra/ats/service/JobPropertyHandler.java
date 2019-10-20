@@ -49,15 +49,15 @@ public class JobPropertyHandler {
         locationRepository.save(location);
     }
 
-   public List<JobType> findAllType() {
+    public List<JobType> findAllType() {
         return jobTypeRepository.findAll();
    }
 
-   public List<JobLevel> findAllLevel() {
+    public List<JobLevel> findAllLevel() {
         return jobLevelRepository.findAll();
    }
 
-   public List<Location> findAllLocation() {
+    public List<Location> findAllLocation() {
         return locationRepository.findAll();
    }
 }

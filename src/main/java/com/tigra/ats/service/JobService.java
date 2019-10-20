@@ -5,6 +5,7 @@ import com.tigra.ats.domain.JobLevel;
 import com.tigra.ats.domain.JobType;
 import com.tigra.ats.domain.Location;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,8 +35,8 @@ public class JobService {
         jobRegister.deleteJob(id);
     }
 
-    public List<Job> getAvailableJobs() {
-        return jobLoader.getAllJob();
+    public Page<Job> getAvailableJobs(int pageNumber) {
+        return jobLoader.getJobPage(pageNumber);
     }
 
     public List<JobType> getTypes() {
@@ -48,5 +49,9 @@ public class JobService {
 
     public List<Location> getLocations() {
         return jobLoader.getLocations();
+    }
+
+    public int getNumberOfPages() {
+        return jobLoader.getNumberOfPages();
     }
 }

@@ -4,6 +4,8 @@ import com.tigra.ats.domain.Job;
 import com.tigra.ats.domain.JobLevel;
 import com.tigra.ats.domain.JobType;
 import com.tigra.ats.domain.Location;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,8 +14,7 @@ import java.util.Optional;
 
 @Repository
 public interface JobRepository extends CrudRepository<Job, Long> {
-    @Override
-    List<Job> findAll();
+    Page<Job> findAll(Pageable pageable);
 
     @Override
     void deleteById(Long id);

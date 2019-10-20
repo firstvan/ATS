@@ -22,7 +22,6 @@ public class JobRegister {
         this.jobRepository = jobRepository;
     }
 
-    //TODO Ne legyen kódismétlés
     public void saveType(String type) {
         if(!type.isEmpty()) {
             Optional<JobType> jobType = jobPropertyHandler.getType(type);

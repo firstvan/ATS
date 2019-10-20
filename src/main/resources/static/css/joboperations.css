@@ -1,7 +1,11 @@
+body {
+    background: #e9ecef !important;
+}
+
 .container-fluid {
-    height: 100vh;
+    height: 92vh;
 }
 
 .col {
-    height: 100vh;
+    height: 92vh;
 }
