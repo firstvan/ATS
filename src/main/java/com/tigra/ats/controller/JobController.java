@@ -33,13 +33,19 @@ public class JobController {
 
     @GetMapping("/job-operations/{actualPage}")
     public String getJobOperationPage(Model model, @PathVariable("actualPage") int actualPage) {
-        model.addAttribute("jobs", jobService.getAvailableJobs(actualPage - 1));
-        model.addAttribute("actualPage", actualPage);
-        model.addAttribute("numberOfPages", jobService.getNumberOfPages());
-        model.addAttribute("types", jobService.getTypes());
-        model.addAttribute("levels", jobService.getLevels());
-        model.addAttribute("locations", jobService.getLocations());
-        return "joboperations";
+        int numberOfPages = jobService.getNumberOfPages();
+
+        if(actualPage > 1 && actualPage > (numberOfPages + 1))
+            return "error";
+        else {
+            model.addAttribute("jobs", jobService.getAvailableJobs(actualPage - 1));
+            model.addAttribute("actualPage", actualPage);
+            model.addAttribute("numberOfPages", numberOfPages);
+            model.addAttribute("types", jobService.getTypes());
+            model.addAttribute("levels", jobService.getLevels());
+            model.addAttribute("locations", jobService.getLocations());
+            return "joboperations";
+        }
     }
 
     @PostMapping("/delete-job/{id}")

@@ -1,5 +1,7 @@
 package com.tigra.ats.service;
 
-//TODO értelmes hibaüzenet
 public class CannotCreateJob extends RuntimeException {
+    public CannotCreateJob(String message) {
+        super(message);
+    }
 }

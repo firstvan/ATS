@@ -58,7 +58,7 @@ public class JobRegister {
             jobRepository.save(createdJob);
         }
         else
-            throw new CannotCreateJob();
+            throw new CannotCreateJob("Properties not found!");
     }
 
     public void deleteJob(Long id) {
