@@ -1,4 +1,4 @@
-package com.tigra.ats.service;
+package com.tigra.ats.service.logic;
 
 import com.tigra.ats.domain.JobLevel;
 import com.tigra.ats.domain.JobType;

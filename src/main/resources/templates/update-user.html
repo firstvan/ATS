@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="hu" layout:decorator="layouts/main" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="../static/css/joboperations.css" th:href="@{/css/joboperations.css}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>ATS</title>
+</head>
+
+
+<div layout:fragment="loginContent">
+
+
+        <div>
+            <form action="#"
+                  th:action="@{/update/{id}(id=${user.id})}"
+                  method="post">
+
+                <select name="role">
+                    <option th:each="role : ${roles}" th:value="${role.role}" th:text="${role.role}"></option>
+                    <option>None</option>
+                </select>
+                <button type="submit">Mentés</button>
+            </form>
+
+        </div>
+
+
+</div>
+
+
+</body>
+</html>

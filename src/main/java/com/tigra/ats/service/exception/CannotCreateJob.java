@@ -1,4 +1,4 @@
-package com.tigra.ats.service;
+package com.tigra.ats.service.exception;
 
 public class CannotCreateJob extends RuntimeException {
     public CannotCreateJob(String message) {

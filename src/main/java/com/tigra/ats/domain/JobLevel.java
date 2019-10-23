@@ -56,4 +56,13 @@ public class JobLevel {
     public int hashCode() {
         return Objects.hash(getLevel());
     }
+
+    @Override
+    public String toString() {
+        return "JobLevel{" +
+                "id=" + id +
+                ", level='" + level + '\'' +
+                ", jobs=" + jobs +
+                '}';
+    }
 }

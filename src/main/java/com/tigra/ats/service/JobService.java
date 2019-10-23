@@ -4,6 +4,8 @@ import com.tigra.ats.domain.Job;
 import com.tigra.ats.domain.JobLevel;
 import com.tigra.ats.domain.JobType;
 import com.tigra.ats.domain.Location;
+import com.tigra.ats.service.logic.JobRegister;
+import com.tigra.ats.service.logic.JobLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;

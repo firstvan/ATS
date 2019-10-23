@@ -81,4 +81,15 @@ public class Job {
     public int hashCode() {
         return Objects.hash(getLocation(), getType(), getLevel());
     }
+
+    @Override
+    public String toString() {
+        return "Job{" +
+                "id=" + id +
+                ", openDate=" + openDate +
+                ", location=" + location +
+                ", type=" + type +
+                ", level=" + level +
+                '}';
+    }
 }
