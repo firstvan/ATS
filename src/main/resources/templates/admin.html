@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="hu" layout:decorator="layouts/main" xmlns:layout="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="../static/css/joboperations.css" th:href="@{/css/joboperations.css}" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<title>ATS</title>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item">
+				<a class="nav-link" th:href="@{/home}">Home</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" th:href="@{/job-operations/1}">Pozíció nyilvántartás</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link active" th:href="@{/admin}">Szerepkörök</a>
+			</li>
+		</ul>
+	</div>
+</nav>
+
+
+	<div layout:fragment="loginContent">
+		
+
+		<div sec:authorize="hasRole('ROLE_ADMIN')"  class="container">
+
+			<div>
+				<form action="/admin" class="container mySpace">
+					<div class="form-group mb2">
+						 <input type="text" class="form-control" name="name" placeholder="Search User"/>
+						<input type="submit" value="Search" class="btn btn-primary" />
+					</div>
+				</form>
+
+				<table class="table table-stripped">
+					<tr>
+						<th>Email</th>
+						<th>Name</th>
+                        <th>Roles</th>
+                        <th>Edit_Roles</th>
+					</tr>
+					<tr th:each="user:${users}">
+						<td th:text="${user.email}"></td>
+						<td th:text="${user.fullName}"></td>
+                        <td th:text="${user.role}"></td>
+                        <td><a th:href="@{/edit/{id}(id=${user.id})}">Edit</a></td>
+					</tr>
+				</table>
+			</div>
+
+		</div>
+
+	</div>
+		
+		
+</body>
+</html>
