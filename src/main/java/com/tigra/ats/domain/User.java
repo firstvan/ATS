@@ -22,7 +22,7 @@ public class User {
 	private String username;
 
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Role role;
 
 	public User() {}

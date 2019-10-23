@@ -38,11 +38,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	public List<User> findAllUserExceptAdmin() {
-		List<User> users = userRepository.findAll();
-		users = users.stream()
-					.filter(u -> !u.getRole().getRole().equals("ROLE_ADMIN"))
-					.collect(Collectors.toList());
-		return users;
+		return userRepository.findAll();
 	}
 
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -28,6 +28,7 @@ public class RoleController {
 		model.addAttribute("users",users);
 		return "admin";
 	}
+
     @GetMapping("/delete-user/{id}")
     public String deleteUser(@PathVariable("id") long id, Model model) {
         User user =  userService.findById(id);
