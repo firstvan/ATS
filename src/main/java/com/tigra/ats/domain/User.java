@@ -2,97 +2,95 @@ package com.tigra.ats.domain;
 
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.Objects;
 
 @Entity
+@Table( name="users" )
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@Id @GeneratedValue
+	private Long id;
+	
+	@Column( unique=true, nullable=false )
+	private String email;
+	
+	@Column( nullable=false )
+	private String password;
+	
+	private String fullName;
 
-    @Column
-    private String username;
 
-    @Column
-    private String password;
+    @ManyToOne
+    private Role role;
 
-    @Column
-    private boolean enabled;
+	public User() {}
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "authorities_users", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id"))
-    private Set<Authority> authority;
+	public Long getId() {
+		return id;
+	}
 
-    public Long getId() {
-        return id;
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+    public Role getRole() {
+        return role;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public String getUsername() {
-        return username;
-    }
+	public void addRole(String roleName) {
+			this.role = new Role(roleName);
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
-    public String getPassword() {
-        return password;
-    }
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		User user = (User) o;
+		return Objects.equals(getEmail(), user.getEmail()) &&
+				Objects.equals(getFullName(), user.getFullName()) &&
+				Objects.equals(getRole(), user.getRole());
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	@Override
+	public int hashCode() {
+		return Objects.hash(getEmail(), getFullName(), getRole());
+	}
 
-    public boolean isEnabled() {
-        return enabled;
-    }
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", email=" + email + ", password=" + password + "]";
+	}
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Set<Authority> getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(Set<Authority> authority) {
-        this.authority = authority;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((id == null) ? 0 : id.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        User other = (User) obj;
-        if (id == null) {
-            if (other.id != null)
-                return false;
-        } else if (!id.equals(other.id))
-            return false;
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "User [id=" + id + ", username=" + username + ", password=" + password + "]";
-    }
-
+	public void deleteRole() {
+		this.role=null;
+	}
 }

@@ -2,11 +2,15 @@ package com.tigra.ats.repository;
 
 import com.tigra.ats.domain.User;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 
-@Repository
 public interface UserRepository extends CrudRepository<User, Long> {
+    List<User> findByFullNameIsContaining(String name);
+    User findByEmail(String username);
+  
     public Optional<User> findByUsername(String username);
+
+    @Override
+    List<User> findAll();
 }

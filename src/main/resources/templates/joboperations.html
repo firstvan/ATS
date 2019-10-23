@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="../static/css/joboperations.css" th:href="@{/css/joboperations.css}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="../static/js/joboperations.js" th:src="@{/js/joboperations.js}" type="text/javascript"></script>
+    <title>ATS</title>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/}">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" th:href="@{/job-operations/1}">Pozíció nyilvántartás</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin}">Szerepkörök</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+    <div class="container-fluid">
+        <div class="row pt-2">
+            <div class="col-3">
+                <div class="accordion" id="job-operation-accordion">
+                    <div class="card">
+                        <div class="card-header" id="jobreg-heading">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#jobreg-collapse" aria-expanded="true" aria-controls="jobreg-collapse">
+                                    Nyitott pozíció meghírdetése
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="jobreg-collapse" class="collapse" aria-labelledby="jobreg-heading"
+                            data-parent="#job-operation-accordion">
+                            <div class="card-body">
+                                <form action="/create-job" method="post" th:object="${job}">
+                                    <div class="form-group">
+                                        <label for="job-name-select">Pozició neve</label>
+                                        <select id="job-name-select" class="form-control" name="job-name">
+                                            <option th:each="type : ${types}" th:value="${type.name}"
+                                                th:text="${type.name}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="job-level-select">Szint</label>
+                                        <select id="job-level-select" class="form-control" name="job-level">
+                                            <option th:each="level : ${levels}" th:value="${level.level}"
+                                                th:text="${level.level}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="job-location-select">Telephely</label>
+                                        <select id="job-location-select" class="form-control" name="location">
+                                            <option th:each="location : ${locations}" th:value="${location.city}"
+                                                th:text="${location.city}"></option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Mentés</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="property-heading">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                    data-target="#property-collapse" aria-expanded="false"
+                                    aria-controls="property-collapse">
+                                    Pozíció rögzítése
+                                </button>
+                            </h2>
+                        </div>
+                        <div id="property-collapse" class="collapse" aria-labelledby="property-heading"
+                            data-parent="#job-operation-accordion">
+                            <div class="card-body">
+                                <form action="/save-job-props" method="post">
+                                    <div class="form-group">
+                                        <label for="job-name-input">Pozició neve</label>
+                                        <input id="job-name-input" class="form-control" type="text" name="job-name"
+                                            value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="job-level-input">Szint</label>
+                                        <input id="job-level-input" class="form-control" type="text" name="job-level"
+                                            value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="job-location-input">Telephely</label>
+                                        <input id="job-location-input" class="form-control" type="text" name="location"
+                                            value="">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Mentés</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <table id="job-table" class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Név</th>
+                            <th scope="col">Szint</th>
+                            <th scope="col">Telephely</th>
+                            <th scope="col">Meghírdetés dátuma</th>
+                            <th scope="col">Műveletek</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="job : ${jobs}" th:attr="data-job-id=${job.id}" data-job-id="1">
+                            <td th:text="${job.type.name}">Szoftverfejlesztő</td>
+                            <td th:text="${job.level.level}">Junior</td>
+                            <td th:text="${job.location.city}">Debrecen</td>
+                            <td th:text="${job.openDate}">2019-10-17</td>
+                            <td>
+                                <button type="button" class="btn btn-danger delete-job-button">Pozíció
+                                    lezárása</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:if="${actualPage} > 1">
+                            <a class="page-link" th:href="@{|/job-operations/${actualPage - 1}|}" tabindex="-1"
+                                aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item disabled" th:if="${actualPage} == 1">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <th:block th:each="i: ${#numbers.sequence(0, numberOfPages)}">
+                                <li class="page-item active" th:if="${actualPage} == ${i + 1}">
+                                    <a class="page-link" th:text="${i + 1}" th:href="@{|/job-operations/${i + 1}|}"></a>
+                                </li>
+                                <li class="page-item" th:if="${actualPage} != ${i + 1}">
+                                    <a class="page-link" th:text="${i + 1}" th:href="@{|/job-operations/${i + 1}|}"></a>
+                                </li>
+                            </th:block>
+                            <li class="page-item" th:if="${actualPage} < ${numberOfPages + 1}">
+                                <a class="page-link" th:href="@{|/job-operations/${actualPage+1}|}">Next</a>
+                            </li>
+                            <li class="page-item disabled" th:if="${actualPage} == ${numberOfPages + 1}">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                
+            </div>
+        </div>
+    </body>
+</html>
