@@ -5,11 +5,11 @@ import com.tigra.ats.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
@@ -19,17 +19,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //necessary to prevent security from being applied to the resources
     //such as CSS, images and javascripts
     String [] resources = new String [] {
-            "/include/* *", "/css/* *", "/icons/* *", "/img/* *", "/js/* *", "/layer/* *"
+            "/include/**", "/css/**", "/icons/**", "/img/**", "/js/**", "/layer/**"
     };
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(resources).permitAll ()
-                .antMatchers("/login").permitAll()
-                .antMatchers("/admin *").access("HasRole ('admin')")
-                .antMatchers("/user *").access("HasRole ('user') or hasRole('ADMIN')")
+                .antMatchers(HttpMethod.GET, "/login", "/").permitAll()
+                .antMatchers("/admin").hasRole("ADMIN")
+                .antMatchers("/user").access("hasRole('ADMIN') or hasRole('USER')")
+                .antMatchers(resources).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
