@@ -8,6 +8,8 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findByFullNameIsContaining(String name);
     User findByEmail(String username);
+  
+    public Optional<User> findByUsername(String username);
 
     @Override
     List<User> findAll();
