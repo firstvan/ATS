@@ -21,11 +21,6 @@ public class RoleController {
 		this.userService = userService;
 	}
 
-	@RequestMapping("/")
-	public String home(Model model){
-		return "index";
-	}
-
 	@GetMapping("/admin")
 	public String listOfUsers(Model model,@RequestParam(defaultValue = "") String name  ){
 

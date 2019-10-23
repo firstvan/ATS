@@ -1,6 +1,5 @@
 package com.tigra.ats.service;
 
-import com.tigra.ats.domain.Authority;
 import com.tigra.ats.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -11,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,12 +27,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     userRepository.findByUsername(username)
                             .orElseThrow(() -> new UsernameNotFoundException("Nem letezo felhasznalo"));
             List grantList = new ArrayList();
-            for (Authority authority : appUser.getAuthority()) {
-                // ROLE_USER, ROLE_ADMIN,..
-                GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authority.getAuthority());
-                grantList.add(grantedAuthority);
-
-            }
+            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(appUser.getRole().getRole());
+            grantList.add(grantedAuthority);
 
             UserDetails user = (UserDetails) new User(appUser.getUsername(), appUser.getPassword(), grantList);
             return user;

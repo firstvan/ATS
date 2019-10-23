@@ -19,6 +19,8 @@ public class User {
 	
 	private String fullName;
 
+	private String username;
+
 
     @ManyToOne
     private Role role;
@@ -69,6 +71,14 @@ public class User {
 			this.role = new Role(roleName);
 	}
 
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
 	@Override
 	public boolean equals(Object o) {
