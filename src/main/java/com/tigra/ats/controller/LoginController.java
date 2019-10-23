@@ -11,9 +11,9 @@ public class LoginController {
         return "login";
     }
 
-    @GetMapping("/menu")
+    @GetMapping("/home")
     public String menu() {
-        return "menu";
+        return "home";
     }
 
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymleaf.org">
+<html lang="hu" xmlns:th="http://www.thymleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <head>
     <meta charset="UTF-8">
@@ -134,8 +134,8 @@
                             <td th:text="${job.location.city}">Debrecen</td>
                             <td th:text="${job.openDate}">2019-10-17</td>
                             <td>
-                                <button type="button" class="btn btn-danger delete-job-button">Pozíció
-                                    lezárása</button>
+                                    <button type="button" class="btn btn-danger delete-job-button"  >Pozíció lezárása</button>
+
                             </td>
                         </tr>
                     </tbody>
