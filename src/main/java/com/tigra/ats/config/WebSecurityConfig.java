@@ -18,7 +18,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     //necessary to prevent security from being applied to the resources
     //such as CSS, images and javascripts
-    String [] resources = new String [] {
+    private String [] resources = new String [] {
             "/include/**", "/css/**", "/icons/**", "/img/**", "/js/**", "/layer/**"
     };
 

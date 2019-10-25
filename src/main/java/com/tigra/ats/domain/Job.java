@@ -1,7 +1,10 @@
 package com.tigra.ats.domain;
 
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Objects;
 
 @Entity
@@ -9,7 +12,8 @@ public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate openDate;
+    @CreatedDate
+    private LocalDate createdDate;
     @ManyToOne
     private Location location;
     @ManyToOne
@@ -20,8 +24,8 @@ public class Job {
     protected Job() {
     }
 
-    public Job(JobType type, JobLevel level, Location location, LocalDate openDate) {
-        this.openDate = openDate;
+    public Job(JobType type, JobLevel level, Location location) {
+        this.createdDate = LocalDate.now();
         this.location = location;
         this.type = type;
         this.level = level;
@@ -35,12 +39,12 @@ public class Job {
         this.id = id;
     }
 
-    public LocalDate getOpenDate() {
-        return openDate;
+    public LocalDate getCreatedDate() {
+        return createdDate;
     }
 
-    public void setOpenDate(LocalDate openDate) {
-        this.openDate = openDate;
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
     }
 
     public Location getLocation() {
@@ -86,7 +90,7 @@ public class Job {
     public String toString() {
         return "Job{" +
                 "id=" + id +
-                ", openDate=" + openDate +
+                ", createdDate=" + createdDate +
                 ", location=" + location +
                 ", type=" + type +
                 ", level=" + level +

@@ -82,7 +82,7 @@ public class JobRegister {
         if(jobType.isPresent() && jobLevel.isPresent() && location.isPresent()) {
             Job createdJob = jobRepository
                     .findByTypeAndLevelAndLocation(jobType.get(), jobLevel.get(), location.get())
-                    .orElseGet(() -> new Job(jobType.get(), jobLevel.get(), location.get(), LocalDate.now()));
+                    .orElseGet(() -> new Job(jobType.get(), jobLevel.get(), location.get()));
             jobRepository.save(createdJob);
         }
         else

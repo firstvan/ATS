@@ -14,6 +14,6 @@ function deleteJob() {
             window.location.replace("/job-operations/1");
          }
     }
-    xhttpreq.open("POST", `/delete-job/${rowId}`, true);
+    xhttpreq.open("POST", `/delete-job/${rowId}`, false);
     xhttpreq.send();
 }
