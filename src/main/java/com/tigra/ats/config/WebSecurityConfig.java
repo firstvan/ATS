@@ -16,26 +16,24 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    //necessary to prevent security from being applied to the resources
-    //such as CSS, images and javascripts
-    private String [] resources = new String [] {
+    private String[] resources = new String [] {
             "/include/**", "/css/**", "/icons/**", "/img/**", "/js/**", "/layer/**"
     };
 
+    private String[] jobOperationUrls = new String[] {
+            "/save-job-props", "/create-job", "/delete-job/**"
+    };
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/login", "/").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
-                .antMatchers("/save-job-props").hasRole("SZAKMAIVEZETO")
-                .antMatchers("/create-job").hasRole("SZAKMAIVEZETO")
-                .antMatchers("/delete-job/**").hasRole("SZAKMAIVEZETO")
+                .antMatchers(jobOperationUrls).hasRole("SZAKMAIVEZETO")
                 .antMatchers(resources).permitAll()
                 .anyRequest().authenticated()
-                .and()
+                    .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
@@ -43,7 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error=True")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .and()
+                    .and()
                 .logout()
                 .permitAll()
                 .logoutSuccessUrl("/login?Logout");
