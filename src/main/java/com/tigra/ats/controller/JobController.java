@@ -15,22 +15,6 @@ public class JobController {
         this.jobService = jobService;
     }
 
-    @PostMapping("/save-job-props")
-    public String createJobProps(@RequestParam("job-name") String name,
-                            @RequestParam("job-level") String level,
-                            @RequestParam("location") String location) {
-        jobService.saveAvailableJobProperties(name, level, location);
-        return "redirect:/job-operations/1";
-    }
-
-    @PostMapping("/create-job")
-    public String createJob(@RequestParam("job-name") String name,
-                            @RequestParam("job-level") String level,
-                            @RequestParam("location") String location) {
-        jobService.createJob(name, level, location);
-        return "redirect:/job-operations/1";
-    }
-
     @GetMapping("/job-operations/{actualPage}")
     public String getJobOperationPage(Model model, @PathVariable("actualPage") int actualPage) {
         int numberOfPages = jobService.getNumberOfPages();
@@ -46,6 +30,22 @@ public class JobController {
             model.addAttribute("locations", jobService.getLocations());
             return "joboperations";
         }
+    }
+
+    @PostMapping("/save-job-props")
+    public String createJobProps(@RequestParam("job-name") String name,
+                            @RequestParam("job-level") String level,
+                            @RequestParam("location") String location) {
+        jobService.saveAvailableJobProperties(name, level, location);
+        return "redirect:/job-operations/1";
+    }
+
+    @PostMapping("/create-job")
+    public String createJob(@RequestParam("job-name") String name,
+                            @RequestParam("job-level") String level,
+                            @RequestParam("location") String location) {
+        jobService.createJob(name, level, location);
+        return "redirect:/job-operations/1";
     }
 
     @PostMapping("/delete-job/{id}")

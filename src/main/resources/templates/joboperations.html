@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="hu" xmlns:th="http://www.thymleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="hu" xmlns:th="http://www.thymleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta id="csrf_token" th:name="_csrf" th:content="${_csrf.token}"/>
-    <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <meta id="csrf_token" th:name="_csrf" th:content="${_csrf.token}" />
     <link href="../static/css/joboperations.css" th:href="@{/css/joboperations.css}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -23,29 +22,43 @@
 </head>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/home}">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" th:href="@{/job-operations/1}">Pozíció nyilvántartás</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:href="@{/admin}">Szerepkörök</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/home}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/job-operations/1}">Pozíció nyilvántartás</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a class="nav-link" th:href="@{/admin}">Szerepkörök</a>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="javascript: document.logoutForm.submit()"
+                        role="menuitem">Kijelentkezés</a>
+
+                    <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+                        <input hidden type="submit" value="Sign Out" />
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container-fluid">
         <div class="row pt-2">
-            <div class="col-3">
+            <div class="col-3" sec:authorize="hasRole('ROLE_SZAKMAIVEZETO')">
                 <div class="accordion" id="job-operation-accordion">
                     <div class="card">
                         <div class="card-header" id="jobreg-heading">
                             <h2 class="mb-0">
-                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#jobreg-collapse" aria-expanded="true" aria-controls="jobreg-collapse">
+                                <button class="btn btn-link" type="button" data-toggle="collapse"
+                                    data-target="#jobreg-collapse" aria-expanded="true" aria-controls="jobreg-collapse">
                                     Nyitott pozíció meghírdetése
                                 </button>
                             </h2>
@@ -99,17 +112,17 @@
                                     <div class="form-group">
                                         <label for="job-name-input">Pozició neve</label>
                                         <input id="job-name-input" class="form-control" type="text" name="job-name"
-                                            value="">
+                                            placeholder="Pl.:Rendszergazda" value="">
                                     </div>
                                     <div class="form-group">
                                         <label for="job-level-input">Szint</label>
                                         <input id="job-level-input" class="form-control" type="text" name="job-level"
-                                            value="">
+                                            placeholder="Pl.:Junior" value="">
                                     </div>
                                     <div class="form-group">
                                         <label for="job-location-input">Telephely</label>
                                         <input id="job-location-input" class="form-control" type="text" name="location"
-                                            value="">
+                                            placeholder="Pl.:Debrecen" value="">
                                     </div>
                                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                                     <button type="submit" class="btn btn-primary">Mentés</button>
@@ -138,7 +151,8 @@
                             <td th:text="${job.location.city}">Debrecen</td>
                             <td th:text="${job.createdDate}">2019-10-17</td>
                             <td>
-                                <button type="button" class="btn btn-danger delete-job-button">Pozíció lezárása</button>
+                                <button sec:authorize="hasRole('ROLE_SZAKMAIVEZETO')" type="button"
+                                    class="btn btn-danger delete-job-button">Pozíció lezárása</button>
                             </td>
                         </tr>
                     </tbody>
@@ -165,12 +179,11 @@
                                 <a class="page-link" th:href="@{|/job-operations/${actualPage+1}|}">Next</a>
                             </li>
                             <li class="page-item disabled" th:if="${actualPage} == ${numberOfPages + 1}">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
         </div>
     </body>
