@@ -29,25 +29,6 @@ public class RoleController {
 		return "admin";
 	}
 
-    @GetMapping("/delete-user/{id}")
-    public String deleteUser(@PathVariable("id") long id, Model model) {
-        User user =  userService.findById(id);
-        userService.delete(user);
-        model.addAttribute("users", userService.findAllUserExceptAdmin());
-        return "admin";
-    }
-
-	@GetMapping("/edit/{id}")
-	public String showUpdateForm(@PathVariable("id") long id, Model model) {
-		User user = userService.findById(id);
-		List<Role> roles = userService.findAllRole();
-		roles = roles.stream()
-			.filter(role -> !role.getRole().equals("ROLE_ADMIN"))
-			.collect(Collectors.toList());
-		model.addAttribute("user", user);
-		model.addAttribute("roles",roles );
-		return "update-user";
-	}
 
 	@PostMapping("/update/{id}")
 	public String updateUser(@PathVariable("id") long id, @RequestParam("role") String role, Model model) {
