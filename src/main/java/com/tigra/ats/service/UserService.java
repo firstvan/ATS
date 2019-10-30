@@ -26,7 +26,7 @@ public class UserService implements UserDetailsService {
 	}
 
 	public List<User> findByFullNameIsContaining(String name) {
-		return userRepository.findByFullNameIsContaining("%"+name+"%");
+		return userRepository.findAllByFullNameContaining(name);
 	}
 
 	public User findById(long id) {
@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
 		return new UserDetailsImpl(user);
 	}
 
-	private User findByEmail(String username) {
+	public User findByEmail(String username) {
 		return userRepository.findByEmail(username);
 	}
 

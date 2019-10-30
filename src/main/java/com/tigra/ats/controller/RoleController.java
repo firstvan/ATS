@@ -23,25 +23,24 @@ public class RoleController {
 
 	@GetMapping("/admin")
 	public String listOfUsers(Model model,@RequestParam(defaultValue = "") String name  ){
-
-	    List<User> users = userService.findAllUserExceptAdmin();
-		model.addAttribute("users",users);
+		List<User> users=userService.findByFullNameIsContaining(name);
+		model.addAttribute("users", users);
 		return "admin";
 	}
 
 
-	@PostMapping("/update/{id}")
-	public String updateUser(@PathVariable("id") long id, @RequestParam("role") String role, Model model) {
-	    if(role.equals("None")){
-            User user = userService.findById(id);
-            user.deleteRole();
+	@PostMapping("/update/{email}")
+	public String updateUser(@PathVariable("email") String email, @RequestParam("role") String role, Model model) {
+		User user = userService.findByEmail(email);
+
+		if(role.equals("None")){
+            user.setRole(null);
             userService.save(user);
         }else {
-            User user = userService.findById(id);
-            Role existRole = userService.findRoleByName(role);
+            Role existRole = userService.findRoleByName("ROLE_"+role);
             user.setRole(existRole);
-            userService.save(user);
         }
+		userService.save(user);
 		return "redirect:/admin";
 	}
 }
