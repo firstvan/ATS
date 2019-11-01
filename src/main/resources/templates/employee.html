@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="hu" xmlns:th="http://www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ATS</title>
+</head>
+<body>
+    <form action="/create-employee" method="GET" th:object="${employee}">
+        <input type="text" name="mail" placeholder="email@example.com" th:field="*{mail}">
+        <input type="text" name="firstName" placeholder="Példa" th:field="*{firstName}">
+        <input type="text" name="lastName" placeholder="Péter" th:field="*{lastName}">
+        <input type="text" name="birthName" placeholder="Példa Péter" th:field="*{birthName}">
+        <input type="text" name="birthPlace" placeholder="Berettyóújfalu" th:field="*{birthPlace}">
+        <input type="text" name="mother" placeholder="Példa Ilonka" th:field="*{mother}">
+        <input type="date" name="birthDay" th:field="*{birthDay}">
+        <div class="form-group">
+            <label for="job-name-select">Pozició neve</label>
+            <select id="job-name-select" class="form-control" name="type" th:field="*{type}">
+                <option th:each="type : ${types}" th:value="${type.id}"
+                        th:text="${type.name}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="job-level-select">Szint</label>
+            <select id="job-level-select" class="form-control" name="level" th:field="*{level}">
+                <option th:each="level : ${levels}" th:value="${level.id}"
+                        th:text="${level.level}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="job-location-select">Telephely</label>
+            <select id="job-location-select" class="form-control" name="location" th:field="*{location}">
+                <option th:each="location : ${locations}" th:value="${location.id}"
+                        th:text="${location.city}"></option>
+            </select>
+        </div>
+        <button type="submit">Mentés</button>
+    </form>
+</body>
+</html>
