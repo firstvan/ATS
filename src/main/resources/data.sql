@@ -13,3 +13,4 @@ INSERT INTO roles (id, role) values(5,'ROLE_ADMIN');
 INSERT INTO job_type (id, name) VALUES(1, 'Szoftverfejlesztő');
 INSERT INTO job_level (id, level) VALUES(1, 'Junior');
 INSERT INTO location (id, city) VALUES(1, 'Debrecen');
+ALTER TABLE `users` CHANGE `role_id` `role_id` BIGINT(20) NULL DEFAULT NULL;

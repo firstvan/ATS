@@ -65,7 +65,19 @@
 						<td th:text="${user.email}"></td>
 						<td th:text="${user.fullName}"></td>
 						<td th:text="${user.role}"></td>
-						<td><a th:href="@{/edit/{id}(id=${user.id})}">Edit</a></td>
+						<td>
+							<form action="#" th:action="@{/update/{email}(email=${user.email})}" method="post">
+
+								<select name="role">
+									<option>HRVEZETO</option>
+									<option>HRMUNKATARS</option>
+									<option>SZAKMAIVEZETO</option>
+									<option>SZAKMAIMUNKATARS</option>
+									<option>None</option>
+								</select>
+								<button type="submit">Mentés</button>
+							</form>
+						</td>
 					</tr>
 				</table>
 			</div>

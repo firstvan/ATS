@@ -23,44 +23,24 @@ public class RoleController {
 
 	@GetMapping("/admin")
 	public String listOfUsers(Model model,@RequestParam(defaultValue = "") String name  ){
-
-	    List<User> users = userService.findAllUserExceptAdmin();
-		model.addAttribute("users",users);
+		List<User> users=userService.findByFullNameIsContaining(name);
+		model.addAttribute("users", users);
 		return "admin";
 	}
 
-    @GetMapping("/delete-user/{id}")
-    public String deleteUser(@PathVariable("id") long id, Model model) {
-        User user =  userService.findById(id);
-        userService.delete(user);
-        model.addAttribute("users", userService.findAllUserExceptAdmin());
-        return "admin";
-    }
 
-	@GetMapping("/edit/{id}")
-	public String showUpdateForm(@PathVariable("id") long id, Model model) {
-		User user = userService.findById(id);
-		List<Role> roles = userService.findAllRole();
-		roles = roles.stream()
-			.filter(role -> !role.getRole().equals("ROLE_ADMIN"))
-			.collect(Collectors.toList());
-		model.addAttribute("user", user);
-		model.addAttribute("roles",roles );
-		return "update-user";
-	}
+	@PostMapping("/update/{email}")
+	public String updateUser(@PathVariable("email") String email, @RequestParam("role") String role, Model model) {
+		User user = userService.findByEmail(email);
 
-	@PostMapping("/update/{id}")
-	public String updateUser(@PathVariable("id") long id, @RequestParam("role") String role, Model model) {
-	    if(role.equals("None")){
-            User user = userService.findById(id);
-            user.deleteRole();
+		if(role.equals("None")){
+            user.setRole(null);
             userService.save(user);
         }else {
-            User user = userService.findById(id);
-            Role existRole = userService.findRoleByName(role);
+            Role existRole = userService.findRoleByName("ROLE_"+role);
             user.setRole(existRole);
-            userService.save(user);
         }
+		userService.save(user);
 		return "redirect:/admin";
 	}
 }
