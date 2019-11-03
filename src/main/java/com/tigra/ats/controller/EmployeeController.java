@@ -1,5 +1,7 @@
 package com.tigra.ats.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tigra.ats.domain.DBFile;
 import com.tigra.ats.domain.Employee;
 import com.tigra.ats.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.io.IOException;
 
 @Controller
 public class EmployeeController {
@@ -26,8 +32,16 @@ public class EmployeeController {
         return "employee";
     }
 
-    @GetMapping("/create-employee")
-    public String createEmployee(@ModelAttribute Employee employee) {
+    @PostMapping("/create-employee")
+    public String createEmployee(@ModelAttribute Employee employee, @RequestParam("CVFile") String CVFile) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        DBFile CV = null;
+        try {
+            CV = objectMapper.readValue(CVFile, DBFile.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        employee.setCV(CV);
         System.out.println(employee);
         return "redirect:/employee-creator";
     }

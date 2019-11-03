@@ -24,12 +24,13 @@ public class Employee {
     private LocalDate birthDay;
     private String mail;
     private String status;
+    private Integer phoneNumber;
     @ManyToOne
     private JobType type;
     @ManyToOne
     private JobLevel level;
     @ManyToOne
     private Location location;
-    @Lob
-    private byte[] CV;
+    @OneToOne
+    private DBFile CV;
 }
