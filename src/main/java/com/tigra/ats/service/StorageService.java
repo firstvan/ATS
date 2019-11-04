@@ -21,13 +21,18 @@ public class StorageService {
 
     public String uploadFile(MultipartFile file) {
         DBFile dbFile = fileUploader.upload(file);
+        return getResponse(dbFile);
+    }
+
+    private String getResponse(DBFile file) {
         ObjectMapper objectMapper = new ObjectMapper();
         String response = null;
         try {
-            response = objectMapper.writeValueAsString(dbFile);
+            response = objectMapper.writeValueAsString(file);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+
         return response;
     }
 }

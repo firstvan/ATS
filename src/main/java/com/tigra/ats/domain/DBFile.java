@@ -19,4 +19,10 @@ public class DBFile {
     private byte[] content;
     @OneToOne
     private Employee employee;
+
+    public DBFile(String fileName, String contentType, byte[] content) {
+        this.fileName = fileName;
+        this.contentType = contentType;
+        this.content = content;
+    }
 }

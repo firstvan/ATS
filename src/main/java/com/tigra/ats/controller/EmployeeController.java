@@ -3,6 +3,7 @@ package com.tigra.ats.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tigra.ats.domain.DBFile;
 import com.tigra.ats.domain.Employee;
+import com.tigra.ats.service.EmployeeService;
 import com.tigra.ats.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +18,12 @@ import java.io.IOException;
 @Controller
 public class EmployeeController {
     private JobService jobService;
+    private EmployeeService employeeService;
 
     @Autowired
-    public EmployeeController(JobService jobService) {
+    public EmployeeController(JobService jobService, EmployeeService employeeService) {
         this.jobService = jobService;
+        this.employeeService = employeeService;
     }
 
     @GetMapping("/employee-creator")
@@ -34,15 +37,7 @@ public class EmployeeController {
 
     @PostMapping("/create-employee")
     public String createEmployee(@ModelAttribute Employee employee, @RequestParam("CVFile") String CVFile) {
-        ObjectMapper objectMapper = new ObjectMapper();
-        DBFile CV = null;
-        try {
-            CV = objectMapper.readValue(CVFile, DBFile.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        employee.setCV(CV);
-        System.out.println(employee);
+        employeeService.createEmployee(employee, CVFile);
         return "redirect:/employee-creator";
     }
 }

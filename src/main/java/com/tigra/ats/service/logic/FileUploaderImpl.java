@@ -10,12 +10,9 @@ import java.io.IOException;
 public class FileUploaderImpl implements FileUploader {
     @Override
     public DBFile upload(MultipartFile file) {
-        DBFile dbFile = new DBFile();
-        dbFile.setId(1L);
-        dbFile.setContentType(file.getContentType());
-        dbFile.setFileName(file.getName());
+        DBFile dbFile = null;
         try {
-            dbFile.setContent(file.getBytes());
+            dbFile = new DBFile(file.getName(), file.getContentType(), file.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
         }
