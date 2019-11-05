@@ -1,7 +1,5 @@
 package com.tigra.ats.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tigra.ats.domain.DBFile;
 import com.tigra.ats.domain.Employee;
 import com.tigra.ats.service.EmployeeService;
 import com.tigra.ats.service.JobService;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.io.IOException;
 
 @Controller
 public class EmployeeController {

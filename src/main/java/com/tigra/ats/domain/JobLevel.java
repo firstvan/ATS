@@ -26,4 +26,9 @@ public class JobLevel {
     public JobLevel(String level) {
         this.level = level;
     }
+
+    @Override
+    public String toString() {
+        return getLevel();
+    }
 }

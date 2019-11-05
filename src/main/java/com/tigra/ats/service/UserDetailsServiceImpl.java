@@ -21,8 +21,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-
             com.tigra.ats.domain.User appUser =
                     userRepository.findByUsername(username)
                             .orElseThrow(() -> new UsernameNotFoundException("Nem letezo felhasznalo"));

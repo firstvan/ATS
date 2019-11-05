@@ -28,4 +28,9 @@ public class Location {
     public Location(String city) {
         this.city = city;
     }
+
+    @Override
+    public String toString() {
+        return getCity();
+    }
 }

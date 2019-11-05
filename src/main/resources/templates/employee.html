@@ -28,42 +28,59 @@
                 <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h5 class="modal-title">Modal title</h5>
+                <h5 class="modal-title">Új jelölt felvétele</h5>
             </div>
             <div class="modal-body">
-                <form action="/create-employee" method="POST" th:object="${employee}">
+                <form id="employee-form" action="/create-employee" method="POST" th:object="${employee}">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="first-name-input">Vezetéknév*</label>
                             <input class="form-control" id="first-name-input" name="firstName" placeholder="Példa"
-                                   required th:field="*{firstName}" type="text">
+                                   th:field="*{firstName}" type="text" required>
+                            <div class="invalid-feedback">
+                                Kérlek add meg a jelölt vezetéknevét!
+                            </div>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="last-name-input">Keresztnév*</label>
                             <input class="form-control" id="last-name-input" name="lastName" placeholder="Péter"
-                                   required
-                                   th:field="*{lastName}" type="text">
+                                   th:field="*{lastName}" type="text" required>
+                            <div class="invalid-feedback">
+                                Kérlek add meg a jelölt keresztnevét!
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="birth-name-input">Születési név*</label>
                         <input class="form-control" id="birth-name-input" name="birthName" placeholder="Példa Péter"
-                               required th:field="*{birthName}" type="text">
+                               th:field="*{birthName}" type="text" required>
+                        <div class="invalid-feedback">
+                            Kérlek add meg a jelölt születési nevét!
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="birthplace-input">Születési hely*</label>
                         <input class="form-control" id="birthplace-input" name="birthPlace" placeholder="Berettyóújfalu"
-                               required th:field="*{birthPlace}" type="text">
+                               th:field="*{birthPlace}" type="text" required>
+                        <div class="invalid-feedback">
+                            Kérlek add meg a jelölt születési helyét!
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="mother-input">Anyja neve*</label>
                         <input class="form-control" id="mother-input" name="mother" placeholder="Példa Ilonka"
-                               required th:field="*{mother}" type="text">
+                               th:field="*{mother}" type="text" required>
+                        <div class="invalid-feedback">
+                            Kérlek add meg az édesanyja nevét!
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="mail-input">Email cím*</label>
                         <input class="form-control" id="mail-input" name="mail" placeholder="email@example.com"
-                               required th:field="*{mail}" type="text">
+                               th:field="*{mail}" type="text" required>
+                        <div class="invalid-feedback">
+                            Kérlek add meg a jelölt email címét!
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="date-input">Születési dátum</label>
@@ -105,15 +122,13 @@
                     </div>
                     <div class="form-group">
                         <label for="cv-input">Önéletrajz</label>
-                        <input class="form-control" id="cv-input" name="cv" type="file">
-                        <button class="file-uploader-button">Feltölt</button>
+                        <input class="form-control-file" id="cv-input" name="cv" type="file">
                     </div>
-                    <button id="employee-submit" type="submit">Mentés</button>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" data-dismiss="modal" type="button">Close</button>
-                <button class="btn btn-primary" type="button">Save changes</button>
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Mégse</button>
+                <button id="employee-submit" class="btn btn-primary" type="button">Mentés</button>
             </div>
         </div>
     </div>
