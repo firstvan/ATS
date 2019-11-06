@@ -38,7 +38,7 @@ public class Employee {
     @NotEmpty
     private String mail;
     private String status;
-    private Integer phoneNumber;
+    private String phoneNumber;
     @ManyToOne
     private JobType type;
     @ManyToOne

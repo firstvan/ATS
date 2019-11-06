@@ -17,12 +17,16 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private String[] resources = new String [] {
+    private final String[] resources = new String [] {
             "/include/**", "/css/**", "/icons/**", "/img/**", "/js/**", "/layer/**"
     };
 
-    private String[] jobOperationUrls = new String[] {
+    private final String[] jobOperationUrls = new String[] {
             "/save-job-props", "/create-job", "/delete-job/**"
+    };
+
+    private final String[] employeeUrls = new String[] {
+            "/employee-creator", "/create-employee"
     };
 
 
@@ -33,6 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/login", "/").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers(jobOperationUrls).hasRole("SZAKMAIVEZETO")
+                .antMatchers(employeeUrls).access("hasRole('HRVEZETO') or hasRole('HRMUNKATARS')")
                 .antMatchers(resources).permitAll()
                 .anyRequest().authenticated()
                     .and()

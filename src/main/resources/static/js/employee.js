@@ -1,5 +1,4 @@
 var DBFile = null;
-var hasInvalid = true;
 
 document.addEventListener('DOMContentLoaded', () => {
     const employeeCreatorButton = document.getElementById('employee-submit');
@@ -9,6 +8,13 @@ document.addEventListener('DOMContentLoaded', () => {
     requiredFields.forEach(f => f.addEventListener('change', listenChangeInput));
     const cvInput = document.querySelector("#cv-input");
     cvInput.addEventListener("change", uploadCV);
+    const emailInput = document.getElementById('mail-input');
+    emailInput.addEventListener('change', validateMail);
+
+    $('#form-modal').on('hidden.bs.modal', function () {
+        $(this).find('form').trigger('reset');
+        DBFile = null;
+    });
 });
 
 function uploadCV() {
@@ -30,25 +36,14 @@ function uploadCV() {
 
 function createEmployee(event) {
     event.preventDefault();
-
     let hasInvalid = hasInvalidInput();
     if(!hasInvalid) {
-        let formData = new FormData();
-        formData.append('firstName', document.getElementById('first-name-input').value);
-        formData.append('lastName', document.getElementById('last-name-input').value);
-        formData.append('birthPlace', document.getElementById('birthplace-input').value);
-        formData.append('mail', document.getElementById('mail-input').value);
-        formData.append('birthName', document.getElementById('birth-name-input').value);
-        formData.append('mother', document.getElementById('mother-input').value);
-        formData.append('birthDay', document.getElementById('date-input').value);
-        formData.append('phoneNumber', document.getElementById('phone-number-input').value);
-        formData.append('status', document.getElementById('status-input').value);
-        formData.append('type', document.getElementById('job-name-select').value);
-        formData.append('level', document.getElementById('job-level-select').value);
-        formData.append('location', document.getElementById('job-location-select').value);
+        let allInput = document.getElementById("employee-form").querySelectorAll(".form-control");
+        let formData = getFormData(allInput);;
         formData.append('CVFile', DBFile);
+        let fileType = JSON.parse(DBFile).contentType;
 
-        if (DBFile != null) {
+        if (DBFile != null && !isInvalidDocumentFormat(fileType)) {
             const token = document.querySelector('#csrf_token').getAttribute('content');
             let xhttpreq = new XMLHttpRequest();
             xhttpreq.onreadystatechange = function () {
@@ -61,9 +56,17 @@ function createEmployee(event) {
             xhttpreq.setRequestHeader('X-CSRF-TOKEN', token);
             xhttpreq.send(formData);
         } else {
-            alert("Kérlek tölts fel egy önéletrajzot!");
+            alert("Kérlek tölts fel egy érvényes önéletrajzot!");
         }
     }   
+}
+
+function getFormData(inputs) {
+    let formData = new FormData();
+    inputs.forEach(i => {
+        formData.append(i.name, i.value);
+    });
+    return formData;
 }
 
 function validateRequiredInputs() {
@@ -91,4 +94,24 @@ function hasInvalidInput() {
         }
     });
     return hasInvalid;
+}
+
+function isInvalidDocumentFormat(fileType) {
+    let validTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf', '.doc', '.docx'];
+    if(!validTypes.includes(fileType)) {
+        return true;
+    }
+
+    return false;
+}
+
+function validateMail() {
+    if(!isValidMail(this.value) && !this.classList.contains('is-invalid')) {
+        this.classList.toggle('is-invalid');
+    }
+}
+
+function isValidMail(email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
 }

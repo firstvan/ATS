@@ -15,6 +15,7 @@
     <script crossorigin="anonymous"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/libphonenumber-js@1.7.6/bundle/libphonenumber-max.js"></script>
     <title>ATS</title>
 </head>
 <body>
@@ -31,104 +32,115 @@
                 <h5 class="modal-title">Új jelölt felvétele</h5>
             </div>
             <div class="modal-body">
-                <form id="employee-form" action="/create-employee" method="POST" th:object="${employee}">
+                <form action="/create-employee" id="employee-form" method="POST" th:object="${employee}">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="first-name-input">Vezetéknév*</label>
-                            <input class="form-control" id="first-name-input" name="firstName" placeholder="Példa"
+                            <label for="first-name-input">Vezetéknév<span style="color: red">*</span></label>
+                            <input class="form-control" id="first-name-input" name="firstName"
                                    th:field="*{firstName}" type="text" required>
                             <div class="invalid-feedback">
                                 Kérlek add meg a jelölt vezetéknevét!
                             </div>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="last-name-input">Keresztnév*</label>
-                            <input class="form-control" id="last-name-input" name="lastName" placeholder="Péter"
-                                   th:field="*{lastName}" type="text" required>
+                            <label for="last-name-input">Keresztnév<span style="color: red">*</span></label>
+                            <input class="form-control" id="last-name-input" name="lastName" th:field="*{lastName}" type="text" required>
                             <div class="invalid-feedback">
                                 Kérlek add meg a jelölt keresztnevét!
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="birth-name-input">Születési név*</label>
-                        <input class="form-control" id="birth-name-input" name="birthName" placeholder="Példa Péter"
-                               th:field="*{birthName}" type="text" required>
+                        <label for="birth-name-input">Születési név<span style="color: red">*</span></label>
+                        <input class="form-control" id="birth-name-input" name="birthName" th:field="*{birthName}" type="text" required>
                         <div class="invalid-feedback">
                             Kérlek add meg a jelölt születési nevét!
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="birthplace-input">Születési hely*</label>
-                        <input class="form-control" id="birthplace-input" name="birthPlace" placeholder="Berettyóújfalu"
-                               th:field="*{birthPlace}" type="text" required>
-                        <div class="invalid-feedback">
-                            Kérlek add meg a jelölt születési helyét!
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="date-input">Születési dátum<span style="color: red">*</span></label>
+                            <input class="form-control" id="date-input" name="birthDay" th:field="*{birthDay}" type="date" required>
+                            <div class="invalid-feedback">
+                                Kérlek add meg a jelölt születési dátumát!
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="birthplace-input">Születési hely<span style="color: red">*</span></label>
+                            <input class="form-control" id="birthplace-input" name="birthPlace" th:field="*{birthPlace}" type="text" required>
+                            <div class="invalid-feedback">
+                                Kérlek add meg a jelölt születési helyét!
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="mother-input">Anyja neve*</label>
-                        <input class="form-control" id="mother-input" name="mother" placeholder="Példa Ilonka"
-                               th:field="*{mother}" type="text" required>
-                        <div class="invalid-feedback">
-                            Kérlek add meg az édesanyja nevét!
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="mother-input">Anyja neve<span style="color: red">*</span></label>
+                            <input class="form-control" id="mother-input" name="mother" th:field="*{mother}" type="text" required>
+                            <div class="invalid-feedback">
+                                Kérlek add meg az édesanyja nevét!
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="mail-input">Email cím*</label>
-                        <input class="form-control" id="mail-input" name="mail" placeholder="email@example.com"
-                               th:field="*{mail}" type="text" required>
-                        <div class="invalid-feedback">
-                            Kérlek add meg a jelölt email címét!
+                        <div class="form-group col-md-6">
+                            <label for="mail-input">Email cím<span style="color: red">*</span></label>
+                            <input class="form-control" id="mail-input" name="mail" th:field="*{mail}" type="text" required>
+                            <div class="invalid-feedback">
+                                Kérlek adj meg egy érvénye email címet!
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="date-input">Születési dátum</label>
-                        <input class="form-control" id="date-input" name="birthDay" th:field="*{birthDay}" type="date">
                     </div>
                     <div class="form-group">
                         <label for="phone-number-input">Telefonszám</label>
-                        <input class="form-control" id="phone-number-input" name="phoneNumber" th:filed="*{phoneNumber}"
-                               type="tel"/>
-                    </div>
-                    <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <label for="job-name-select">Pozició neve</label>
-                        <select class="form-control" id="job-name-select" name="type" th:field="*{type}">
-                            <option th:each="type : ${types}" th:text="${type.name}"
-                                    th:value="${type.id}"></option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="job-level-select">Szint</label>
-                        <select class="form-control" id="job-level-select" name="level" th:field="*{level}">
-                            <option th:each="level : ${levels}" th:text="${level.level}"
-                                    th:value="${level.id}"></option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="job-location-select">Telephely</label>
-                        <select class="form-control" id="job-location-select" name="location" th:field="*{location}">
-                            <option th:each="location : ${locations}" th:text="${location.city}"
-                                    th:value="${location.id}"></option>
-                        </select>
-                    </div>
+                        <input class="form-control" id="phone-number-input" name="phoneNumber" th:filed="*{phoneNumber}" type="tel"/>
                     </div>
                     <div class="form-group">
                         <label for="status-input">Státusz</label>
-                        <input class="form-control" id="status-input" name="status" placeholder="Aktív"
-                               th:field="*{status}"
-                               type="text">
+                        <input class="form-control" id="status-input" name="status" th:field="*{status}" type="text">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="job-name-select">Pozició neve</label>
+                            <select class="form-control" id="job-name-select" name="type" th:field="*{type}">
+                                <option th:each="type : ${types}" th:text="${type.name}"
+                                        th:value="${type.id}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="job-level-select">Szint</label>
+                            <select class="form-control" id="job-level-select" name="level" th:field="*{level}">
+                                <option th:each="level : ${levels}" th:text="${level.level}" th:value="${level.id}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="job-location-select">Telephely</label>
+                            <select class="form-control" id="job-location-select" name="location"
+                                    th:field="*{location}">
+                                <option th:each="location : ${locations}" th:text="${location.city}" th:value="${location.id}"></option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="cv-input">Önéletrajz</label>
-                        <input class="form-control-file" id="cv-input" name="cv" type="file">
+                        <p style="font-size: 11px">Csak .pdf, .doc, .docx kiterjesztésű önéletrajzok tölthetőek fel!</p>
+                        <input class="form-control-file" id="cv-input" name="cv" type="file"
+                               accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, .doc, .docx">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary" data-dismiss="modal" type="button">Mégse</button>
-                <button id="employee-submit" class="btn btn-primary" type="button">Mentés</button>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6 text-left">
+                            <p>A csillaggal (<span style="color: red">*</span>) jelölt mezők kitöltése kötelező!</p>
+                        </div>
+                        <div class="col-sm-6" style="justify-content: flex-end;">
+                            <div class="float-right">
+                                <button class="btn btn-secondary" data-dismiss="modal" id="modal-close-button" type="button">Mégse</button>
+                                <button class="btn btn-primary" id="employee-submit" type="button">Mentés</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
