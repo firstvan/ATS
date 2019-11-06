@@ -41,6 +41,9 @@
                     <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
                         <a class="nav-link" th:href="@{/admin}">Szerepkörök</a>
                     </li>
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_HRVEZETO') or hasRole('ROLE_HRMUNKATARS')">
+                        <a class="nav-link" th:href="@{/employee-creator}">Jelöltek</a>
+                    </li>
                 </ul>
             </div>
             <div class="navbar-collapse collapse">
