@@ -26,7 +26,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private LoginAttemptService loginAttemptService;
 
-
     private String getClientIP() {
         String xfHeader = request.getHeader("X-Forwarded-For");
         if (xfHeader == null){

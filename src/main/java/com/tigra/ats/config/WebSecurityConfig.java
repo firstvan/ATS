@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -25,9 +26,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/include/**", "/css/**", "/icons/**", "/img/**", "/js/**", "/layer/**"
     };
 
-    private String[] jobOperationUrls = new String[] {
+    private final String[] jobOperationUrls = new String[] {
             "/save-job-props", "/create-job", "/delete-job/**"
     };
+
+    private final String[] employeeUrls = new String[] {
+            "/employee-creator", "/create-employee"
+    };
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,6 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/login", "/").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers(jobOperationUrls).hasRole("SZAKMAIVEZETO")
+                .antMatchers(employeeUrls).access("hasRole('HRVEZETO') or hasRole('HRMUNKATARS')")
                 .antMatchers(resources).permitAll()
                 .anyRequest().authenticated()
                     .and()
@@ -53,7 +60,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login?Logout");
     }
     BCryptPasswordEncoder bCryptPasswordEncoder;
-    //password encryption
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
@@ -66,11 +72,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-
-        // Setting Service to find User in the database.
-        // And Setting PassswordEncoder
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
-
-
 }

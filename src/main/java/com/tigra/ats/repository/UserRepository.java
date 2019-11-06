@@ -10,6 +10,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     User findByEmail(String username);
     User findByUsername(String username);
     List<User> findAllByFullNameContaining(String e);
+
     @Override
     List<User> findAll();
 }
