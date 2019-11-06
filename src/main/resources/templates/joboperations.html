@@ -123,8 +123,7 @@
                         <td th:text="${job.location.city}">Debrecen</td>
                         <td th:text="${job.createdDate}">2019-10-17</td>
                         <td sec:authorize="hasRole('ROLE_SZAKMAIVEZETO')">
-                            <button sec:authorize="hasRole('ROLE_SZAKMAIVEZETO')" type="button"
-                                    class="btn btn-danger delete-job-button">Pozíció lezárása</button>
+                            <button sec:authorize="hasRole('ROLE_SZAKMAIVEZETO')" type="button" class="btn btn-danger delete-job-button">Pozíció lezárása</button>
                         </td>
                     </tr>
                     </tbody>

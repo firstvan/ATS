@@ -22,8 +22,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
-    <script src="../../static/js/joboperations.js" th:src="@{/static/js/joboperations.js}" type="text/javascript"></script>
-
 
     <title>ATS HR WEB-APP</title>
 </head>
@@ -42,7 +40,7 @@
                         <a class="nav-link" th:href="@{/admin}">Szerepkörök</a>
                     </li>
                     <li class="nav-item" sec:authorize="hasRole('ROLE_HRVEZETO') or hasRole('ROLE_HRMUNKATARS')">
-                        <a class="nav-link" th:href="@{/employee-creator}">Jelöltek</a>
+                        <a class="nav-link" th:href="@{/employee-creator/1}">Jelöltek</a>
                     </li>
                 </ul>
             </div>

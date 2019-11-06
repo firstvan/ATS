@@ -24,7 +24,6 @@ public class EmployeeService {
     public void createEmployee(Employee employee, String CVFile) {
         DBFile CV = convertResponse(CVFile);
         employee.setCV(CV);
-        System.out.println(employee);
         dbFileRepository.save(CV);
         employeeRepository.save(employee);
     }

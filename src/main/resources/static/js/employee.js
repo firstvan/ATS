@@ -41,20 +41,22 @@ function createEmployee(event) {
         let allInput = document.getElementById("employee-form").querySelectorAll(".form-control");
         let formData = getFormData(allInput);;
         formData.append('CVFile', DBFile);
-        let fileType = JSON.parse(DBFile).contentType;
 
-        if (DBFile != null && !isInvalidDocumentFormat(fileType)) {
-            const token = document.querySelector('#csrf_token').getAttribute('content');
-            let xhttpreq = new XMLHttpRequest();
-            xhttpreq.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    alert("Sikeresen felvetted a rendszerbe az új jelöltet!");
-                    $('#form-modal').modal('hide');
+        if (DBFile != null) {
+            let fileType = JSON.parse(DBFile).contentType;
+            if(!isInvalidDocumentFormat(fileType)) {
+                const token = document.querySelector('#csrf_token').getAttribute('content');
+                let xhttpreq = new XMLHttpRequest();
+                xhttpreq.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        alert("Sikeresen felvetted a rendszerbe az új jelöltet!");
+                        window.location.replace("/employee-creator/1");
+                    }
                 }
+                xhttpreq.open("POST", '/create-employee', true);
+                xhttpreq.setRequestHeader('X-CSRF-TOKEN', token);
+                xhttpreq.send(formData);
             }
-            xhttpreq.open("POST", '/create-employee', true);
-            xhttpreq.setRequestHeader('X-CSRF-TOKEN', token);
-            xhttpreq.send(formData);
         } else {
             alert("Kérlek tölts fel egy érvényes önéletrajzot!");
         }

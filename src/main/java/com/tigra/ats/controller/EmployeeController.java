@@ -5,6 +5,7 @@ import com.tigra.ats.service.EmployeeService;
 import com.tigra.ats.service.JeloltService;
 import com.tigra.ats.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +42,8 @@ public class EmployeeController {
     }
 
     @PostMapping("/create-employee")
-    public String createEmployee(@ModelAttribute Employee employee, @RequestParam("CVFile") String CVFile) {
+    @ResponseStatus(value = HttpStatus.OK)
+    public void createEmployee(@ModelAttribute Employee employee, @RequestParam("CVFile") String CVFile) {
         employeeService.createEmployee(employee, CVFile);
-        return "redirect:/employee-creator";
     }
 }
