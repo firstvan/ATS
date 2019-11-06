@@ -21,31 +21,34 @@
 </head>
 
 <body>
-    <div class="modal-dialog text-center">
-        <div class="col-sm-8 main-section">
-            <div class="modal-content">
-                <div class="col-12 user-img">
-                    <img src="../static/img/user.png" th:src="@{/img/user.png}" />
+<div class="modal-dialog text-center">
+    <div class="col-sm-8 main-section">
+        <div class="modal-content">
+            <div class="col-12 user-img">
+                <img src="../static/img/user.png" th:src="@{/img/user.png}" />
+            </div>
+            <form class="col-12" th:action="@{/login}" method="post">
+                <div class="form-group" id="user-group">
+                    <input type="text" class="form-control" placeholder="Username" name="username" />
                 </div>
-                <form class="col-12" th:action="@{/login}" method="post">
-                    <div class="form-group" id="user-group">
-                        <input type="text" class="form-control" placeholder="Username" name="username" />
-                    </div>
-                    <div class="form-group" id="password-group">
-                        <input type="password" class="form-control" placeholder="Password" name="password" />
-                    </div>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Bejelentkezes
-                    </button>
-                </form>
-                <div th:if="${param.error}" class="alert alert-danger" authority="alert">
-                    Invalid username and password.
+                <div class="form-group" id="password-group">
+                    <input type="password" class="form-control" placeholder="Password" name="password" />
                 </div>
-                <div th:if="${param.logout}" class="alert alert-success" authority="alert">
-                    You have been logged out.
-                </div>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Bejelentkezes
+                </button>
+            </form>
+
+
+
+            <div th:if="${errorMessage != null}" class="alert alert-danger" authority="alert" th:text="${errorMessage}">
+                errorMessage
+            </div>
+            <div th:if="${param.logout}" class="alert alert-success" authority="alert">
+                You have been logged out.
             </div>
         </div>
     </div>
+</div>
 </body>
 
 </html>
