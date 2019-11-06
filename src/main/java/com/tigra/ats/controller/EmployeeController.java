@@ -2,29 +2,37 @@ package com.tigra.ats.controller;
 
 import com.tigra.ats.domain.Employee;
 import com.tigra.ats.service.EmployeeService;
+import com.tigra.ats.service.JeloltService;
 import com.tigra.ats.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
 public class EmployeeController {
     private JobService jobService;
     private EmployeeService employeeService;
+    private JeloltService jeloltService;
 
     @Autowired
-    public EmployeeController(JobService jobService, EmployeeService employeeService) {
+    public EmployeeController(JobService jobService, EmployeeService employeeService,JeloltService jeloltService) {
         this.jobService = jobService;
         this.employeeService = employeeService;
+        this.jeloltService=jeloltService;
     }
 
-    @GetMapping("/employee-creator")
-    public String displayEmployeeCreator(Model model) {
+    @GetMapping("/employee-creator/{actualPage}")
+    public String displayEmployeeCreator(Model model, @RequestParam(defaultValue = "") String name, @PathVariable("actualPage") int actualPage) {
+        int numberOfPages = jeloltService.getNumberOfPages();
+        if(actualPage > 1 && actualPage > (numberOfPages + 1))
+            return "error";
+        else {
+            model.addAttribute("jelolts", jeloltService.getAvailableJelolts(actualPage - 1, name));
+            model.addAttribute("actualPage", actualPage);
+            model.addAttribute("numberOfPages", numberOfPages);
+        }
         model.addAttribute("employee", new Employee());
         model.addAttribute("types", jobService.getTypes());
         model.addAttribute("levels", jobService.getLevels());
