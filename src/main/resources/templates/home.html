@@ -1,49 +1,15 @@
 <!DOCTYPE html>
-<html lang="hu" layout:decorator="layouts/main" xmlns:layout="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymleaf.org">
+<html layout:decorate="layouts/layout">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link href="../static/css/joboperations.css" th:href="@{/css/joboperations.css}" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<title>ATS</title>
 </head>
 
 <body>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link active" th:href="@{/home}">Home</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/job-operations/1}">Pozíció nyilvántartás</a>
-				</li>
-				<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
-					<a class="nav-link" th:href="@{/admin}">Szerepkörök</a>
-				</li>
-			</ul>
-		</div>
-		<div class="navbar-collapse collapse">
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item">
-					<a class="nav-link" href="javascript: document.logoutForm.submit()"
-						role="menuitem">Kijelentkezés</a>
-
-					<form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
-						<input hidden type="submit" value="Sign Out" />
-					</form>
-				</li>
-			</ul>
-		</div>
-	</nav>
-
-	<div layout:fragment="loginContent">
-		<h2>Kezdőoldal</h2>
-	</div>
+<div layout:fragment="content">
+	<h2>Kezdőoldal</h2>
+</div>
 
 </body>
 

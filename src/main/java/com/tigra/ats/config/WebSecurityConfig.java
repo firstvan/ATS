@@ -2,6 +2,7 @@ package com.tigra.ats.config;
 
 
 import com.tigra.ats.service.UserDetailsServiceImpl;
+import com.tigra.ats.service.logic.CustomAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private CustomAuthenticationFailureHandler failureHandler;
+
 
     private String[] resources = new String [] {
             "/include/**", "/css/**", "/icons/**", "/img/**", "/js/**", "/layer/**"
@@ -39,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .defaultSuccessUrl("/home")
                 .failureUrl("/login?error=True")
+                .failureHandler(failureHandler)
                 .usernameParameter("username")
                 .passwordParameter("password")
                     .and()
