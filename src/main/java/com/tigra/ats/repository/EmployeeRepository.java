@@ -1,7 +1,6 @@
 package com.tigra.ats.repository;
 
 import com.tigra.ats.domain.Employee;
-import com.tigra.ats.domain.Jelolt;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;

@@ -1,9 +1,7 @@
 package com.tigra.ats.service;
 
 import com.tigra.ats.domain.Employee;
-import com.tigra.ats.domain.Jelolt;
 import com.tigra.ats.repository.EmployeeRepository;
-import com.tigra.ats.repository.JeloltRepository;
 import com.tigra.ats.service.logic.JeloltLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

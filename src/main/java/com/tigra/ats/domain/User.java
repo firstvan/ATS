@@ -4,8 +4,10 @@ package com.tigra.ats.domain;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
@@ -16,7 +18,8 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column( unique=true, nullable=false )
+	@NotNull
+	@Column( length=50, unique=true )
 	private String email;
 	@Column( nullable=false )
 	private String password;
