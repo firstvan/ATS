@@ -45,25 +45,25 @@
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <li class="page-item" th:if="${actualPage} > 1">
-                    <a class="page-link" th:href="@{|/jeloltek/${actualPage - 1}|}" tabindex="-1"
+                    <a class="page-link" th:href="@{|/employee-creator/${actualPage - 1}|}" tabindex="-1"
                        aria-disabled="true">Previous</a>
                 </li>
                 <li class="page-item disabled" th:if="${actualPage} == 1">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Vissza</a>
                 </li>
                 <th:block th:each="i: ${#numbers.sequence(0, numberOfPages)}">
                     <li class="page-item active" th:if="${actualPage} == ${i + 1}">
-                        <a class="page-link" th:text="${i + 1}" th:href="@{|/jeloltek/${i + 1}|}"></a>
+                        <a class="page-link" th:text="${i + 1}" th:href="@{|/employee-creator/${i + 1}|}"></a>
                     </li>
                     <li class="page-item" th:if="${actualPage} != ${i + 1}">
-                        <a class="page-link" th:text="${i + 1}" th:href="@{|/jeloltek/${i + 1}|}"></a>
+                        <a class="page-link" th:text="${i + 1}" th:href="@{|/employee-creator/${i + 1}|}"></a>
                     </li>
                 </th:block>
                 <li class="page-item" th:if="${actualPage} < ${numberOfPages + 1}">
-                    <a class="page-link" th:href="@{|/jeloltek/${actualPage+1}|}">Next</a>
+                    <a class="page-link" th:href="@{|/employee-creator/${actualPage+1}|}">Next</a>
                 </li>
                 <li class="page-item disabled" th:if="${actualPage} == ${numberOfPages + 1}">
-                    <a class="page-link" href="#">Next</a>
+                    <a class="page-link" href="#">Következő</a>
                 </li>
             </ul>
         </nav>
@@ -146,20 +146,20 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <label for="job-name-select">Pozició neve</label>
+                                <label for="job-name-select">Preferált pozíció</label>
                                 <select class="form-control" id="job-name-select" name="type" th:field="*{type}">
                                     <option th:each="type : ${types}" th:text="${type.name}"
                                             th:value="${type.id}"></option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="job-level-select">Szint</label>
+                                <label for="job-level-select">Preferált szint</label>
                                 <select class="form-control" id="job-level-select" name="level" th:field="*{level}">
                                     <option th:each="level : ${levels}" th:text="${level.level}" th:value="${level.id}"></option>
                                 </select>
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="job-location-select">Telephely</label>
+                                <label for="job-location-select">Preferált telephely</label>
                                 <select class="form-control" id="job-location-select" name="location"
                                         th:field="*{location}">
                                     <option th:each="location : ${locations}" th:text="${location.city}" th:value="${location.id}"></option>

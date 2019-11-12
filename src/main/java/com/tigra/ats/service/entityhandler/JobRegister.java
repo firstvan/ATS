@@ -1,4 +1,4 @@
-package com.tigra.ats.service.logic;
+package com.tigra.ats.service.entityhandler;
 
 import com.tigra.ats.domain.Job;
 import com.tigra.ats.domain.JobLevel;
@@ -9,7 +9,6 @@ import com.tigra.ats.service.exception.CannotCreateJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 /**

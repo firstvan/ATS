@@ -1,4 +1,4 @@
-package com.tigra.ats.service.logic;
+package com.tigra.ats.service.authentication;
 
 import com.tigra.ats.service.LoginAttemptService;
 import org.springframework.beans.factory.annotation.Autowired;

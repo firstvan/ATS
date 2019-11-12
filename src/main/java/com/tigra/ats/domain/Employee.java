@@ -36,6 +36,7 @@ public class Employee {
     private LocalDate birthDay;
     @NotNull
     @NotEmpty
+    @Column(unique = true)
     private String mail;
     private String status;
     private String phoneNumber;

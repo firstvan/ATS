@@ -2,9 +2,9 @@ package com.tigra.ats.controller;
 
 import com.tigra.ats.domain.Employee;
 import com.tigra.ats.service.EmployeeService;
-import com.tigra.ats.service.JeloltService;
 import com.tigra.ats.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,22 +15,22 @@ import org.springframework.web.bind.annotation.*;
 public class EmployeeController {
     private JobService jobService;
     private EmployeeService employeeService;
-    private JeloltService jeloltService;
 
     @Autowired
-    public EmployeeController(JobService jobService, EmployeeService employeeService,JeloltService jeloltService) {
+    public EmployeeController(JobService jobService, EmployeeService employeeService) {
         this.jobService = jobService;
         this.employeeService = employeeService;
-        this.jeloltService=jeloltService;
     }
 
     @GetMapping("/employee-creator/{actualPage}")
     public String displayEmployeeCreator(Model model, @RequestParam(defaultValue = "") String name, @PathVariable("actualPage") int actualPage) {
-        int numberOfPages = jeloltService.getNumberOfPages();
+        Page<Employee> employeePage = employeeService.getAvailableEmployees(actualPage - 1, name);
+        int numberOfPages = employeePage.getTotalPages() - 1;
+
         if(actualPage > 1 && actualPage > (numberOfPages + 1))
             return "error";
         else {
-            model.addAttribute("jelolts", jeloltService.getAvailableJelolts(actualPage - 1, name));
+            model.addAttribute("jelolts", employeePage);
             model.addAttribute("actualPage", actualPage);
             model.addAttribute("numberOfPages", numberOfPages);
         }

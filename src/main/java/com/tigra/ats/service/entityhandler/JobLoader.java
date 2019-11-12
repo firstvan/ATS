@@ -1,4 +1,4 @@
-package com.tigra.ats.service.logic;
+package com.tigra.ats.service.entityhandler;
 
 import com.tigra.ats.domain.Job;
 import com.tigra.ats.domain.JobLevel;
@@ -15,25 +15,12 @@ import java.util.List;
 
 @Component
 public class JobLoader {
-    private final int JOBS_IN_ONE_PAGE = 10;
 
-    private JobRepository jobRepository;
     private JobPropertyHandler jobPropertyHandler;
 
     @Autowired
-    public JobLoader(JobRepository jobRepository, JobPropertyHandler jobPropertyHandler) {
-        this.jobRepository = jobRepository;
+    public JobLoader(JobPropertyHandler jobPropertyHandler) {
         this.jobPropertyHandler = jobPropertyHandler;
-    }
-
-    public Page<Job> getJobPage(int pageNumber) {
-        Pageable pageRequest = PageRequest.of(pageNumber, JOBS_IN_ONE_PAGE);
-        Page<Job> page = jobRepository.findAll(pageRequest);
-        return page;
-    }
-
-    public int getNumberOfPages() {
-        return (int) jobRepository.count() / (JOBS_IN_ONE_PAGE + 1);
     }
 
     public List<JobType> getTypes() {

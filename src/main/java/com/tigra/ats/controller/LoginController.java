@@ -1,6 +1,6 @@
 package com.tigra.ats.controller;
 
-import com.tigra.ats.service.logic.CustomAuthenticationFailureHandler;
+import com.tigra.ats.service.authentication.CustomAuthenticationFailureHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

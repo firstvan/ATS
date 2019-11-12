@@ -1,4 +1,4 @@
-package com.tigra.ats.service.logic;
+package com.tigra.ats.service.storage;
 
 import com.tigra.ats.domain.DBFile;
 import org.springframework.stereotype.Component;
