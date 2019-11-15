@@ -6,10 +6,17 @@ import com.tigra.ats.domain.JobType;
 import com.tigra.ats.domain.Location;
 import com.tigra.ats.service.entityhandler.JobRegister;
 import com.tigra.ats.service.entityhandler.JobLoader;
-import com.tigra.ats.service.paginate.Paginator;
+import com.tigra.ats.service.paginate.JobPaginator;
+import com.tigra.ats.service.searchengine.SearchFilter;
+import com.tigra.ats.service.paginate.factory.JobPaginatorFactory;
+import com.tigra.ats.service.searchengine.parameter.SearchParameter;
+import com.tigra.ats.service.searchengine.job.JobSearchType;
+import com.tigra.ats.service.searchengine.job.JobSearchTypeEnum;
+import com.tigra.ats.service.searchengine.SearchEngine;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,13 +25,13 @@ import java.util.List;
 public class JobService {
     private JobLoader jobLoader;
     private JobRegister jobRegister;
-    private Paginator paginator;
+    private JobPaginatorFactory paginatorFactory;
 
     @Autowired
-    public JobService(JobLoader jobLoader, JobRegister jobRegister, @Qualifier("jobPaginator") Paginator paginator) {
+    public JobService(JobLoader jobLoader, JobRegister jobRegister, JobPaginatorFactory paginatorFactory) {
         this.jobLoader = jobLoader;
         this.jobRegister = jobRegister;
-        this.paginator = paginator;
+        this.paginatorFactory = paginatorFactory;
     }
 
     public void saveAvailableJobProperties(String type, String level, String city) {
@@ -42,8 +49,12 @@ public class JobService {
     }
 
     public Page<Job> getAvailableJobs(int pageNumber) {
-        paginator.setMaxItemInOnePage(2);
-        return paginator.getPage(pageNumber);
+        Pageable pageable = PageRequest.of(pageNumber, 2);
+        Job job = new Job();
+        SearchParameter searchParameter = paginatorFactory.createSearchParameter(new JobSearchType(JobSearchTypeEnum.ALL), new SearchFilter<Job>(job));
+        SearchEngine searchEngine = paginatorFactory.createSearchEngine(searchParameter, pageable);
+        JobPaginator paginator = new JobPaginator(searchEngine);
+        return paginator.getPage();
     }
 
     public List<JobType> getTypes() {

@@ -15,4 +15,6 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     Page<Employee> findAll(Pageable pageable);
 
+    Page<Employee> findByLastNameIsContaining(Pageable pageable, String name);
+
 }

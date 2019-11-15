@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Data
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

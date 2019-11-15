@@ -1,46 +1,25 @@
 package com.tigra.ats.service.paginate;
 
 import com.tigra.ats.domain.Employee;
-import com.tigra.ats.repository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.tigra.ats.service.exception.NotFoundSearchParameterException;
+import com.tigra.ats.service.searchengine.SearchEngine;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
 
-@Component("employeePaginator")
 public class EmployeePaginator implements Paginator {
-    private EmployeeRepository employeeRepository;
-    private Filter filter;
-    private int jobsInOnePage;
+    private SearchEngine searchEngine;
 
-    @Autowired
-    public EmployeePaginator(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-        this.jobsInOnePage = 10;
+    public EmployeePaginator(SearchEngine searchEngine) {
+        this.searchEngine = searchEngine;
     }
 
     @Override
-    public void setMaxItemInOnePage(int numberOfItems) {
-        this.jobsInOnePage = numberOfItems;
-    }
-
-    @Override
-    public Page<Employee> getPage(int index) {
+    public Page<Employee> getPage() {
         Page<Employee> actualPage = null;
-        if(filter == null || filter.isEmpty()) {
-            Pageable pageRequest = PageRequest.of(index, jobsInOnePage);
-            actualPage = employeeRepository.findAll(pageRequest);
-        }
-        else if(filter.getFilter() instanceof String) {
-            Pageable pageRequest = PageRequest.of(index, jobsInOnePage);
-            actualPage = employeeRepository.findByFirstNameIsContaining(pageRequest, (String) filter.getFilter());
+        try {
+            actualPage = (Page<Employee>) searchEngine.search();
+        } catch (NotFoundSearchParameterException ex) {
+            ex.printStackTrace();
         }
         return actualPage;
-    }
-
-    @Override
-    public void setFilter(Filter filter) {
-        this.filter = filter;
     }
 }

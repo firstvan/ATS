@@ -5,11 +5,16 @@ import com.tigra.ats.domain.DBFile;
 import com.tigra.ats.domain.Employee;
 import com.tigra.ats.repository.DBFileRepository;
 import com.tigra.ats.repository.EmployeeRepository;
-import com.tigra.ats.service.paginate.Filter;
-import com.tigra.ats.service.paginate.Paginator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import com.tigra.ats.service.paginate.*;
+import com.tigra.ats.service.paginate.factory.EmployeePaginatorFactory;
+import com.tigra.ats.service.searchengine.parameter.SearchParameter;
+import com.tigra.ats.service.searchengine.employee.EmployeeSearchType;
+import com.tigra.ats.service.searchengine.employee.EmployeeSearchTypeEnum;
+import com.tigra.ats.service.searchengine.SearchEngine;
+import com.tigra.ats.service.searchengine.SearchFilter;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,13 +23,12 @@ import java.io.IOException;
 public class EmployeeService {
     private EmployeeRepository employeeRepository;
     private DBFileRepository dbFileRepository;
-    private Paginator paginator;
+    private EmployeePaginatorFactory employeePaginatorFactory;
 
-    @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository, DBFileRepository dbFileRepository, @Qualifier("employeePaginator") Paginator paginator) {
+    public EmployeeService(EmployeeRepository employeeRepository, DBFileRepository dbFileRepository, EmployeePaginatorFactory employeePaginatorFactory) {
         this.employeeRepository = employeeRepository;
         this.dbFileRepository = dbFileRepository;
-        this.paginator = paginator;
+        this.employeePaginatorFactory = employeePaginatorFactory;
     }
 
     public void createEmployee(Employee employee, String CVFile) {
@@ -47,8 +51,13 @@ public class EmployeeService {
     }
 
     public Page<Employee> getAvailableEmployees(int pageNumber, String name) {
-        paginator.setFilter(new Filter<>(name));
-        paginator.setMaxItemInOnePage(2);
-        return paginator.getPage(pageNumber);
+        Pageable pageRequest = PageRequest.of(pageNumber, 2);
+        Employee employee = new Employee();
+        employee.setFirstName(name);
+        SearchParameter parameter
+                = employeePaginatorFactory.createSearchParameter(new EmployeeSearchType(EmployeeSearchTypeEnum.BY_FIRST_NAME), new SearchFilter<>(employee));
+        SearchEngine engine = employeePaginatorFactory.createSearchEngine(parameter, pageRequest);
+        EmployeePaginator paginator = new EmployeePaginator(engine);
+        return paginator.getPage();
     }
 }
