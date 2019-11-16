@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Data
@@ -49,4 +50,6 @@ public class Employee {
     private Location location;
     @OneToOne
     private DBFile CV;
+    @ManyToMany(mappedBy = "employees")
+    private Set<JobRegistration> registrations;
 }

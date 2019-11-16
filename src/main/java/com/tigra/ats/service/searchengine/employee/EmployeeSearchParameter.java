@@ -1,8 +1,9 @@
-package com.tigra.ats.service.searchengine.parameter;
+package com.tigra.ats.service.searchengine.employee;
 
 import com.tigra.ats.domain.Employee;
 import com.tigra.ats.service.searchengine.SearchFilter;
 import com.tigra.ats.service.searchengine.SearchType;
+import com.tigra.ats.service.searchengine.SearchParameter;
 
 public class EmployeeSearchParameter implements SearchParameter {
     private SearchType searchType;

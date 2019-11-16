@@ -19,25 +19,42 @@
 
 <div layout:fragment="content">
     <button class="btn btn-primary" data-target="#form-modal" data-toggle="modal" type="button">Új jelölt felvétele</button>
+    <button class="btn btn-primary" type="button" onclick="createRegistration()">Új jelentkezés</button>
 
     <div class="container">
         <form action="/employee-creator/1" class="container mySpace">
             <div class="form-group mb2">
-                <input type="text" class="form-control" name="name" placeholder="Search User" />
+                <input type="text" class="form-control" name="name" placeholder="Keresés" />
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>
         </form>
-        <table  class="table table-hover">
+        <table class="table table-hover">
             <thead class="thead-dark">
             <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Vezetéknév</th>
+                <th scope="col">Keresztnév</th>
                 <th scope="col">Email</th>
-                <th scope="col">Name</th>
+                <th scope="col">Preferált pozíció</th>
+                <th scope="col">Preferált szint</th>
+                <th scope="col">Preferált telephely</th>
+                <th scope="col">Státusz</th>
+                <th scope="col">Műveletek</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="jelolt : ${jelolts}" >
-                <td th:text="${jelolt.mail}"></td>
+            <tr th:each="jelolt : ${jelolts}">
+                <td th:text="${jelolt.id}" class="employee-id"></td>
                 <td th:text="${jelolt.firstName}"></td>
+                <td th:text="${jelolt.lastName}"></td>
+                <td th:text="${jelolt.mail}"></td>
+                <td th:text="${jelolt.type.name}"></td>
+                <td th:text="${jelolt.level.level}"></td>
+                <td th:text="${jelolt.location.city}"></td>
+                <td th:text="${jelolt.status}"></td>
+                <td>
+                    <input class="operation-checkbox" type="checkbox">
+                </td>
             </tr>
             </tbody>
         </table>
@@ -46,7 +63,7 @@
             <ul class="pagination justify-content-center">
                 <li class="page-item" th:if="${actualPage} > 1">
                     <a class="page-link" th:href="@{|/employee-creator/${actualPage - 1}|}" tabindex="-1"
-                       aria-disabled="true">Previous</a>
+                       aria-disabled="true">Vissza</a>
                 </li>
                 <li class="page-item disabled" th:if="${actualPage} == 1">
                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Vissza</a>

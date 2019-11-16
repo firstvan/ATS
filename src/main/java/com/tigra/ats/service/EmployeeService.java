@@ -7,7 +7,7 @@ import com.tigra.ats.repository.DBFileRepository;
 import com.tigra.ats.repository.EmployeeRepository;
 import com.tigra.ats.service.paginate.*;
 import com.tigra.ats.service.paginate.factory.EmployeePaginatorFactory;
-import com.tigra.ats.service.searchengine.parameter.SearchParameter;
+import com.tigra.ats.service.searchengine.SearchParameter;
 import com.tigra.ats.service.searchengine.employee.EmployeeSearchType;
 import com.tigra.ats.service.searchengine.employee.EmployeeSearchTypeEnum;
 import com.tigra.ats.service.searchengine.SearchEngine;

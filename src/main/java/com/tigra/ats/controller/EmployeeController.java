@@ -46,4 +46,10 @@ public class EmployeeController {
     public void createEmployee(@ModelAttribute Employee employee, @RequestParam("CVFile") String CVFile) {
         employeeService.createEmployee(employee, CVFile);
     }
+
+    @PostMapping("/create-job-registration")
+    public String createJobRegistration() {
+
+        return "";
+    }
 }

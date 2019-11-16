@@ -9,7 +9,7 @@ import com.tigra.ats.service.entityhandler.JobLoader;
 import com.tigra.ats.service.paginate.JobPaginator;
 import com.tigra.ats.service.searchengine.SearchFilter;
 import com.tigra.ats.service.paginate.factory.JobPaginatorFactory;
-import com.tigra.ats.service.searchengine.parameter.SearchParameter;
+import com.tigra.ats.service.searchengine.SearchParameter;
 import com.tigra.ats.service.searchengine.job.JobSearchType;
 import com.tigra.ats.service.searchengine.job.JobSearchTypeEnum;
 import com.tigra.ats.service.searchengine.SearchEngine;

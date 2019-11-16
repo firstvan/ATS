@@ -2,8 +2,8 @@ package com.tigra.ats.service.paginate.factory;
 
 import com.tigra.ats.service.searchengine.PaginatedSearchEngine;
 import com.tigra.ats.service.searchengine.SearchFilter;
-import com.tigra.ats.service.searchengine.parameter.JobSearchParameter;
-import com.tigra.ats.service.searchengine.parameter.SearchParameter;
+import com.tigra.ats.service.searchengine.job.JobSearchParameter;
+import com.tigra.ats.service.searchengine.SearchParameter;
 import com.tigra.ats.service.searchengine.job.JobSearchEngine;
 import com.tigra.ats.service.searchengine.SearchType;
 import org.springframework.beans.factory.annotation.Autowired;

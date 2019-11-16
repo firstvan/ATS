@@ -22,6 +22,9 @@ public class JobLevel {
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "level")
     private List<Employee> employees;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "level")
+    private List<JobRegistration> registrations;
 
     public JobLevel(String level) {
         this.level = level;

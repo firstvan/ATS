@@ -1,7 +1,7 @@
 package com.tigra.ats.service.paginate.factory;
 
-import com.tigra.ats.service.searchengine.parameter.EmployeeSearchParameter;
-import com.tigra.ats.service.searchengine.parameter.SearchParameter;
+import com.tigra.ats.service.searchengine.employee.EmployeeSearchParameter;
+import com.tigra.ats.service.searchengine.SearchParameter;
 import com.tigra.ats.service.searchengine.employee.EmployeeSearchEngine;
 import com.tigra.ats.service.searchengine.PaginatedSearchEngine;
 import com.tigra.ats.service.searchengine.SearchFilter;

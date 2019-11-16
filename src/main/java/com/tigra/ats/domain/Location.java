@@ -24,6 +24,9 @@ public class Location {
     @OneToMany(mappedBy = "location")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Employee> employees;
+    @OneToMany(mappedBy = "location")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<JobRegistration> registrations;
 
     public Location(String city) {
         this.city = city;

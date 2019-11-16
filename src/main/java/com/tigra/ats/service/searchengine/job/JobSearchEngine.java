@@ -3,7 +3,7 @@ package com.tigra.ats.service.searchengine.job;
 import com.tigra.ats.domain.Job;
 import com.tigra.ats.repository.JobRepository;
 import com.tigra.ats.service.exception.NotFoundSearchParameterException;
-import com.tigra.ats.service.searchengine.parameter.SearchParameter;
+import com.tigra.ats.service.searchengine.SearchParameter;
 import com.tigra.ats.service.searchengine.PaginatedSearchEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

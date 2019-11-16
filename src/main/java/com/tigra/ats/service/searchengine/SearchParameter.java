@@ -1,4 +1,4 @@
-package com.tigra.ats.service.searchengine.parameter;
+package com.tigra.ats.service.searchengine;
 
 import com.tigra.ats.service.searchengine.SearchFilter;
 import com.tigra.ats.service.searchengine.SearchType;
