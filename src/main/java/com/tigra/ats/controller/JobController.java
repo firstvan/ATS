@@ -1,12 +1,15 @@
 package com.tigra.ats.controller;
 
 import com.tigra.ats.domain.Job;
+import com.tigra.ats.domain.JobType;
 import com.tigra.ats.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class JobController {
@@ -24,6 +27,7 @@ public class JobController {
         if(jobPage.getTotalPages() > 0) {
             numberOfPages = jobPage.getTotalPages();
         }
+        List<JobType> types = jobService.getTypes();
 
         if(actualPage > 1 && actualPage > numberOfPages)
             return "error";

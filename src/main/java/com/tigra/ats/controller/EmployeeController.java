@@ -1,6 +1,7 @@
 package com.tigra.ats.controller;
 
 import com.tigra.ats.domain.Employee;
+import com.tigra.ats.domain.Job;
 import com.tigra.ats.service.EmployeeService;
 import com.tigra.ats.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +49,8 @@ public class EmployeeController {
     }
 
     @PostMapping("/create-job-registration")
-    public String createJobRegistration() {
-
-        return "";
+    @ResponseStatus(value = HttpStatus.OK)
+    public void createJobRegistration(@ModelAttribute Job job, @RequestParam("employee_ids") String employees) {
+        employeeService.createJobRegistration(job, employees);
     }
 }

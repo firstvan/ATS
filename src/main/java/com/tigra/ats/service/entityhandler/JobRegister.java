@@ -9,6 +9,7 @@ import com.tigra.ats.service.exception.CannotCreateJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
@@ -74,6 +75,7 @@ public class JobRegister {
             Job createdJob = jobRepository
                     .findByTypeAndLevelAndLocation(jobType.get(), jobLevel.get(), location.get())
                     .orElseGet(() -> new Job(jobType.get(), jobLevel.get(), location.get()));
+            createdJob.setCreatedDate(LocalDate.now());
             createdJob.setDisplayStatus(true);
             jobRepository.save(createdJob);
         }

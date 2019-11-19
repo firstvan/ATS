@@ -3,6 +3,7 @@ package com.tigra.ats.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tigra.ats.domain.DBFile;
 import com.tigra.ats.domain.Employee;
+import com.tigra.ats.domain.Job;
 import com.tigra.ats.repository.DBFileRepository;
 import com.tigra.ats.repository.EmployeeRepository;
 import com.tigra.ats.service.paginate.*;
@@ -18,6 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class EmployeeService {
@@ -29,6 +33,26 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
         this.dbFileRepository = dbFileRepository;
         this.employeePaginatorFactory = employeePaginatorFactory;
+    }
+
+    public void createJobRegistration(Job job, String employees) {
+        List<Long> IDs = getEmployeeIDListFromString(employees);
+        List<Employee> employeeList = getEmployeesFromIDs(IDs);
+        //TODO Ha nem létezik a munka, akkor hozzuk létre úgy hogy ne jelenítsük meg, majd kapcsoljuk hozzá a jelölthöz
+        //TODO Ha létezik a munka, csak szimplán kapcsoljuk össze őket
+    }
+
+    private List<Long> getEmployeeIDListFromString(String employeeIDs) {
+        String[] IDs = employeeIDs.split(",");
+        List<Long> IDList = new ArrayList<>();
+        for(String id : IDs) {
+            IDList.add(Long.parseLong(id));
+        }
+        return IDList;
+    }
+
+    private List<Employee> getEmployeesFromIDs(List<Long> IDs) {
+        return (ArrayList<Employee>)employeeRepository.findAllById(IDs);
     }
 
     public void createEmployee(Employee employee, String CVFile) {
