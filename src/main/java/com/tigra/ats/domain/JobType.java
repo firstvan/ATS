@@ -21,9 +21,6 @@ public class JobType {
     @OneToMany(mappedBy = "type")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Employee> employees;
-    @OneToMany(mappedBy = "type")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<JobRegistration> registrations;
 
     public JobType(String name) {
         this.name = name;

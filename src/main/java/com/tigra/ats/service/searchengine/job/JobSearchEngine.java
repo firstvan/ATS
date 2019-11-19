@@ -44,6 +44,8 @@ public class JobSearchEngine implements PaginatedSearchEngine {
             case ALL:
                 actualPage = jobRepository.findAll(pageable);
                 break;
+            case BY_STATUS:
+                actualPage = jobRepository.findAllByDisplayStatus(pageable, jobFilter.isDisplayStatus());
         }
         return actualPage;
     }

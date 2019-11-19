@@ -21,5 +21,10 @@ public interface JobRepository extends CrudRepository<Job, Long> {
     @Override
     Job save(Job job);
 
+    @Override
+    Optional<Job> findById(Long id);
+
+    Page<Job> findAllByDisplayStatus(Pageable pageable, boolean status);
+
     Optional<Job> findByTypeAndLevelAndLocation(JobType type, JobLevel level, Location location);
 }

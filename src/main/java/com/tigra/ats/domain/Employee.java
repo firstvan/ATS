@@ -51,5 +51,5 @@ public class Employee {
     @OneToOne
     private DBFile CV;
     @ManyToMany(mappedBy = "employees")
-    private Set<JobRegistration> registrations;
+    private Set<Job> jobs;
 }

@@ -65,14 +65,6 @@ public class JobRegister {
         }
     }
 
-    /**
-     * Meghírdet egy állást az aktuális dátummal és a paraméterekként átadott tulajdonságokkal.
-     *
-     * @param typeName a pozíció típusának neve
-     * @param level a pozíció típusának a szintje
-     * @param city a város, ahol a telephely található
-     * @throws CannotCreateJob ha nem léteznek az adatbázisban a megadott tulajdonságok
-     */
     public void createJob(String typeName, String level, String city) {
         Optional<JobType> jobType = jobPropertyHandler.getType(typeName);
         Optional<JobLevel> jobLevel = jobPropertyHandler.getLevel(level);
@@ -82,6 +74,7 @@ public class JobRegister {
             Job createdJob = jobRepository
                     .findByTypeAndLevelAndLocation(jobType.get(), jobLevel.get(), location.get())
                     .orElseGet(() -> new Job(jobType.get(), jobLevel.get(), location.get()));
+            createdJob.setDisplayStatus(true);
             jobRepository.save(createdJob);
         }
         else
@@ -89,6 +82,11 @@ public class JobRegister {
     }
 
     public void deleteJob(Long id) {
-        jobRepository.deleteById(id);
+        Optional<Job> optionalJob = jobRepository.findById(id);
+        if(optionalJob.isPresent()) {
+            Job job = optionalJob.get();
+            job.setDisplayStatus(false);
+            jobRepository.save(job);
+        }
     }
 }

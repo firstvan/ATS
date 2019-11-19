@@ -51,7 +51,8 @@ public class JobService {
     public Page<Job> getAvailableJobs(int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, 2);
         Job job = new Job();
-        SearchParameter searchParameter = paginatorFactory.createSearchParameter(new JobSearchType(JobSearchTypeEnum.ALL), new SearchFilter<Job>(job));
+        job.setDisplayStatus(true);
+        SearchParameter searchParameter = paginatorFactory.createSearchParameter(new JobSearchType(JobSearchTypeEnum.BY_STATUS), new SearchFilter<Job>(job));
         SearchEngine searchEngine = paginatorFactory.createSearchEngine(searchParameter, pageable);
         JobPaginator paginator = new JobPaginator(searchEngine);
         return paginator.getPage();
