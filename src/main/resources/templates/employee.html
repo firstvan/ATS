@@ -69,7 +69,7 @@
                 <li class="page-item disabled" th:if="${actualPage} == 1">
                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Vissza</a>
                 </li>
-                <th:block th:each="i: ${#numbers.sequence(0, numberOfPages)}">
+                <th:block th:each="i: ${#numbers.sequence(0, numberOfPages - 1)}">
                     <li class="page-item active" th:if="${actualPage} == ${i + 1}">
                         <a class="page-link" th:text="${i + 1}" th:href="@{|/employee-creator/${i + 1}|}"></a>
                     </li>
@@ -78,7 +78,7 @@
                     </li>
                 </th:block>
                 <li class="page-item" th:if="${actualPage} < ${numberOfPages + 1}">
-                    <a class="page-link" th:href="@{|/employee-creator/${actualPage+1}|}">Next</a>
+                    <a class="page-link" th:href="@{|/employee-creator/${actualPage+1}|}">Következő</a>
                 </li>
                 <li class="page-item disabled" th:if="${actualPage} == ${numberOfPages + 1}">
                     <a class="page-link" href="#">Következő</a>

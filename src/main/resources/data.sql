@@ -21,3 +21,12 @@ VALUES(1, 'Példa', 'Péter', 'Példa Péter', 'example@example.com', null, 'Deb
 
 INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, level_id, location_id, type_id)
 VALUES(2, 'Példa', 'Géza', 'Példa Géza', 'example2@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1, 1, 1);
+
+INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, level_id, location_id, type_id)
+VALUES(3, 'Példa', 'Irén', 'Példa Irén', 'example3@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1, 1, 1);
+
+INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, level_id, location_id, type_id)
+VALUES(4, 'Példa', 'Panna', 'Példa Panna', 'example4@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1, 1, 1);
+
+INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, level_id, location_id, type_id)
+VALUES(5, 'Példa', 'Elemér', 'Példa Elemér', 'example5@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1, 1, 1);

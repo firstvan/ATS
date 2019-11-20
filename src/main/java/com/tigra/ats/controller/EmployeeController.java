@@ -26,15 +26,16 @@ public class EmployeeController {
     @GetMapping("/employee-creator/{actualPage}")
     public String displayEmployeeCreator(Model model, @RequestParam(defaultValue = "") String name, @PathVariable("actualPage") int actualPage) {
         Page<Employee> employeePage = employeeService.getAvailableEmployees(actualPage - 1, name);
-        int numberOfPages = employeePage.getTotalPages() - 1;
+        int numberOfPages = 1;
 
-        if(actualPage > 1 && actualPage > (numberOfPages + 1))
+        if(employeePage.getTotalPages() > 0)
+            numberOfPages = employeePage.getTotalPages();
+        else if(actualPage > 1 && actualPage > (numberOfPages + 1))
             return "error";
-        else {
-            model.addAttribute("jelolts", employeePage);
-            model.addAttribute("actualPage", actualPage);
-            model.addAttribute("numberOfPages", numberOfPages);
-        }
+
+        model.addAttribute("jelolts", employeePage);
+        model.addAttribute("actualPage", actualPage);
+        model.addAttribute("numberOfPages", numberOfPages);
         model.addAttribute("employee", new Employee());
         model.addAttribute("types", jobService.getTypes());
         model.addAttribute("levels", jobService.getLevels());
@@ -42,22 +43,21 @@ public class EmployeeController {
         return "employee";
     }
 
-    @PostMapping(value = "/create-employee", produces = "application/json; charset=UTF-8")
+    @PostMapping("/create-employee")
     @ResponseStatus(value = HttpStatus.OK)
     public void createEmployee(@ModelAttribute Employee employee, @RequestParam("CVFile") String CVFile) {
         employeeService.createEmployee(employee, CVFile);
     }
 
-    @PostMapping("/create-job-registration")
+    @PostMapping(value = "/create-job-registration", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ResponseTransfer createJobRegistration(@ModelAttribute Job job, @RequestParam("employee_ids") String employees) {
         boolean success = employeeService.createJobRegistration(job, employees);
-        System.out.println(success);
         if(success) {
-            return new ResponseTransfer("Sikeres létrehozás");
+            return new ResponseTransfer("Sikeres létrehozás!");
         }
         else if(employees.isEmpty()) {
-
+            return new ResponseTransfer("Ki kell választanod legalább egy jelöltet!");
         }
         else {
             return new ResponseTransfer("Már létezik ilyen regisztráció!");
