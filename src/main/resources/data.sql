@@ -15,3 +15,9 @@ INSERT INTO job_level (id, level) VALUES(1, 'Junior');
 INSERT INTO location (id, city) VALUES(1, 'Debrecen');
 
 ALTER TABLE `users` CHANGE `role_id` `role_id` BIGINT(20) NULL DEFAULT NULL;
+
+INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, level_id, location_id, type_id)
+VALUES(1, 'Példa', 'Péter', 'Példa Péter', 'example@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1, 1, 1);
+
+INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, level_id, location_id, type_id)
+VALUES(2, 'Példa', 'Géza', 'Példa Géza', 'example2@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1, 1, 1);

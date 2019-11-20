@@ -1,10 +1,15 @@
 package com.tigra.ats.controller;
 
+import com.tigra.ats.domain.Job;
+import com.tigra.ats.domain.JobType;
 import com.tigra.ats.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 public class JobController {
@@ -17,12 +22,17 @@ public class JobController {
 
     @GetMapping("/job-operations/{actualPage}")
     public String getJobOperationPage(Model model, @PathVariable("actualPage") int actualPage) {
-        int numberOfPages = jobService.getNumberOfPages();
+        Page<Job> jobPage = jobService.getAvailableJobs(actualPage - 1);
+        int numberOfPages = 1;
+        if(jobPage.getTotalPages() > 0) {
+            numberOfPages = jobPage.getTotalPages();
+        }
+        List<JobType> types = jobService.getTypes();
 
-        if(actualPage > 1 && actualPage > (numberOfPages + 1))
+        if(actualPage > 1 && actualPage > numberOfPages)
             return "error";
         else {
-            model.addAttribute("jobs", jobService.getAvailableJobs(actualPage - 1));
+            model.addAttribute("jobs", jobPage);
             model.addAttribute("actualPage", actualPage);
             model.addAttribute("numberOfPages", numberOfPages);
             model.addAttribute("types", jobService.getTypes());

@@ -43,8 +43,7 @@
                                     <div class="form-group">
                                         <label for="job-name-select">Pozició neve</label>
                                         <select id="job-name-select" class="form-control" name="job-name">
-                                            <option th:each="type : ${types}" th:value="${type.name}"
-                                                    th:text="${type.name}"></option>
+                                            <option th:each="type : ${types}" th:value="${type.name}" th:text="${type.name}"></option>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -133,12 +132,12 @@
                     <ul class="pagination justify-content-center">
                         <li class="page-item" th:if="${actualPage} > 1">
                             <a class="page-link" th:href="@{|/job-operations/${actualPage - 1}|}" tabindex="-1"
-                               aria-disabled="true">Previous</a>
+                               aria-disabled="true">Vissza</a>
                         </li>
                         <li class="page-item disabled" th:if="${actualPage} == 1">
-                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Vissza</a>
                         </li>
-                        <th:block th:each="i: ${#numbers.sequence(0, numberOfPages)}">
+                        <th:block th:each="i: ${#numbers.sequence(0, numberOfPages - 1)}">
                             <li class="page-item active" th:if="${actualPage} == ${i + 1}">
                                 <a class="page-link" th:text="${i + 1}" th:href="@{|/job-operations/${i + 1}|}"></a>
                             </li>
@@ -146,11 +145,11 @@
                                 <a class="page-link" th:text="${i + 1}" th:href="@{|/job-operations/${i + 1}|}"></a>
                             </li>
                         </th:block>
-                        <li class="page-item" th:if="${actualPage} < ${numberOfPages + 1}">
-                            <a class="page-link" th:href="@{|/job-operations/${actualPage+1}|}">Next</a>
+                        <li class="page-item" th:if="${actualPage} < ${numberOfPages}">
+                            <a class="page-link" th:href="@{|/job-operations/${actualPage + 1}|}">Következő</a>
                         </li>
-                        <li class="page-item disabled" th:if="${actualPage} == ${numberOfPages + 1}">
-                            <a class="page-link" href="#">Next</a>
+                        <li class="page-item disabled" th:if="${actualPage} == ${numberOfPages}">
+                            <a class="page-link" href="#">Következő</a>
                         </li>
                     </ul>
                 </nav>

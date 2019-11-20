@@ -1,4 +1,4 @@
-package com.tigra.ats.service.logic;
+package com.tigra.ats.service.entityhandler;
 
 import com.tigra.ats.domain.Job;
 import com.tigra.ats.domain.JobLevel;
@@ -66,15 +66,7 @@ public class JobRegister {
         }
     }
 
-    /**
-     * Meghírdet egy állást az aktuális dátummal és a paraméterekként átadott tulajdonságokkal.
-     *
-     * @param typeName a pozíció típusának neve
-     * @param level a pozíció típusának a szintje
-     * @param city a város, ahol a telephely található
-     * @throws CannotCreateJob ha nem léteznek az adatbázisban a megadott tulajdonságok
-     */
-    public void createJob(String typeName, String level, String city) {
+    public Job createJob(String typeName, String level, String city, boolean isDisplayed) {
         Optional<JobType> jobType = jobPropertyHandler.getType(typeName);
         Optional<JobLevel> jobLevel = jobPropertyHandler.getLevel(level);
         Optional<Location> location = jobPropertyHandler.getLocation(city);
@@ -83,13 +75,20 @@ public class JobRegister {
             Job createdJob = jobRepository
                     .findByTypeAndLevelAndLocation(jobType.get(), jobLevel.get(), location.get())
                     .orElseGet(() -> new Job(jobType.get(), jobLevel.get(), location.get()));
-            jobRepository.save(createdJob);
+            createdJob.setCreatedDate(LocalDate.now());
+            createdJob.setDisplayStatus(isDisplayed);
+            return jobRepository.save(createdJob);
         }
         else
             throw new CannotCreateJob("Properties not found!");
     }
 
     public void deleteJob(Long id) {
-        jobRepository.deleteById(id);
+        Optional<Job> optionalJob = jobRepository.findById(id);
+        if(optionalJob.isPresent()) {
+            Job job = optionalJob.get();
+            job.setDisplayStatus(false);
+            jobRepository.save(job);
+        }
     }
 }

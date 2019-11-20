@@ -3,7 +3,7 @@ package com.tigra.ats.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tigra.ats.domain.DBFile;
-import com.tigra.ats.service.logic.FileUploader;
+import com.tigra.ats.service.storage.FileUploader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

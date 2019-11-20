@@ -1,4 +1,4 @@
-package com.tigra.ats.service.logic;
+package com.tigra.ats.service.authentication;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
