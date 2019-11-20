@@ -41,7 +41,7 @@ public class JobService {
     }
 
     public void createJob(String type, String level, String city) {
-        jobRegister.createJob(type, level, city);
+        jobRegister.createJob(type, level, city, true);
     }
 
     public void deleteJob(Long id) {

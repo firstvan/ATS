@@ -49,8 +49,15 @@ public class EmployeeController {
     }
 
     @PostMapping("/create-job-registration")
-    @ResponseStatus(value = HttpStatus.OK)
-    public void createJobRegistration(@ModelAttribute Job job, @RequestParam("employee_ids") String employees) {
-        employeeService.createJobRegistration(job, employees);
+    @ResponseBody
+    public ResponseTransfer createJobRegistration(@ModelAttribute Job job, @RequestParam("employee_ids") String employees) {
+        boolean success = employeeService.createJobRegistration(job, employees);
+        System.out.println(success);
+        if(success) {
+            return new ResponseTransfer("Sikeres létrehozás");
+        }
+        else {
+            return new ResponseTransfer("Már létezik ilyen regisztráció!");
+        }
     }
 }

@@ -6,6 +6,7 @@ import com.tigra.ats.domain.Employee;
 import com.tigra.ats.domain.Job;
 import com.tigra.ats.repository.DBFileRepository;
 import com.tigra.ats.repository.EmployeeRepository;
+import com.tigra.ats.service.entityhandler.JobRegister;
 import com.tigra.ats.service.paginate.*;
 import com.tigra.ats.service.paginate.factory.EmployeePaginatorFactory;
 import com.tigra.ats.service.searchengine.SearchParameter;
@@ -13,33 +14,44 @@ import com.tigra.ats.service.searchengine.employee.EmployeeSearchType;
 import com.tigra.ats.service.searchengine.employee.EmployeeSearchTypeEnum;
 import com.tigra.ats.service.searchengine.SearchEngine;
 import com.tigra.ats.service.searchengine.SearchFilter;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeService {
     private EmployeeRepository employeeRepository;
     private DBFileRepository dbFileRepository;
     private EmployeePaginatorFactory employeePaginatorFactory;
+    private JobRegister jobRegister;
 
-    public EmployeeService(EmployeeRepository employeeRepository, DBFileRepository dbFileRepository, EmployeePaginatorFactory employeePaginatorFactory) {
+    public EmployeeService(EmployeeRepository employeeRepository, DBFileRepository dbFileRepository, EmployeePaginatorFactory employeePaginatorFactory, JobRegister jobRegister) {
         this.employeeRepository = employeeRepository;
         this.dbFileRepository = dbFileRepository;
         this.employeePaginatorFactory = employeePaginatorFactory;
+        this.jobRegister = jobRegister;
     }
 
-    public void createJobRegistration(Job job, String employees) {
+    public boolean createJobRegistration(Job job, String employees) {
         List<Long> IDs = getEmployeeIDListFromString(employees);
         List<Employee> employeeList = getEmployeesFromIDs(IDs);
-        //TODO Ha nem létezik a munka, akkor hozzuk létre úgy hogy ne jelenítsük meg, majd kapcsoljuk hozzá a jelölthöz
-        //TODO Ha létezik a munka, csak szimplán kapcsoljuk össze őket
+        Job createdJob = jobRegister.createJob(job.getType().getName(), job.getLevel().getLevel(), job.getLocation().getCity(), false);
+        for(Employee employee : employeeList) {
+            employee.addJob(createdJob);
+        }
+
+        try {
+            employeeRepository.saveAll(employeeList);
+        } catch (InvalidDataAccessApiUsageException ex) {
+            return false;
+        }
+
+        return true;
     }
 
     private List<Long> getEmployeeIDListFromString(String employeeIDs) {

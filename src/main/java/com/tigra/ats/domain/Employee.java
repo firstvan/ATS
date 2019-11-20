@@ -12,6 +12,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -52,6 +55,18 @@ public class Employee {
     private Location location;
     @OneToOne
     private DBFile CV;
-    @ManyToMany(mappedBy = "employees")
-    private Set<Job> jobs;
+    @ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    }, fetch = FetchType.EAGER)
+    @JoinTable(name = "registered_employee",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "registration_id"))
+    private List<Job> jobs = new ArrayList<>();
+
+
+    public void addJob(Job job) {
+        jobs.add(job);
+        job.getEmployees().add(this);
+    }
 }

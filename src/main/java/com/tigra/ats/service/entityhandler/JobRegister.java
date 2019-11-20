@@ -66,7 +66,7 @@ public class JobRegister {
         }
     }
 
-    public void createJob(String typeName, String level, String city) {
+    public Job createJob(String typeName, String level, String city, boolean isDisplayed) {
         Optional<JobType> jobType = jobPropertyHandler.getType(typeName);
         Optional<JobLevel> jobLevel = jobPropertyHandler.getLevel(level);
         Optional<Location> location = jobPropertyHandler.getLocation(city);
@@ -76,8 +76,8 @@ public class JobRegister {
                     .findByTypeAndLevelAndLocation(jobType.get(), jobLevel.get(), location.get())
                     .orElseGet(() -> new Job(jobType.get(), jobLevel.get(), location.get()));
             createdJob.setCreatedDate(LocalDate.now());
-            createdJob.setDisplayStatus(true);
-            jobRepository.save(createdJob);
+            createdJob.setDisplayStatus(isDisplayed);
+            return jobRepository.save(createdJob);
         }
         else
             throw new CannotCreateJob("Properties not found!");

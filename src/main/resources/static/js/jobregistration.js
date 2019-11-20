@@ -35,7 +35,8 @@ function sendData(formData) {
     let xhttpreq = new XMLHttpRequest();
     xhttpreq.onreadystatechange = function()  {
         if (this.readyState == 4 && this.status == 200) {
-            window.location.reload()
+            console.log(xhttpreq.response);
+            window.location.reload();
         }
     }
     xhttpreq.open("POST", '/create-job-registration', true);

@@ -8,8 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Data
@@ -27,15 +26,8 @@ public class Job {
     @ManyToOne
     private JobLevel level;
     private boolean displayStatus;
-
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "registered_employee",
-            joinColumns = @JoinColumn(name = "registration_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id"))
-    private Set<Employee> employees;
+    @ManyToMany(mappedBy = "jobs", fetch = FetchType.EAGER)
+    private List<Employee> employees = new ArrayList<>();
 
     public Job(JobType type, JobLevel level, Location location) {
         this.createdDate = LocalDate.now();
@@ -43,5 +35,16 @@ public class Job {
         this.type = type;
         this.level = level;
         this.displayStatus = false;
+    }
+
+    @Override
+    public String toString() {
+        return "Job{" +
+                "id=" + id +
+                ", createdDate=" + createdDate +
+                ", location=" + location +
+                ", type=" + type +
+                ", level=" + level +
+               "}";
     }
 }
