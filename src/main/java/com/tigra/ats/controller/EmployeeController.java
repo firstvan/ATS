@@ -42,7 +42,7 @@ public class EmployeeController {
         return "employee";
     }
 
-    @PostMapping("/create-employee")
+    @PostMapping(value = "/create-employee", produces = "application/json; charset=UTF-8")
     @ResponseStatus(value = HttpStatus.OK)
     public void createEmployee(@ModelAttribute Employee employee, @RequestParam("CVFile") String CVFile) {
         employeeService.createEmployee(employee, CVFile);
@@ -55,6 +55,9 @@ public class EmployeeController {
         System.out.println(success);
         if(success) {
             return new ResponseTransfer("Sikeres létrehozás");
+        }
+        else if(employees.isEmpty()) {
+
         }
         else {
             return new ResponseTransfer("Már létezik ilyen regisztráció!");

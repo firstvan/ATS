@@ -35,7 +35,8 @@ function sendData(formData) {
     let xhttpreq = new XMLHttpRequest();
     xhttpreq.onreadystatechange = function()  {
         if (this.readyState == 4 && this.status == 200) {
-            console.log(xhttpreq.response);
+            let obj = JSON.parse(xhttpreq.responseText);
+            alert(obj.text);
             window.location.reload();
         }
     }
