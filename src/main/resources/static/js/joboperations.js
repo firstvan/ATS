@@ -13,7 +13,7 @@ function deleteJob() {
     xhttpreq.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             alert("Sikeresen lezártad a pozíciót!");
-            window.location.replace('/job-operations/1');
+            window.location.reload();
         }
     }
     xhttpreq.open("POST", `/delete-job/${rowId}`, true);

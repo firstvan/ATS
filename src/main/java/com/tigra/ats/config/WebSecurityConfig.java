@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private final String[] employeeUrls = new String[] {
-            "/employee-creator", "/create-employee"
+            "/employee-creator/**", "/create-employee", "/create-job-registration"
     };
 
 

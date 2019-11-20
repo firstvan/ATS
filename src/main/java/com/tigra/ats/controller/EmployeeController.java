@@ -54,13 +54,13 @@ public class EmployeeController {
     public ResponseTransfer createJobRegistration(@ModelAttribute Job job, @RequestParam("employee_ids") String employees) {
         boolean success = employeeService.createJobRegistration(job, employees);
         if(success) {
-            return new ResponseTransfer("Sikeres létrehozás!");
+            return new ResponseTransfer("Sikeres rögzítés!");
         }
         else if(employees.isEmpty()) {
             return new ResponseTransfer("Ki kell választanod legalább egy jelöltet!");
         }
         else {
-            return new ResponseTransfer("Már létezik ilyen regisztráció!");
+            return new ResponseTransfer("Már van ilyen aktív státuszú jelentkezés a rendszerben!");
         }
     }
 }
