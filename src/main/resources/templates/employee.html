@@ -20,6 +20,7 @@
 
 <div layout:fragment="content">
     <div class="container">
+        <!--th:href="@{/getOne/(id=${jelolt.id})}"-->
         <button class="btn btn-primary" data-target="#form-modal" data-toggle="modal" type="button">Új jelölt felvétele</button>
         <button class="btn btn-primary" data-target="#registration-modal" data-toggle="modal" type="button">Új jelentkezés</button>
 
@@ -40,7 +41,7 @@
                 <th scope="col">Preferált szint</th>
                 <th scope="col">Preferált telephely</th>
                 <th scope="col">Státusz</th>
-                <th scope="col">Műveletek</th>
+                <th scope="col" colspan="4" style="text-align: center">Műveletek</th>
             </tr>
             </thead>
             <tbody>
@@ -56,6 +57,9 @@
                 <td>
                     <input class="operation-checkbox" type="checkbox">
                 </td>
+                <td><a href="#">Megtekint</a></td>
+                <td>  <a  th:href="@{/getOne/(id=${jelolt.id})}" class="btn btn-warning"  id="edit">Szerkesztés</a></td>
+                <td><a th:href="@{/delete/{id}(id=${jelolt.id})}">Törlés</a></td>
             </tr>
             </tbody>
         </table>
@@ -69,7 +73,7 @@
                 <li class="page-item disabled" th:if="${actualPage} == 1">
                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Vissza</a>
                 </li>
-                <th:block th:each="i: ${#numbers.sequence(0, numberOfPages - 1)}">
+                <th:block th:each="i: ${#numbers.sequence(0, numberOfPages)}">
                     <li class="page-item active" th:if="${actualPage} == ${i + 1}">
                         <a class="page-link" th:text="${i + 1}" th:href="@{|/employee-creator/${i + 1}|}"></a>
                     </li>
@@ -78,7 +82,7 @@
                     </li>
                 </th:block>
                 <li class="page-item" th:if="${actualPage} < ${numberOfPages + 1}">
-                    <a class="page-link" th:href="@{|/employee-creator/${actualPage+1}|}">Következő</a>
+                    <a class="page-link" th:href="@{|/employee-creator/${actualPage+1}|}">Next</a>
                 </li>
                 <li class="page-item disabled" th:if="${actualPage} == ${numberOfPages + 1}">
                     <a class="page-link" href="#">Következő</a>
@@ -207,7 +211,126 @@
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="form-modal-edit" role="dialog" tabindex="-2">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="model-header">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title" id="editModalLabel">Jelölt Változtatása</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="/update" id="employee-form-edit" method="PUT">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="first-name-input">Vezetéknév<span style="color: red">*</span></label>
+                                <input class="form-control" id="first-name-input-edit" name="firstNameEdit" type="text" required>
+                                <div class="invalid-feedback">
+                                    Kérlek add meg a jelölt vezetéknevét!
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="last-name-input">Keresztnév<span style="color: red">*</span></label>
+                                <input class="form-control" id="last-name-input-edit" name="lastNameEdit" type="text" required>
+                                <div class="invalid-feedback">
+                                    Kérlek add meg a jelölt keresztnevét!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="birth-name-input">Születési név<span style="color: red">*</span></label>
+                            <input class="form-control" id="birth-name-input-edit" name="birthNameEdit" type="text" required>
+                            <div class="invalid-feedback">
+                                Kérlek add meg a jelölt születési nevét!
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="date-input">Születési dátum<span style="color: red">*</span></label>
+                                <input class="form-control" id="date-input-edit" name="birthDayEdit" type="date" required>
+                                <div class="invalid-feedback">
+                                    Kérlek add meg a jelölt születési dátumát!
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="birthplace-input">Születési hely<span style="color: red">*</span></label>
+                                <input class="form-control" id="birthplace-input-edit" name="birthPlaceEdit" type="text" required>
+                                <div class="invalid-feedback">
+                                    Kérlek add meg a jelölt születési helyét!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="mother-input">Anyja neve<span style="color: red">*</span></label>
+                                <input class="form-control" id="mother-input-edit" name="motherEdit" type="text" required>
+                                <div class="invalid-feedback">
+                                    Kérlek add meg az édesanyja nevét!
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="mail-input">Email cím<span style="color: red">*</span></label>
+                                <input class="form-control" id="mail-input-edit" name="mailEdit" type="text" required>
+                                <div class="invalid-feedback">
+                                    Kérlek adj meg egy érvényes email címet!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone-number-input">Telefonszám</label>
+                            <input class="form-control" id="phone-number-input-edit" name="phoneNumberEdit" type="tel"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="status-input">Státusz</label>
+                            <input class="form-control" id="status-input-edit" name="statusEdit" type="text">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="job-name-select">Preferált pozíció</label>
+                                <select class="form-control" id="job-name-select-edit" name="typeEdit">
+                                    <option th:each="type : ${types}" th:text="${type.name}" th:value="${type.id}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="job-level-select">Preferált szint</label>
+                                <select class="form-control" id="job-level-select-edit" name="levelEdit">
+                                    <option th:each="level : ${levels}" th:text="${level.level}" th:value="${level.id}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="job-location-select">Preferált telephely</label>
+                                <select class="form-control" id="job-location-select-edit" name="locationEdit">
+                                    <option th:each="location : ${locations}" th:text="${location.city}" th:value="${location.id}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="cv-input">Önéletrajz</label>
+                            <p style="font-size: 11px">Csak .pdf, .doc, .docx kiterjesztésű önéletrajzok tölthetőek fel!</p>
+                            <input class="form-control-file" id="cv-input-edit" name="cvEdit" type="file"
+                                   accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, .doc, .docx">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-6 text-left">
+                                <p>A csillaggal (<span style="color: red">*</span>) jelölt mezők kitöltése kötelező!</p>
+                            </div>
+                            <div class="col-sm-6" style="justify-content: flex-end;">
+                                <div class="float-right">
+                                    <button class="btn btn-secondary" data-dismiss="modal" id="modal-close-button-edit" type="button">Mégse</button>
+                                    <button class="btn btn-primary" id="employee-submit-edit" type="button">Mentés</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="registration-modal" role="dialog" tabindex="-1">
         <div class="modal-dialog" role="document">
             <div class="modal-content">

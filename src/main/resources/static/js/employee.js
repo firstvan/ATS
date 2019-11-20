@@ -2,6 +2,8 @@ var DBFile = null;
 
 document.addEventListener('DOMContentLoaded', () => {
     const employeeCreatorButton = document.getElementById('employee-submit');
+    const showdata=document.getElementById('edit');
+    showdata.addEventListener('click',myFunction);
     employeeCreatorButton.addEventListener('click', validateRequiredInputs);
     employeeCreatorButton.addEventListener('click', createEmployee);
     let requiredFields = document.getElementById("employee-form").querySelectorAll("[required]");
@@ -11,11 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('mail-input');
     emailInput.addEventListener('change', validateMail);
 
-    $('#form-modal').on('hidden.bs.modal', function () {
-        $(this).find('form').trigger('reset');
-        DBFile = null;
-    });
+$('#form-modal').on('hidden.bs.modal', function () {
+    $(this).find('form').trigger('reset');
+    DBFile = null;
 });
+});
+
 
 function uploadCV() {
     let formData = new FormData();
@@ -117,3 +120,52 @@ function isValidMail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
+$(document).ready(function(){
+
+        $('.table .btn').on('click',function (event) {
+            var href= $(this).attr('href');
+            event.preventDefault();
+            console.log(href);
+            $(function() {
+               /* $.ajax({
+                    url: href,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(jelolt) {
+                        $('#first-name-input-edit').val(jelolt.firstName);                    }
+                });*/
+
+                $('#form-modal-edit').modal();
+            });
+        });
+});
+function myFunction()
+{
+    var obj;
+    console.log("itt");
+    var href= $(this).attr('href');
+    console.log(href);
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open('GET',href, true);
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4) {
+            if(xmlhttp.status == 200) {
+                obj = JSON.parse(xmlhttp.responseText);
+                document.getElementById("first-name-input-edit").value =obj.firstName;
+                document.getElementById("last-name-input-edit").value =obj.lastName;
+                document.getElementById("birth-name-input-edit").value =obj.birthName;
+                document.getElementById("birthplace-input-edit").value =obj.birthPlace;
+                document.getElementById("mother-input-edit").value =obj.mother;
+                document.getElementById("date-input-edit").value =obj.birthDay;
+                document.getElementById("mail-input-edit").value =obj.mail;
+                document.getElementById("status-input-edit").value =obj.status;
+                document.getElementById("phone-number-input-edit").value =obj.phoneNumber;
+
+            }
+        }
+    };
+    xmlhttp.send(null);
+
+    return obj;
+}
+

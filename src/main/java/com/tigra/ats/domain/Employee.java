@@ -1,5 +1,7 @@
 package com.tigra.ats.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -48,12 +50,16 @@ public class Employee {
     private String status;
     private String phoneNumber;
     @ManyToOne
+    @JsonIgnore
     private JobType type;
     @ManyToOne
+    @JsonIgnore
     private JobLevel level;
     @ManyToOne
+    @JsonIgnore
     private Location location;
     @OneToOne
+    @JsonIgnore
     private DBFile CV;
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -62,6 +68,7 @@ public class Employee {
     @JoinTable(name = "registered_employee",
             joinColumns = @JoinColumn(name = "employee_id"),
             inverseJoinColumns = @JoinColumn(name = "registration_id"))
+    @JsonIgnore
     private List<Job> jobs = new ArrayList<>();
 
 

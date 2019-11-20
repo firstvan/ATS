@@ -96,4 +96,14 @@ public class EmployeeService {
         EmployeePaginator paginator = new EmployeePaginator(engine);
         return paginator.getPage();
     }
+
+    public void delete(long id) {
+        employeeRepository.deleteById(id);
+    }
+    public void update(Employee employee){
+        employeeRepository.save(employee);
+    }
+    public Optional<Employee> getOne(long id){
+        return employeeRepository.findById(id);
+    }
 }

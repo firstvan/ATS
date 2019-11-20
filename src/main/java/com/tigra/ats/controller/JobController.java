@@ -27,6 +27,7 @@ public class JobController {
         if(jobPage.getTotalPages() > 0) {
             numberOfPages = jobPage.getTotalPages();
         }
+        List<JobType> types = jobService.getTypes();
 
         if(actualPage > 1 && actualPage > numberOfPages)
             return "error";
