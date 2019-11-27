@@ -22,10 +22,38 @@
         <button class="btn btn-primary" data-target="#form-modal" data-toggle="modal" type="button">Új jelölt felvétele</button>
         <button class="btn btn-primary" data-target="#registration-modal" data-toggle="modal" type="button">Új jelentkezés létrehozás</button>
 
-        <form action="/employee-creator/1" class="container mySpace">
+        <form action="/employee-creator/1" method="get" class="container mySpace">
             <div class="form-group mb2">
-                <input type="text" class="form-control" name="name" placeholder="Keresés" />
-                <input type="submit" value="Search" class="btn btn-primary" />
+                <input type="text" class="form-control" name="firstName" placeholder="Vezetéknév" th:value="${param.firstName}"/>
+                <input type="text" class="form-control" name="lastName" placeholder="Keresztnév" th:value="${param.lastName}">
+                <input type="text" class="form-control" name="mail" placeholder="Email" th:value="${param.mail}">
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="job-name-select">Preferált pozíció</label>
+                        <select class="form-control" name="type">
+                            <option th:value="NULL"></option>
+                            <option th:each="type : ${types}" th:text="${type.name}" th:value="${type.id}"
+                                    th:selected="${#strings.equals(param.type, #strings.toString(type.id))}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="job-level-select">Preferált szint</label>
+                        <select class="form-control" name="level">
+                            <option th:value="NULL"></option>
+                            <option th:each="level : ${levels}" th:text="${level.level}" th:value="${level.id}"
+                                    th:selected="${#strings.equals(param.level, #strings.toString(level.id))}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="job-location-select">Preferált telephely</label>
+                        <select class="form-control" name="location">
+                            <option th:value="NULL"></option>
+                            <option th:each="location : ${locations}" th:text="${location.city}" th:value="${location.id}"
+                                    th:selected="${#strings.equals(param.location, #strings.toString(location.id))}"></option>
+                        </select>
+                    </div>
+                </div>
+                <input type="submit" value="Keresés" class="btn btn-primary" />
             </div>
         </form>
         <table class="table table-hover">
@@ -59,27 +87,35 @@
             </tbody>
         </table>
 
+        <input type="hidden" th:value="${param.type}">
+        <input type="hidden" th:value="${param.level}">
+        <input type="hidden" th:value="${param.location}">
         <nav aria-label="Page navigation">
             <ul class="pagination justify-content-center">
                 <li class="page-item" th:if="${actualPage} > 1">
-                    <a class="page-link" th:href="@{|/employee-creator/${actualPage - 1}|}" tabindex="-1"
-                       aria-disabled="true">Vissza</a>
+                    <a class="page-link" th:if="${param.firstName != null}"
+                       th:href="@{|/employee-creator/${actualPage - 1}?firstName=${param.firstName}&lastName=${param.lastName}&mail=${param.mail}&type=${param.type}&level=${param.level}&location=${param.location}|}">Vissza</a>
+                    <a class="page-link" th:if="${param.firstName == null}"
+                       th:href="@{|/employee-creator/${actualPage - 1}|}">Vissza</a>
                 </li>
                 <li class="page-item disabled" th:if="${actualPage} == 1">
                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Vissza</a>
                 </li>
                 <th:block th:each="i: ${#numbers.sequence(0, numberOfPages - 1)}">
-                    <li class="page-item active" th:if="${actualPage} == ${i + 1}">
-                        <a class="page-link" th:text="${i + 1}" th:href="@{|/employee-creator/${i + 1}|}"></a>
-                    </li>
-                    <li class="page-item" th:if="${actualPage} != ${i + 1}">
-                        <a class="page-link" th:text="${i + 1}" th:href="@{|/employee-creator/${i + 1}|}"></a>
+                    <li class="page-item" th:classappend="${actualPage == i + 1} ? active : ''">
+                        <a class="page-link" th:if="${param.firstName != null}" th:text="${i + 1}"
+                           th:href="@{|/employee-creator/${i + 1}?firstName=${param.firstName}&lastName=${param.lastName}&mail=${param.mail}&type=${param.type}&level=${param.level}&location=${param.location}|}"></a>
+                        <a class="page-link" th:if="${param.firstName == null}" th:text="${i + 1}"
+                           th:href="@{|/employee-creator/${i + 1}|}"></a>
                     </li>
                 </th:block>
-                <li class="page-item" th:if="${actualPage} < ${numberOfPages + 1}">
-                    <a class="page-link" th:href="@{|/employee-creator/${actualPage+1}|}">Következő</a>
+                <li class="page-item" th:if="${actualPage} < ${numberOfPages}">
+                    <a class="page-link" th:if="${param.firstName != null}"
+                       th:href="@{|/employee-creator/${actualPage + 1}?firstName=${param.firstName}&lastName=${param.lastName}&mail=${param.mail}&type=${param.type}&level=${param.level}&location=${param.location}|}">Következő</a>
+                    <a class="page-link" th:if="${param.firstName == null}"
+                       th:href="@{|/employee-creator/${actualPage + 1}|}">Következő</a>
                 </li>
-                <li class="page-item disabled" th:if="${actualPage} == ${numberOfPages + 1}">
+                <li class="page-item disabled" th:if="${actualPage} == ${numberOfPages}">
                     <a class="page-link" href="#">Következő</a>
                 </li>
             </ul>
@@ -181,7 +217,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="cv-input">Önéletrajz</label>
+                            <label for="cv-input">Önéletrajz<span style="color: red">*</span></label>
                             <p style="font-size: 11px">Csak .pdf, .doc, .docx kiterjesztésű önéletrajzok tölthetőek fel!</p>
                             <input class="form-control-file" id="cv-input" name="cv" type="file"
                                    accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, .doc, .docx">

@@ -24,13 +24,11 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee-creator/{actualPage}")
-    public String displayEmployeeCreator(Model model, @RequestParam(defaultValue = "") String name, @PathVariable("actualPage") int actualPage) {
-        Page<Employee> employeePage = employeeService.getAvailableEmployees(actualPage - 1, name);
-        int numberOfPages = 1;
+    public String searchBy(Model model, Employee filter, @PathVariable("actualPage") int actualPage) {
+        Page<Employee> employeePage = employeeService.getEmployeesBy(actualPage - 1, filter);
+        int numberOfPages = getNumberOfPages(employeePage);
 
-        if(employeePage.getTotalPages() > 0)
-            numberOfPages = employeePage.getTotalPages();
-        else if(actualPage > 1 && actualPage > (numberOfPages + 1))
+        if(actualPage > 1 && actualPage > numberOfPages)
             return "error";
 
         model.addAttribute("jelolts", employeePage);
@@ -43,6 +41,14 @@ public class EmployeeController {
         return "employee";
     }
 
+    private int getNumberOfPages(Page<Employee> employeePage) {
+        int numberOfPages = 1;
+        if(employeePage.getTotalPages() > 0)
+            numberOfPages = employeePage.getTotalPages();
+
+        return numberOfPages;
+    }
+
     @PostMapping("/create-employee")
     @ResponseStatus(value = HttpStatus.OK)
     public void createEmployee(@ModelAttribute Employee employee, @RequestParam("CVFile") String CVFile) {
@@ -52,12 +58,13 @@ public class EmployeeController {
     @PostMapping(value = "/create-job-registration", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ResponseTransfer createJobRegistration(@ModelAttribute Job job, @RequestParam("employee_ids") String employees) {
+        if(employees.isEmpty()) {
+            return new ResponseTransfer("Ki kell választanod legalább egy jelöltet!");
+        }
+
         boolean success = employeeService.createJobRegistration(job, employees);
         if(success) {
             return new ResponseTransfer("Sikeres rögzítés!");
-        }
-        else if(employees.isEmpty()) {
-            return new ResponseTransfer("Ki kell választanod legalább egy jelöltet!");
         }
         else {
             return new ResponseTransfer("Már van ilyen aktív státuszú jelentkezés a rendszerben!");

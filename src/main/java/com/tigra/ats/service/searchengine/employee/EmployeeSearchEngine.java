@@ -2,19 +2,18 @@ package com.tigra.ats.service.searchengine.employee;
 
 import com.tigra.ats.domain.Employee;
 import com.tigra.ats.repository.EmployeeRepository;
-import com.tigra.ats.service.exception.NotFoundSearchParameterException;
-import com.tigra.ats.service.searchengine.SearchParameter;
+import com.tigra.ats.service.searchengine.SearchFilter;
 import com.tigra.ats.service.searchengine.PaginatedSearchEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-@Component("employeeSearchEngine")
+@Component("EmployeeSearchEngine")
 public class EmployeeSearchEngine implements PaginatedSearchEngine {
     private EmployeeRepository employeeRepository;
     private Pageable pageable;
-    private SearchParameter searchParameter;
+    private SearchFilter<Employee> searchFilter;
 
     @Autowired
     public EmployeeSearchEngine(EmployeeRepository employeeRepository) {
@@ -22,8 +21,8 @@ public class EmployeeSearchEngine implements PaginatedSearchEngine {
     }
 
     @Override
-    public void setSearchParameter(SearchParameter searchParameter) {
-        this.searchParameter  = searchParameter;
+    public void setSearchFilter(SearchFilter searchFilter) {
+        this.searchFilter = searchFilter;
     }
 
     @Override
@@ -32,25 +31,86 @@ public class EmployeeSearchEngine implements PaginatedSearchEngine {
     }
 
     @Override
-    public Page<Employee> search() throws NotFoundSearchParameterException {
-        if(pageable == null || searchParameter == null)
-            throw new NotFoundSearchParameterException();
+    public Page<Employee> search() {
+        Employee employee = searchFilter.getParameter();
+        Page<Employee> employees;
 
-        EmployeeSearchTypeEnum actualTypeEnum = ((EmployeeSearchType)searchParameter.getSearchType()).getType();
-        Employee filterEmployee = ((EmployeeSearchParameter) searchParameter).getFilter().getParameter();
-
-        Page<Employee> actualPage = null;
-        switch (actualTypeEnum) {
-            case ALL:
-                actualPage = employeeRepository.findAll(pageable);
-                break;
-            case BY_FIRST_NAME:
-                actualPage = employeeRepository.findByFirstNameIsContaining(pageable, filterEmployee.getFirstName());
-                break;
-            case BY_LAST_NAME:
-                actualPage = employeeRepository.findByLastNameIsContaining(pageable, filterEmployee.getLastName());
-                break;
+        if(employee.getType() == null && employee.getLevel() == null && employee.getLocation() == null) {
+            employees = employeeRepository.findByFirstNameIsContainingAndLastNameIsContainingAndMailIsContaining(
+                    pageable,
+                    employee.getFirstName(),
+                    employee.getLastName(),
+                    employee.getMail()
+            );
         }
-        return actualPage;
+        else if(employee.getLevel() == null && employee.getLocation() == null) {
+            employees = employeeRepository.findByFirstNameIsContainingAndLastNameIsContainingAndMailIsContainingAndType(
+                    pageable,
+                    employee.getFirstName(),
+                    employee.getLastName(),
+                    employee.getMail(),
+                    employee.getType()
+            );
+        }
+        else if(employee.getType() == null && employee.getLocation() == null) {
+            employees = employeeRepository.findByFirstNameIsContainingAndLastNameIsContainingAndMailIsContainingAndLevel(
+                    pageable,
+                    employee.getFirstName(),
+                    employee.getLastName(),
+                    employee.getMail(),
+                    employee.getLevel()
+            );
+        }
+        else if(employee.getType() == null && employee.getLevel() == null) {
+            employees = employeeRepository.findByFirstNameIsContainingAndLastNameIsContainingAndMailIsContainingAndLocation(
+                    pageable,
+                    employee.getFirstName(),
+                    employee.getLastName(),
+                    employee.getMail(),
+                    employee.getLocation()
+            );
+        }
+        else if(employee.getLocation() == null) {
+            employees = employeeRepository.findByFirstNameIsContainingAndLastNameIsContainingAndMailIsContainingAndTypeAndLevel(
+                    pageable,
+                    employee.getFirstName(),
+                    employee.getLastName(),
+                    employee.getMail(),
+                    employee.getType(),
+                    employee.getLevel()
+            );
+        }
+        else if(employee.getLevel() == null) {
+            employees = employeeRepository.findByFirstNameIsContainingAndLastNameIsContainingAndMailIsContainingAndTypeAndLocation(
+                    pageable,
+                    employee.getFirstName(),
+                    employee.getLastName(),
+                    employee.getMail(),
+                    employee.getType(),
+                    employee.getLocation()
+            );
+        }
+        else if(employee.getType() == null) {
+            employees = employeeRepository.findByFirstNameIsContainingAndLastNameIsContainingAndMailIsContainingAndLevelAndLocation(
+                    pageable,
+                    employee.getFirstName(),
+                    employee.getLastName(),
+                    employee.getMail(),
+                    employee.getLevel(),
+                    employee.getLocation()
+            );
+        }
+        else {
+            employees = employeeRepository.findByFirstNameIsContainingAndLastNameIsContainingAndMailIsContainingAndTypeAndLevelAndLocation(
+                    pageable,
+                    employee.getFirstName(),
+                    employee.getLastName(),
+                    employee.getMail(),
+                    employee.getType(),
+                    employee.getLevel(),
+                    employee.getLocation()
+            );
+        }
+        return employees;
     }
 }

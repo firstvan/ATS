@@ -57,7 +57,11 @@ function createEmployee(event) {
                 xhttpreq.setRequestHeader('X-CSRF-TOKEN', token);
                 xhttpreq.send(formData);
             }
-        } else {
+            else {
+                alert("Kérlek megfelelő formátumú önéletrajzot tölts fel!");
+            }
+        }
+        else {
             alert("Kérlek tölts fel egy érvényes önéletrajzot!");
         }
     }   
@@ -100,11 +104,7 @@ function hasInvalidInput() {
 
 function isInvalidDocumentFormat(fileType) {
     let validTypes = ['application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/pdf', '.doc', '.docx'];
-    if(!validTypes.includes(fileType)) {
-        return true;
-    }
-
-    return false;
+    return !validTypes.includes(fileType);
 }
 
 function validateMail() {

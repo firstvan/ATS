@@ -30,15 +30,14 @@ public class JobController {
 
         if(actualPage > 1 && actualPage > numberOfPages)
             return "error";
-        else {
-            model.addAttribute("jobs", jobPage);
-            model.addAttribute("actualPage", actualPage);
-            model.addAttribute("numberOfPages", numberOfPages);
-            model.addAttribute("types", jobService.getTypes());
-            model.addAttribute("levels", jobService.getLevels());
-            model.addAttribute("locations", jobService.getLocations());
-            return "joboperations";
-        }
+
+        model.addAttribute("jobs", jobPage);
+        model.addAttribute("actualPage", actualPage);
+        model.addAttribute("numberOfPages", numberOfPages);
+        model.addAttribute("types", jobService.getTypes());
+        model.addAttribute("levels", jobService.getLevels());
+        model.addAttribute("locations", jobService.getLocations());
+        return "joboperations";
     }
 
     @PostMapping("/save-job-props")

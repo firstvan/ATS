@@ -7,13 +7,9 @@ import com.tigra.ats.domain.Job;
 import com.tigra.ats.repository.DBFileRepository;
 import com.tigra.ats.repository.EmployeeRepository;
 import com.tigra.ats.service.entityhandler.JobRegister;
-import com.tigra.ats.service.paginate.*;
-import com.tigra.ats.service.paginate.factory.EmployeePaginatorFactory;
-import com.tigra.ats.service.searchengine.SearchParameter;
-import com.tigra.ats.service.searchengine.employee.EmployeeSearchType;
-import com.tigra.ats.service.searchengine.employee.EmployeeSearchTypeEnum;
-import com.tigra.ats.service.searchengine.SearchEngine;
 import com.tigra.ats.service.searchengine.SearchFilter;
+import com.tigra.ats.service.searchengine.employee.EmployeeSearchEngine;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,14 +23,15 @@ import java.util.*;
 public class EmployeeService {
     private EmployeeRepository employeeRepository;
     private DBFileRepository dbFileRepository;
-    private EmployeePaginatorFactory employeePaginatorFactory;
     private JobRegister jobRegister;
+    private EmployeeSearchEngine searchEngine;
 
-    public EmployeeService(EmployeeRepository employeeRepository, DBFileRepository dbFileRepository, EmployeePaginatorFactory employeePaginatorFactory, JobRegister jobRegister) {
+    @Autowired
+    public EmployeeService(EmployeeRepository employeeRepository, DBFileRepository dbFileRepository, JobRegister jobRegister, EmployeeSearchEngine employeeSearchEngine) {
         this.employeeRepository = employeeRepository;
         this.dbFileRepository = dbFileRepository;
-        this.employeePaginatorFactory = employeePaginatorFactory;
         this.jobRegister = jobRegister;
+        this.searchEngine = employeeSearchEngine;
     }
 
     public boolean createJobRegistration(Job job, String employees) {
@@ -64,7 +61,7 @@ public class EmployeeService {
     }
 
     private List<Employee> getEmployeesFromIDs(List<Long> IDs) {
-        return (ArrayList<Employee>)employeeRepository.findAllById(IDs);
+        return (ArrayList<Employee>) employeeRepository.findAllById(IDs);
     }
 
     public void createEmployee(Employee employee, String CVFile) {
@@ -86,14 +83,20 @@ public class EmployeeService {
         return CV;
     }
 
-    public Page<Employee> getAvailableEmployees(int pageNumber, String name) {
+    public Page<Employee> getEmployeesBy(int pageNumber, Employee filter) {
+        filter.setFirstName(getValidString(filter.getFirstName()));
+        filter.setLastName(getValidString(filter.getLastName()));
+        filter.setMail(getValidString(filter.getMail()));
+
         Pageable pageRequest = PageRequest.of(pageNumber, 2);
-        Employee employee = new Employee();
-        employee.setFirstName(name);
-        SearchParameter parameter
-                = employeePaginatorFactory.createSearchParameter(new EmployeeSearchType(EmployeeSearchTypeEnum.BY_FIRST_NAME), new SearchFilter<>(employee));
-        SearchEngine engine = employeePaginatorFactory.createSearchEngine(parameter, pageRequest);
-        EmployeePaginator paginator = new EmployeePaginator(engine);
-        return paginator.getPage();
+        searchEngine.setSearchFilter(new SearchFilter(filter));
+        searchEngine.setActualPage(pageRequest);
+        return searchEngine.search();
+    }
+
+    private String getValidString(String str) {
+        if(str == null)
+            return "";
+        return str;
     }
 }

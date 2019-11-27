@@ -1,9 +1,7 @@
 package com.tigra.ats.service.searchengine;
 
-import com.tigra.ats.service.exception.NotFoundSearchParameterException;
-
 public interface SearchEngine {
-    Iterable search() throws NotFoundSearchParameterException;
+    Iterable search();
 
-    void setSearchParameter(SearchParameter parameter);
+    void setSearchFilter(SearchFilter parameter);
 }
