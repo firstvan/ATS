@@ -98,7 +98,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="job : ${jobs}" th:attr="data-job-id=${job.id}" data-job-id="1">
+                    <tr th:each="job : ${jobs}" th:if="${job.displayStatus}" th:attr="data-job-id=${job.id}" data-job-id="1">
                         <td th:text="${job.type.name}">Szoftverfejlesztő</td>
                         <td th:text="${job.level.level}">Junior</td>
                         <td th:text="${job.location.city}">Debrecen</td>
