@@ -9,10 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface EmployeeRepository extends CrudRepository<Employee, Long> {
     @Override
     Employee save(Employee employee);
+
+    List<Employee> findAll();
 
     Page<Employee> findAll(Pageable pageable);
 

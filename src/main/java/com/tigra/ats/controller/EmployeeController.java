@@ -4,8 +4,8 @@ import com.tigra.ats.domain.Employee;
 import com.tigra.ats.domain.Job;
 import com.tigra.ats.service.EmployeeService;
 import com.tigra.ats.service.JobService;
+import com.tigra.ats.service.paginate.Paginator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,29 +24,21 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee-creator/{actualPage}")
-    public String searchBy(Model model, Employee filter, @PathVariable("actualPage") int actualPage) {
-        Page<Employee> employeePage = employeeService.getEmployeesBy(actualPage - 1, filter);
-        int numberOfPages = getNumberOfPages(employeePage);
+    public String searchBy(Model model, Employee filter, @PathVariable("actualPage") int actualPageNumber) {
+        Paginator paginator = employeeService.getPaginator(actualPageNumber, filter);
 
-        if(actualPage > 1 && actualPage > numberOfPages)
+        if(!paginator.isValidPage())
             return "error";
 
-        model.addAttribute("jelolts", employeePage);
-        model.addAttribute("actualPage", actualPage);
-        model.addAttribute("numberOfPages", numberOfPages);
-        model.addAttribute("employee", new Employee());
+        model.addAttribute("jelolts", paginator.getActualPage());
+        model.addAttribute("actualPage", actualPageNumber);
+        model.addAttribute("numberOfPages", paginator.getNumberOfPages());
+        model.addAttribute("hasNext", paginator.hasNextPage());
+        model.addAttribute("hasPrev", paginator.hasPrevPage());
         model.addAttribute("types", jobService.getTypes());
         model.addAttribute("levels", jobService.getLevels());
         model.addAttribute("locations", jobService.getLocations());
         return "employee";
-    }
-
-    private int getNumberOfPages(Page<Employee> employeePage) {
-        int numberOfPages = 1;
-        if(employeePage.getTotalPages() > 0)
-            numberOfPages = employeePage.getTotalPages();
-
-        return numberOfPages;
     }
 
     @PostMapping("/create-employee")

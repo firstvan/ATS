@@ -9,11 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface JobRepository extends CrudRepository<Job, Long> {
     Page<Job> findAll(Pageable pageable);
+
+    List<Job> findAll();
 
     @Override
     void deleteById(Long id);

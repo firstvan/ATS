@@ -23,9 +23,9 @@
 				<table class="table table-stripped">
 					<tr>
 						<th>Email</th>
-						<th>Name</th>
-						<th>Roles</th>
-						<th>Edit_Roles</th>
+						<th>Név</th>
+						<th>Szerepkör</th>
+						<th>Szerepkör műveletek</th>
 					</tr>
 					<tr th:each="user:${users}">
 						<td th:text="${user.email}"></td>
@@ -35,10 +35,10 @@
 							<form action="#" th:action="@{/update/{email}(email=${user.email})}" method="post">
 
 								<select name="role">
-									<option>HRVEZETO</option>
-									<option>HRMUNKATARS</option>
-									<option>SZAKMAIVEZETO</option>
-									<option>SZAKMAIMUNKATARS</option>
+									<option>HR vezető</option>
+									<option>HR munkatárs</option>
+									<option>Szakmaivezető</option>
+									<option>Szakmaimunkatárs</option>
 									<option>None</option>
 								</select>
 								<button type="submit">Mentés</button>
@@ -47,11 +47,8 @@
 					</tr>
 				</table>
 			</div>
-
 		</div>
-
 	</div>
-
 
 </body>
 

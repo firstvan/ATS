@@ -1,15 +1,15 @@
-package com.tigra.ats.service.searchengine.job;
+package com.tigra.ats.service.searchengine;
 
 import com.tigra.ats.domain.Job;
 import com.tigra.ats.repository.JobRepository;
-import com.tigra.ats.service.searchengine.SearchFilter;
-import com.tigra.ats.service.searchengine.PaginatedSearchEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-@Component
+import java.util.List;
+
+@Component("JobSearchEngine")
 public class JobSearchEngine implements PaginatedSearchEngine {
     private JobRepository jobRepository;
     private Pageable pageable;
@@ -21,17 +21,12 @@ public class JobSearchEngine implements PaginatedSearchEngine {
     }
 
     @Override
-    public void setActualPage(Pageable pageable) {
-        this.pageable = pageable;
-    }
-
-    @Override
-    public void setSearchFilter(SearchFilter filter) {
-        this.filter = filter;
-    }
-
-    @Override
-    public Page<Job> search() {
+    public Page<Job> search(Pageable pageable, SearchFilter filter) {
         return jobRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Job> search() {
+        return jobRepository.findAll();
     }
 }

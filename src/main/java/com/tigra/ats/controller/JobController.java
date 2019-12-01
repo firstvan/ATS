@@ -3,6 +3,7 @@ package com.tigra.ats.controller;
 import com.tigra.ats.domain.Job;
 import com.tigra.ats.domain.JobType;
 import com.tigra.ats.service.JobService;
+import com.tigra.ats.service.paginate.Paginator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -21,19 +22,17 @@ public class JobController {
     }
 
     @GetMapping("/job-operations/{actualPage}")
-    public String getJobOperationPage(Model model, @PathVariable("actualPage") int actualPage) {
-        Page<Job> jobPage = jobService.getAvailableJobs(actualPage - 1);
-        int numberOfPages = 1;
-        if(jobPage.getTotalPages() > 0) {
-            numberOfPages = jobPage.getTotalPages();
-        }
+    public String getJobOperationPage(Model model, Job job, @PathVariable("actualPage") int actualPage) {
+        Paginator paginator = jobService.getPaginator(actualPage, job);
 
-        if(actualPage > 1 && actualPage > numberOfPages)
+        if(!paginator.isValidPage())
             return "error";
 
-        model.addAttribute("jobs", jobPage);
+        model.addAttribute("jobs", paginator.getActualPage());
         model.addAttribute("actualPage", actualPage);
-        model.addAttribute("numberOfPages", numberOfPages);
+        model.addAttribute("numberOfPages", paginator.getNumberOfPages());
+        model.addAttribute("hasNext", paginator.hasNextPage());
+        model.addAttribute("hasPrev", paginator.hasPrevPage());
         model.addAttribute("types", jobService.getTypes());
         model.addAttribute("levels", jobService.getLevels());
         model.addAttribute("locations", jobService.getLocations());

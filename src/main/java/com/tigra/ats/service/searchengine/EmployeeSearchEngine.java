@@ -1,4 +1,4 @@
-package com.tigra.ats.service.searchengine.employee;
+package com.tigra.ats.service.searchengine;
 
 import com.tigra.ats.domain.Employee;
 import com.tigra.ats.repository.EmployeeRepository;
@@ -9,11 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component("EmployeeSearchEngine")
 public class EmployeeSearchEngine implements PaginatedSearchEngine {
     private EmployeeRepository employeeRepository;
-    private Pageable pageable;
-    private SearchFilter<Employee> searchFilter;
 
     @Autowired
     public EmployeeSearchEngine(EmployeeRepository employeeRepository) {
@@ -21,18 +21,8 @@ public class EmployeeSearchEngine implements PaginatedSearchEngine {
     }
 
     @Override
-    public void setSearchFilter(SearchFilter searchFilter) {
-        this.searchFilter = searchFilter;
-    }
-
-    @Override
-    public void setActualPage(Pageable page) {
-        this.pageable = page;
-    }
-
-    @Override
-    public Page<Employee> search() {
-        Employee employee = searchFilter.getParameter();
+    public Page<Employee> search(Pageable pageable, SearchFilter searchFilter) {
+        Employee employee = (Employee) searchFilter.getParameter();
         Page<Employee> employees;
 
         if(employee.getType() == null && employee.getLevel() == null && employee.getLocation() == null) {
@@ -112,5 +102,10 @@ public class EmployeeSearchEngine implements PaginatedSearchEngine {
             );
         }
         return employees;
+    }
+
+    @Override
+    public List<Employee> search() {
+        return employeeRepository.findAll();
     }
 }

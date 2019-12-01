@@ -7,13 +7,11 @@ import com.tigra.ats.domain.Job;
 import com.tigra.ats.repository.DBFileRepository;
 import com.tigra.ats.repository.EmployeeRepository;
 import com.tigra.ats.service.entityhandler.JobRegister;
+import com.tigra.ats.service.paginate.Paginator;
 import com.tigra.ats.service.searchengine.SearchFilter;
-import com.tigra.ats.service.searchengine.employee.EmployeeSearchEngine;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -24,14 +22,15 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
     private DBFileRepository dbFileRepository;
     private JobRegister jobRegister;
-    private EmployeeSearchEngine searchEngine;
+    private Paginator paginator;
+
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository, DBFileRepository dbFileRepository, JobRegister jobRegister, EmployeeSearchEngine employeeSearchEngine) {
+    public EmployeeService(EmployeeRepository employeeRepository, DBFileRepository dbFileRepository, JobRegister jobRegister, @Qualifier("EmployeePaginator") Paginator paginator) {
         this.employeeRepository = employeeRepository;
         this.dbFileRepository = dbFileRepository;
         this.jobRegister = jobRegister;
-        this.searchEngine = employeeSearchEngine;
+        this.paginator = paginator;
     }
 
     public boolean createJobRegistration(Job job, String employees) {
@@ -83,15 +82,14 @@ public class EmployeeService {
         return CV;
     }
 
-    public Page<Employee> getEmployeesBy(int pageNumber, Employee filter) {
+    public Paginator getPaginator(int pageNumber, Employee filter) {
         filter.setFirstName(getValidString(filter.getFirstName()));
         filter.setLastName(getValidString(filter.getLastName()));
         filter.setMail(getValidString(filter.getMail()));
 
-        Pageable pageRequest = PageRequest.of(pageNumber, 2);
-        searchEngine.setSearchFilter(new SearchFilter(filter));
-        searchEngine.setActualPage(pageRequest);
-        return searchEngine.search();
+        paginator.setNumberOfItemsOnOnePage(2);
+        paginator.setPageRequest(pageNumber, new SearchFilter<Employee>(filter));
+        return paginator;
     }
 
     private String getValidString(String str) {

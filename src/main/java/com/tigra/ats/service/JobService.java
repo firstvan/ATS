@@ -6,11 +6,11 @@ import com.tigra.ats.domain.JobType;
 import com.tigra.ats.domain.Location;
 import com.tigra.ats.service.entityhandler.JobRegister;
 import com.tigra.ats.service.entityhandler.JobLoader;
-import com.tigra.ats.service.searchengine.job.JobSearchEngine;
+import com.tigra.ats.service.paginate.Paginator;
+import com.tigra.ats.service.searchengine.JobSearchEngine;
+import com.tigra.ats.service.searchengine.SearchFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,12 +20,13 @@ public class JobService {
     private JobLoader jobLoader;
     private JobRegister jobRegister;
     private JobSearchEngine searchEngine;
+    private Paginator paginator;
 
     @Autowired
-    public JobService(JobLoader jobLoader, JobRegister jobRegister, JobSearchEngine searchEngine) {
+    public JobService(JobLoader jobLoader, JobRegister jobRegister, @Qualifier("JobPaginator") Paginator paginator) {
         this.jobLoader = jobLoader;
         this.jobRegister = jobRegister;
-        this.searchEngine = searchEngine;
+        this.paginator = paginator;
     }
 
     public void saveAvailableJobProperties(String type, String level, String city) {
@@ -42,10 +43,10 @@ public class JobService {
         jobRegister.deleteJob(id);
     }
 
-    public Page<Job> getAvailableJobs(int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, 2);
-        searchEngine.setActualPage(pageable);
-        return searchEngine.search();
+    public Paginator getPaginator(int actualPageNumber, Job job) {
+       paginator.setNumberOfItemsOnOnePage(2);
+       paginator.setPageRequest(actualPageNumber, new SearchFilter(job));
+       return paginator;
     }
 
     public List<JobType> getTypes() {
