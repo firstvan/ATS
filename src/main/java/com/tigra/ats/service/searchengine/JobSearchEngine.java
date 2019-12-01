@@ -22,7 +22,8 @@ public class JobSearchEngine implements PaginatedSearchEngine {
 
     @Override
     public Page<Job> search(Pageable pageable, SearchFilter filter) {
-        return jobRepository.findAll(pageable);
+        Job job = (Job) filter.getParameter();
+        return jobRepository.findAllByDisplayStatus(pageable, job.isDisplayStatus());
     }
 
     @Override

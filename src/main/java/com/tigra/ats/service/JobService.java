@@ -45,6 +45,7 @@ public class JobService {
 
     public Paginator getPaginator(int actualPageNumber, Job job) {
        paginator.setNumberOfItemsOnOnePage(2);
+       job.setDisplayStatus(true);
        paginator.setPageRequest(actualPageNumber, new SearchFilter(job));
        return paginator;
     }
