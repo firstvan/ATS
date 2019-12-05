@@ -1,5 +1,6 @@
 package com.tigra.ats.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -55,6 +56,7 @@ public class Employee {
     private Location location;
     @OneToOne
     private DBFile CV;
+    @JsonIgnore
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE

@@ -42,6 +42,9 @@
                     <li class="nav-item" th:classappend="${#httpServletRequest.requestURI.startsWith('/employee-creator/')} ? active : ''" sec:authorize="hasRole('ROLE_HRVEZETO') or hasRole('ROLE_HRMUNKATARS')">
                         <a class="nav-link" th:href="@{/employee-creator/1}">Jelöltek</a>
                     </li>
+                    <li class="nav-item" sec:authorize="hasRole('ROLE_HRVEZETO') or hasRole('ROLE_HRMUNKATARS')">
+                        <a class="nav-link" th:href="@{/jelentkezesek}">Jelentkezések</a>
+                    </li>
                 </ul>
             </div>
             <div class="navbar-collapse collapse">

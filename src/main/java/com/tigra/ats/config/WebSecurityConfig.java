@@ -41,6 +41,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/login", "/").permitAll()
                 .antMatchers("/admin").hasRole("ADMIN")
                 .antMatchers(jobOperationUrls).hasRole("SZAKMAIVEZETO")
+                .antMatchers("/jelentkezesek/**").access("hasRole('HRVEZETO') or hasRole('HRMUNKATARS')")
                 .antMatchers(employeeUrls).access("hasRole('HRVEZETO') or hasRole('HRMUNKATARS')")
                 .antMatchers(resources).permitAll()
                 .anyRequest().authenticated()

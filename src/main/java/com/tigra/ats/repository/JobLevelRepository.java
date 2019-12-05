@@ -15,5 +15,7 @@ public interface JobLevelRepository extends CrudRepository<JobLevel, Long> {
     @Override
     List<JobLevel> findAll();
 
+    JobLevel findById(long id);
+
     Optional<JobLevel> findByLevel(String level);
 }

@@ -18,6 +18,8 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
     List<Employee> findAll();
 
+    Employee findById(long id);
+
     Page<Employee> findAll(Pageable pageable);
 
    Page<Employee> findByFirstNameIsContainingAndLastNameIsContainingAndMailIsContainingAndTypeAndLevelAndLocation

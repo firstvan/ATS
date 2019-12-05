@@ -15,5 +15,7 @@ public interface LocationRepository extends CrudRepository<Location, Long> {
     @Override
     List<Location> findAll();
 
+    Location findById(long id);
+
     Optional<Location> findByCity(String city);
 }
