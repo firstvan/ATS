@@ -66,11 +66,12 @@ public class JobRegister {
         }
     }
 
-    public Job createJob(String typeName, String level, String city, boolean isDisplayed) {
+    /*public Job createJob(String typeName, String level, String city, boolean isDisplayed) {
         Optional<JobType> jobType = jobPropertyHandler.getType(typeName);
         Optional<JobLevel> jobLevel = jobPropertyHandler.getLevel(level);
         Optional<Location> location = jobPropertyHandler.getLocation(city);
 
+        //TODO Üzenet ha sikerül létrehozni egy új állást
         if(jobType.isPresent() && jobLevel.isPresent() && location.isPresent()) {
             Job createdJob = jobRepository
                     .findByTypeAndLevelAndLocation(jobType.get(), jobLevel.get(), location.get())
@@ -81,6 +82,21 @@ public class JobRegister {
         }
         else
             throw new CannotCreateJob("Properties not found!");
+    }*/
+
+    public Optional<Job> saveJob(Job job, boolean isDisplayed) {
+        Job createdJob = jobRepository
+                .findByTypeAndLevelAndLocation(job.getType(), job.getLevel(), job.getLocation())
+                .orElseGet(() -> new Job(job.getType(), job.getLevel(), job.getLocation()));
+        if(createdJob.isDisplayStatus()) {
+            return Optional.empty();
+        }
+        else {
+            createdJob.setDisplayStatus(isDisplayed);
+            createdJob.setCreatedDate(LocalDate.now());
+            createdJob = jobRepository.save(createdJob);
+            return Optional.of(createdJob);
+        }
     }
 
     public void deleteJob(Long id) {

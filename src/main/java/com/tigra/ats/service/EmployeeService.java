@@ -1,16 +1,15 @@
 package com.tigra.ats.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tigra.ats.domain.DBFile;
-import com.tigra.ats.domain.Employee;
-import com.tigra.ats.domain.Job;
+import com.tigra.ats.domain.*;
 import com.tigra.ats.repository.DBFileRepository;
 import com.tigra.ats.repository.EmployeeRepository;
 import com.tigra.ats.service.entityhandler.JobRegister;
 import com.tigra.ats.service.paginate.Paginator;
+import com.tigra.ats.service.paginate.PaginatorFactory;
+import com.tigra.ats.service.paginate.PaginatorType;
 import com.tigra.ats.service.searchengine.SearchFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 
@@ -22,23 +21,23 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
     private DBFileRepository dbFileRepository;
     private JobRegister jobRegister;
-    private Paginator paginator;
+    private PaginatorFactory paginatorFactory;
 
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository, DBFileRepository dbFileRepository, JobRegister jobRegister, @Qualifier("EmployeePaginator") Paginator paginator) {
+    public EmployeeService(EmployeeRepository employeeRepository, DBFileRepository dbFileRepository, JobRegister jobRegister, PaginatorFactory paginatorFactory) {
         this.employeeRepository = employeeRepository;
         this.dbFileRepository = dbFileRepository;
         this.jobRegister = jobRegister;
-        this.paginator = paginator;
+        this.paginatorFactory = paginatorFactory;
     }
 
     public boolean createJobRegistration(Job job, String employees) {
         List<Long> IDs = getEmployeeIDListFromString(employees);
         List<Employee> employeeList = getEmployeesFromIDs(IDs);
-        Job createdJob = jobRegister.createJob(job.getType().getName(), job.getLevel().getLevel(), job.getLocation().getCity(), false);
+        Optional<Job> createdJob = jobRegister.saveJob(job, false);
         for(Employee employee : employeeList) {
-            employee.addJob(createdJob);
+            employee.addJob(createdJob.get());
         }
 
         try {
@@ -63,9 +62,11 @@ public class EmployeeService {
         return (ArrayList<Employee>) employeeRepository.findAllById(IDs);
     }
 
-    public void createEmployee(Employee employee, String CVFile) {
+    public void createEmployee(Employee employee, Job preferredJob, String CVFile) {
         DBFile CV = convertResponse(CVFile);
         employee.setCV(CV);
+        Optional<Job> createdJob = jobRegister.saveJob(preferredJob, false);
+        createdJob.ifPresent(employee::setPreferredJob);
         dbFileRepository.save(CV);
         employeeRepository.save(employee);
     }
@@ -87,8 +88,8 @@ public class EmployeeService {
         filter.setLastName(getValidString(filter.getLastName()));
         filter.setMail(getValidString(filter.getMail()));
 
+        Paginator paginator = paginatorFactory.getPaginator(pageNumber, new SearchFilter(filter), PaginatorType.EMPLOYEE);
         paginator.setNumberOfItemsOnOnePage(2);
-        paginator.setPageRequest(pageNumber, new SearchFilter<Employee>(filter));
         return paginator;
     }
 
@@ -96,5 +97,17 @@ public class EmployeeService {
         if(str == null)
             return "";
         return str;
+    }
+
+    public void delete(long id) {
+        employeeRepository.deleteById(id);
+    }
+
+    public void update(Employee employee){
+        employeeRepository.save(employee);
+    }
+
+    public Optional<Employee> getOne(long id){
+        return employeeRepository.findById(id);
     }
 }

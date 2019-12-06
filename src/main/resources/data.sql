@@ -14,19 +14,21 @@ INSERT INTO job_type (id, name) VALUES(1, 'Szoftverfejlesztő');
 INSERT INTO job_level (id, level) VALUES(1, 'Junior');
 INSERT INTO location (id, city) VALUES(1, 'Debrecen');
 
+INSERT INTO job (id, type_id, level_id, location_id, created_date, display_status) VALUES (1, 1, 1, 1, null, 0);
+
 ALTER TABLE `users` CHANGE `role_id` `role_id` BIGINT(20) NULL DEFAULT NULL;
 
-INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, level_id, location_id, type_id)
-VALUES(1, 'Példa', 'Péter', 'Példa Péter', 'example@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1, 1, 1);
+INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, preferred_job_id)
+VALUES(1, 'Példa', 'Péter', 'Példa Péter', 'example@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1);
 
-INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, level_id, location_id, type_id)
-VALUES(2, 'Példa', 'Géza', 'Példa Géza', 'example2@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1, 1, 1);
+INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, preferred_job_id)
+VALUES(2, 'Példa', 'Géza', 'Példa Géza', 'example2@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1);
 
-INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, level_id, location_id, type_id)
-VALUES(3, 'Példa', 'Irén', 'Példa Irén', 'example3@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1, 1, 1);
+INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, preferred_job_id)
+VALUES(3, 'Példa', 'Irén', 'Példa Irén', 'example3@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1);
 
-INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, level_id, location_id, type_id)
-VALUES(4, 'Példa', 'Panna', 'Példa Panna', 'example4@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1, 1, 1);
+INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, preferred_job_id)
+VALUES(4, 'Példa', 'Panna', 'Példa Panna', 'example4@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1);
 
-INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, level_id, location_id, type_id)
-VALUES(5, 'Példa', 'Elemér', 'Példa Elemér', 'example5@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1, 1, 1);
+INSERT INTO employee (id, first_name, last_name, birth_name, mail, birth_day, birth_place, mother, phone_number, status, cv_id, preferred_job_id)
+VALUES(5, 'Példa', 'Elemér', 'Példa Elemér', 'example5@example.com', null, 'Debrecen', 'Példa Janka', '06301234567', 'Aktív', null, 1);

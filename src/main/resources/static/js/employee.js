@@ -11,10 +11,57 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('mail-input');
     emailInput.addEventListener('change', validateMail);
 
-    $('#form-modal').on('hidden.bs.modal', function () {
+    $('#form-modal').on('hidden.bs.modal', function (event) {
         $(this).find('form').trigger('reset');
         DBFile = null;
+        employeeCreatorButton.hidden = false;
+
+        let allInput = document.getElementById("employee-form").querySelectorAll(".form-control");
+        allInput.forEach(i => {
+            i.readOnly = false;
+        });
     });
+
+    $('#form-modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var parent = button.parent().parent();
+        var recipient = button.data('function');
+        if(recipient == 'edit' || recipient == 'open') {
+            var rowId = parent.find(".employee-id").text();
+            let xhttpreq = new XMLHttpRequest();
+            xhttpreq.onreadystatechange = function (ev) {
+                if (this.readyState == 4 && this.status == 200) {
+                    let obj = JSON.parse(xhttpreq.responseText);
+                    document.getElementById("employee-id").value = obj.id;
+                    document.getElementById("first-name-input").value = obj.firstName;
+                    document.getElementById("last-name-input").value = obj.lastName;
+                    document.getElementById("birth-name-input").value = obj.birthName;
+                    document.getElementById("birthplace-input").value = obj.birthPlace;
+                    document.getElementById("mother-input").value = obj.mother;
+                    document.getElementById("date-input").value = obj.birthDay;
+                    document.getElementById("mail-input").value = obj.mail;
+                    document.getElementById("status-input").value = obj.status;
+                    document.getElementById("phone-number-input").value = obj.phoneNumber;
+                    document.getElementById("job-name-select").value = obj.preferredJob.type.id;
+                    document.getElementById("job-level-select").value = obj.preferredJob.level.id;
+                    document.getElementById("job-location-select").value = obj.preferredJob.location.id;
+                    DBFile = JSON.stringify({id : obj.cv.id, fileName : obj.cv.fileName, content : obj.cv.content, contentType: obj.cv.contentType});
+                }
+            }
+            let href = `/getOne?id=${rowId}`;
+            xhttpreq.open("GET", href, true);
+            xhttpreq.send();
+        }
+
+        if(recipient == 'open') {
+            let allInput = document.getElementById("employee-form").querySelectorAll(".form-control");
+            allInput.forEach(i => {
+               i.readOnly = true;
+            });
+            employeeCreatorButton.hidden = true;
+        }
+    });
+
 });
 
 function uploadCV() {

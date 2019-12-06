@@ -26,7 +26,6 @@
     <title>ATS HR WEB-APP</title>
 </head>
 <body>
-
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
@@ -58,8 +57,30 @@
             </div>
         </nav>
 
+
+        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body" th:text="${message}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div layout:fragment="content">
         </div>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+
+            var message = /*[[${message}]]*/ null;
+            if(message)
+                $('#infoModal').modal('toggle')
+            /*]]>*/
+        </script>
 
 </body>
 </html>
