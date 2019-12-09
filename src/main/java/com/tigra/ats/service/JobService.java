@@ -7,19 +7,18 @@ import com.tigra.ats.domain.Location;
 import com.tigra.ats.service.entityhandler.JobRegister;
 import com.tigra.ats.service.entityhandler.JobLoader;
 import com.tigra.ats.service.paginate.Paginator;
-import com.tigra.ats.service.searchengine.JobSearchEngine;
 import com.tigra.ats.service.searchengine.SearchFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class JobService {
     private JobLoader jobLoader;
     private JobRegister jobRegister;
-    private JobSearchEngine searchEngine;
     private Paginator paginator;
 
     @Autowired
@@ -29,14 +28,21 @@ public class JobService {
         this.paginator = paginator;
     }
 
-    public void saveAvailableJobProperties(String type, String level, String city) {
-        jobRegister.saveType(type);
-        jobRegister.saveLevel(level);
-        jobRegister.saveLocation(city);
+    public String saveAvailableJobProperties(String type, String level, String city) {
+        String message = "";
+        boolean success = jobRegister.createJobProperties(type, level, city);
+        if(success) {
+            message = "Sikeresen meghírdetted a pozíciót!";
+        }
+        else {
+            message = "Már van ilyen meghírdetett pozíció!";
+        }
+        return message;
     }
 
-    public void createJob(String type, String level, String city) {
-        jobRegister.createJob(type, level, city, true);
+    public boolean createJob(Job job) {
+        Optional<Job> createdJob = jobRegister.saveJob(job, true);
+        return createdJob.isPresent();
     }
 
     public void deleteJob(Long id) {

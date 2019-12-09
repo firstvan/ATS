@@ -11,6 +11,7 @@
     <link href="../../static/css/joboperations.css" th:href="@{/static/css/joboperations.css}" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -22,11 +23,9 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
-
     <title>ATS HR WEB-APP</title>
 </head>
 <body>
-
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
@@ -61,8 +60,30 @@
             </div>
         </nav>
 
+
+        <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-body" th:text="${message}">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div layout:fragment="content">
         </div>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+
+            var message = /*[[${message}]]*/ null;
+            if(message)
+                $('#infoModal').modal('toggle')
+            /*]]>*/
+        </script>
 
 </body>
 </html>

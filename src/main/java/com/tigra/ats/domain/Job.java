@@ -1,5 +1,6 @@
 package com.tigra.ats.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -26,8 +27,12 @@ public class Job {
     @ManyToOne
     private JobLevel level;
     private boolean displayStatus;
+    @OneToMany(mappedBy = "preferredJob")
+    @JsonIgnore
+    private List<Employee> employeesByPreferredJob;
     @ManyToMany(mappedBy = "jobs", fetch = FetchType.EAGER)
-    private List<Employee> employees = new ArrayList<>();
+    @JsonIgnore
+    private List<Employee> registeredEmployees = new ArrayList<>();
 
     public Job(JobType type, JobLevel level, Location location) {
         this.createdDate = LocalDate.now();

@@ -1,7 +1,6 @@
 package com.tigra.ats.controller;
 
-import com.tigra.ats.domain.Employee;
-import com.tigra.ats.domain.Job;
+import com.tigra.ats.domain.*;
 import com.tigra.ats.service.EmployeeService;
 import com.tigra.ats.service.JobService;
 import com.tigra.ats.service.paginate.Paginator;
@@ -10,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 
 @Controller
@@ -24,8 +25,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee-creator/{actualPage}")
-    public String searchBy(Model model, Employee filter, @PathVariable("actualPage") int actualPageNumber) {
-        Paginator paginator = employeeService.getPaginator(actualPageNumber, filter);
+    public String searchBy(Model model, Employee employeeFilter, Job jobFilter, @PathVariable("actualPage") int actualPageNumber) {
+        employeeFilter.setPreferredJob(jobFilter);
+        Paginator paginator = employeeService.getPaginator(actualPageNumber, employeeFilter);
 
         if(!paginator.isValidPage())
             return "error";
@@ -43,8 +45,10 @@ public class EmployeeController {
 
     @PostMapping("/create-employee")
     @ResponseStatus(value = HttpStatus.OK)
-    public void createEmployee(@ModelAttribute Employee employee, @RequestParam("CVFile") String CVFile) {
-        employeeService.createEmployee(employee, CVFile);
+    public void createEmployee(@ModelAttribute Employee employee,
+                               @ModelAttribute Job job,
+                               @RequestParam("CVFile") String CVFile) {
+        employeeService.createEmployee(employee, job, CVFile);
     }
 
     @PostMapping(value = "/create-job-registration", produces = "application/json; charset=UTF-8")
@@ -61,5 +65,17 @@ public class EmployeeController {
         else {
             return new ResponseTransfer("Már van ilyen aktív státuszú jelentkezés a rendszerben!");
         }
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteUser(@PathVariable("id") long id) {
+        employeeService.delete(id);
+        return "redirect:/employee-creator/1";
+    }
+
+    @GetMapping("/getOne")
+    @ResponseBody
+    public Optional<Employee> getOne(@RequestParam("id") Long id){
+       return employeeService.getOne(id);
     }
 }

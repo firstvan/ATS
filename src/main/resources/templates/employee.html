@@ -14,12 +14,27 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <title>ATS</title>
+    <style>
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+        }
+    </style>
 </head>
 <body>
 
 <div layout:fragment="content">
     <div class="container">
-        <button class="btn btn-primary" data-target="#form-modal" data-toggle="modal" type="button">Új jelölt felvétele</button>
+        <button class="btn btn-primary" data-target="#form-modal" data-toggle="modal" type="button" data-function="new">Új jelölt felvétele</button>
         <button class="btn btn-primary" data-target="#registration-modal" data-toggle="modal" type="button">Új jelentkezés létrehozás</button>
 
         <form action="/employee-creator/1" method="get" class="container mySpace">
@@ -76,12 +91,15 @@
                 <td th:text="${jelolt.firstName}"></td>
                 <td th:text="${jelolt.lastName}"></td>
                 <td th:text="${jelolt.mail}"></td>
-                <td th:text="${jelolt.type.name}"></td>
-                <td th:text="${jelolt.level.level}"></td>
-                <td th:text="${jelolt.location.city}"></td>
+                <td th:text="${jelolt.preferredJob.type}"></td>
+                <td th:text="${jelolt.preferredJob.level}"></td>
+                <td th:text="${jelolt.preferredJob.location}"></td>
                 <td th:text="${jelolt.status}"></td>
-                <td>
+                <td style="white-space: nowrap">
                     <input class="operation-checkbox" type="checkbox">
+                    <button class="btn btn-primary" data-target="#employee-viewer-modal" data-toggle="modal" data-function="open">Megtekint</button>
+                    <button class="btn btn-warning" data-target="#form-modal" data-toggle="modal" data-function="edit">Szerkesztés</button>
+                    <button class="btn btn-danger" onclick="deleteEmployee(this)">Törlés</button>
                 </td>
             </tr>
             </tbody>
@@ -133,6 +151,7 @@
                 </div>
                 <div class="modal-body">
                     <form action="/create-employee" id="employee-form" method="POST">
+                        <input id="employee-id" type="hidden" name="id" class="form-control">
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="first-name-input">Vezetéknév<span style="color: red">*</span></label>
@@ -219,8 +238,11 @@
                         <div class="form-group">
                             <label for="cv-input">Önéletrajz<span style="color: red">*</span></label>
                             <p style="font-size: 11px">Csak .pdf, .doc, .docx kiterjesztésű önéletrajzok tölthetőek fel!</p>
-                            <input class="form-control-file" id="cv-input" name="cv" type="file"
-                                   accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, .doc, .docx">
+                            <div class="upload-btn-wrapper">
+                                <button class="btn btn-success">Önéletrajz feltöltése</button>
+                                <input id="cv-input" type="file" name="cv"
+                                       accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, .doc, .docx"/>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -281,6 +303,55 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="employee-viewer-modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="employee-name" class="modal-title">Példa Péter</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col text-center">
+                            <img th:src="@{/img/man.png}" width="250px">
+                            <button id="cv-downloader" class="btn btn-success mt-2">Önéletrajz letöltése <i class="fa fa-arrow-down"></i></button>
+                        </div>
+                        <div class="col">
+                            <dl>
+                                <dt>Születési név:</dt>
+                                <dd id="birth-name-dd">Példa Péter</dd>
+                                <dt>Email cím:</dt>
+                                <dd id="mail-dd">example@example.com</dd>
+                                <dt>Születési hely:</dt>
+                                <dd id="birthplace-dd">Debrecen</dd>
+                                <dt>Anyja neve:</dt>
+                                <dd id="mother-dd">Példa Janka</dd>
+                                <dt>Születésnap:</dt>
+                                <dd id="birthday-dd">1992-04-22</dd>
+                                <dt>Telefonszám:</dt>
+                                <dd id="phone-number-dd">06301234567</dd>
+                                <dt>Preferált pozíció:</dt>
+                                <dd id="preferred-job-name-dd">Szoftverfejlesztő</dd>
+                                <dt>Preferált szint:</dt>
+                                <dd id="preferred-job-level-dd">Junior</dd>
+                                <dt>Preferált telephely</dt>
+                                <dd id="preferred-job-location-dd">Debrecen</dd>
+                                <dt>Státusz:</dt>
+                                <dd id="status-dd">Aktív</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Rendben</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 </body>

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -42,21 +43,27 @@ public class JobController {
     @PostMapping("/save-job-props")
     public String createJobProps(@RequestParam("job-name") String name,
                             @RequestParam("job-level") String level,
-                            @RequestParam("location") String location) {
-        jobService.saveAvailableJobProperties(name, level, location);
+                            @RequestParam("location") String location,
+                                 RedirectAttributes redirectAttributes) {
+        String message = jobService.saveAvailableJobProperties(name, level, location);
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/job-operations/1";
     }
 
     @PostMapping("/create-job")
-    public String createJob(@RequestParam("job-name") String name,
-                            @RequestParam("job-level") String level,
-                            @RequestParam("location") String location) {
-        jobService.createJob(name, level, location);
+    public String createJob(@ModelAttribute Job job, RedirectAttributes redirectAttributes) {
+        boolean success = jobService.createJob(job);
+        if(success) {
+            redirectAttributes.addFlashAttribute("message", "Sikeresen meghírdetted az állást!");
+        }
+        else {
+            redirectAttributes.addFlashAttribute("message", "Már létezik ilyen meghírdetett állás!");
+        }
         return "redirect:/job-operations/1";
     }
 
-    @PostMapping("/delete-job/{id}")
-    public String deleteJob(@PathVariable("id") Long id) {
+    @PostMapping("/delete-job")
+    public String deleteJob(@RequestParam("job_id") Long id) {
         jobService.deleteJob(id);
         return "redirect:/job-operations/1";
     }

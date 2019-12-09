@@ -13,10 +13,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Data
@@ -49,11 +46,7 @@ public class Employee {
     private String status;
     private String phoneNumber;
     @ManyToOne
-    private JobType type;
-    @ManyToOne
-    private JobLevel level;
-    @ManyToOne
-    private Location location;
+    private Job preferredJob;
     @OneToOne
     private DBFile CV;
     @JsonIgnore
@@ -67,8 +60,21 @@ public class Employee {
     private List<Job> jobs = new ArrayList<>();
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return id.equals(employee.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
     public void addJob(Job job) {
         jobs.add(job);
-        job.getEmployees().add(this);
+        job.getRegisteredEmployees().add(this);
     }
 }
