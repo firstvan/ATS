@@ -43,8 +43,10 @@ public class JobController {
     @PostMapping("/save-job-props")
     public String createJobProps(@RequestParam("job-name") String name,
                             @RequestParam("job-level") String level,
-                            @RequestParam("location") String location) {
-        jobService.saveAvailableJobProperties(name, level, location);
+                            @RequestParam("location") String location,
+                                 RedirectAttributes redirectAttributes) {
+        String message = jobService.saveAvailableJobProperties(name, level, location);
+        redirectAttributes.addFlashAttribute("message", message);
         return "redirect:/job-operations/1";
     }
 

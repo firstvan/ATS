@@ -28,10 +28,16 @@ public class JobService {
         this.paginator = paginator;
     }
 
-    public void saveAvailableJobProperties(String type, String level, String city) {
-        jobRegister.saveType(type);
-        jobRegister.saveLevel(level);
-        jobRegister.saveLocation(city);
+    public String saveAvailableJobProperties(String type, String level, String city) {
+        String message = "";
+        boolean success = jobRegister.createJobProperties(type, level, city);
+        if(success) {
+            message = "Sikeresen meghírdetted a pozíciót!";
+        }
+        else {
+            message = "Már van ilyen meghírdetett pozíció!";
+        }
+        return message;
     }
 
     public boolean createJob(Job job) {

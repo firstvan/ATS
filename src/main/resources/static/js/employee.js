@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         var button = $(event.relatedTarget);
         var parent = button.parent().parent();
         var recipient = button.data('function');
-        if(recipient == 'edit' || recipient == 'open') {
+        if(recipient == 'edit') {
             var rowId = parent.find(".employee-id").text();
             let xhttpreq = new XMLHttpRequest();
             xhttpreq.onreadystatechange = function (ev) {
@@ -52,17 +52,50 @@ document.addEventListener('DOMContentLoaded', () => {
             xhttpreq.open("GET", href, true);
             xhttpreq.send();
         }
-
-        if(recipient == 'open') {
-            let allInput = document.getElementById("employee-form").querySelectorAll(".form-control");
-            allInput.forEach(i => {
-               i.readOnly = true;
-            });
-            employeeCreatorButton.hidden = true;
-        }
     });
 
+    $('#employee-viewer-modal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var parent = button.parent().parent();
+        var rowId = parent.find(".employee-id").text();
+        let xhttpreq = new XMLHttpRequest();
+        xhttpreq.onreadystatechange = function (ev) {
+            if (this.readyState == 4 && this.status == 200) {
+                let obj = JSON.parse(xhttpreq.responseText);
+                document.getElementById("employee-name").innerHTML = obj.firstName + " " + obj.lastName;
+                document.getElementById("birth-name-dd").innerHTML = obj.birthName;
+                document.getElementById("birthplace-dd").innerHTML = obj.birthPlace;
+                document.getElementById("mother-dd").innerHTML = obj.mother;
+                document.getElementById("birthday-dd").innerHTML = obj.birthDay;
+                document.getElementById("mail-dd").innerHTML = obj.mail;
+                document.getElementById("status-dd").innerHTML = obj.status;
+                document.getElementById("phone-number-dd").innerHTML = obj.phoneNumber;
+                document.getElementById("preferred-job-name-dd").value = obj.preferredJob.type.name;
+                document.getElementById("preferred-job-level-dd").value = obj.preferredJob.level.level;
+                document.getElementById("preferred-job-location-dd").value = obj.preferredJob.location.city;
+                document.getElementById("cv-downloader").onclick = function () {
+                    download(obj.cv.fileName, obj.cv.content);
+                }
+            }
+        }
+        let href = `/getOne?id=${rowId}`;
+        xhttpreq.open("GET", href, true);
+        xhttpreq.send();
+    });
 });
+
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:application/pdf;base64,' + text);
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
 
 function uploadCV() {
     let formData = new FormData();
@@ -163,4 +196,23 @@ function validateMail() {
 function isValidMail(email) {
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
+}
+
+function deleteEmployee(button) {
+    let parent = button.parentElement.parentElement;
+    let empId = parent.querySelector(".employee-id").innerHTML;
+    const token = document.querySelector('#csrf_token').getAttribute('content');
+    let ok = confirm("Biztosan törölni szeretnéd a jelöltet?");
+    if(ok) {
+        let xhttpreq = new XMLHttpRequest();
+        xhttpreq.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                alert("Sikeres törlés!");
+                window.location.replace("/employee-creator/1");
+            }
+        }
+        xhttpreq.open("POST", `/delete/${empId}`, true);
+        xhttpreq.setRequestHeader('X-CSRF-TOKEN', token);
+        xhttpreq.send();
+    }
 }

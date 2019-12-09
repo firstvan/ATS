@@ -103,10 +103,6 @@ public class EmployeeService {
         employeeRepository.deleteById(id);
     }
 
-    public void update(Employee employee){
-        employeeRepository.save(employee);
-    }
-
     public Optional<Employee> getOne(long id){
         return employeeRepository.findById(id);
     }

@@ -9,6 +9,7 @@ import com.tigra.ats.service.exception.CannotCreateJob;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.security.InvalidParameterException;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -27,62 +28,36 @@ public class JobRegister {
         this.jobRepository = jobRepository;
     }
 
-    /**
-     * Egy új pozíció típust ment el az adatbázisba, ha az még nem létezik.
-     * Ha létezik, nem menti el újra az adott típust.
-     * @param typeName a pozíció megnevezése
-     */
     public void saveType(String typeName) {
-        if(!typeName.isEmpty()) {
-            Optional<JobType> jobType = jobPropertyHandler.getType(typeName);
-            if(!jobType.isPresent())
-                jobPropertyHandler.saveType(new JobType(typeName));
-        }
+        if (!typeName.isEmpty())
+            jobPropertyHandler.saveType(new JobType(typeName));
     }
 
-    /**
-     * Egy új pozíció szintet ment el az adatbázisba, ha az még nem létezik.
-     * Ha létezik, nem menti el újra az adott szintet.
-     * @param levelName a szint megnevezése
-     */
     public void saveLevel(String levelName) {
-        if(!levelName.isEmpty()) {
-            Optional<JobLevel> jobLevel = jobPropertyHandler.getLevel(levelName);
-            if(!jobLevel.isPresent())
-                jobPropertyHandler.saveLevel(new JobLevel(levelName));
-        }
+        if(!levelName.isEmpty())
+            jobPropertyHandler.saveLevel(new JobLevel(levelName));
     }
 
-    /**
-     * Egy új telephelyet ment el az adatbázisba, ha az még nem létezik.
-     * Ha létezik, nem menti el újra az adott típust.
-     * @param city a város neve, ahol a telephely megtalálható
-     */
     public void saveLocation(String city) {
-        if(!city.isEmpty()) {
-            Optional<Location> jobLocation = jobPropertyHandler.getLocation(city);
-            if(!jobLocation.isPresent())
-                jobPropertyHandler.saveLocation(new Location(city));
-        }
+        if(!city.isEmpty())
+            jobPropertyHandler.saveLocation(new Location(city));
     }
 
-    /*public Job createJob(String typeName, String level, String city, boolean isDisplayed) {
-        Optional<JobType> jobType = jobPropertyHandler.getType(typeName);
-        Optional<JobLevel> jobLevel = jobPropertyHandler.getLevel(level);
-        Optional<Location> location = jobPropertyHandler.getLocation(city);
+    public boolean createJobProperties(String typeName, String levelName, String location) {
+        Optional<JobType> optionalType = jobPropertyHandler.getType(typeName);
+        Optional<JobLevel> optionalLevel = jobPropertyHandler.getLevel(levelName);
+        Optional<Location> optionalLocation = jobPropertyHandler.getLocation(location);
 
-        //TODO Üzenet ha sikerül létrehozni egy új állást
-        if(jobType.isPresent() && jobLevel.isPresent() && location.isPresent()) {
-            Job createdJob = jobRepository
-                    .findByTypeAndLevelAndLocation(jobType.get(), jobLevel.get(), location.get())
-                    .orElseGet(() -> new Job(jobType.get(), jobLevel.get(), location.get()));
-            createdJob.setCreatedDate(LocalDate.now());
-            createdJob.setDisplayStatus(isDisplayed);
-            return jobRepository.save(createdJob);
+        if(optionalType.isPresent() || optionalLevel.isPresent() || optionalLocation.isPresent()) {
+            return false;
         }
-        else
-            throw new CannotCreateJob("Properties not found!");
-    }*/
+        else {
+            saveType(typeName);
+            saveLevel(levelName);
+            saveLocation(location);
+            return true;
+        }
+    }
 
     public Optional<Job> saveJob(Job job, boolean isDisplayed) {
         Job createdJob = jobRepository

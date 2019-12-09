@@ -48,7 +48,6 @@ public class EmployeeController {
     public void createEmployee(@ModelAttribute Employee employee,
                                @ModelAttribute Job job,
                                @RequestParam("CVFile") String CVFile) {
-        System.out.println(employee.getId());
         employeeService.createEmployee(employee, job, CVFile);
     }
 
@@ -68,17 +67,11 @@ public class EmployeeController {
         }
     }
 
-    @GetMapping("/delete/{id}")
+    @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") long id) {
         employeeService.delete(id);
         return "redirect:/employee-creator/1";
     }
-
- /*   @RequestMapping(value="/update",method={RequestMethod.PUT,RequestMethod.GET})
-    public String update(Employee employee){
-        employeeService.update(employee);
-        return "redirect:/employee-creator/1";
-    }*/
 
     @GetMapping("/getOne")
     @ResponseBody
