@@ -45,7 +45,7 @@ public class JelentkezesekController {
         List<Employee> applicants = new ArrayList<Employee>();
 
         for(com.tigra.ats.domain.Job Job: jobs){
-           applicants.addAll(Job.getEmployees());
+           applicants.addAll(Job.getRegisteredEmployees());
         }
             model.addAttribute("applicants", applicants);
         return "jelentkezesek";
@@ -56,26 +56,20 @@ public class JelentkezesekController {
     @ResponseBody
     public Employee getApplicant(@PathVariable("id") long id, @PathVariable("tid") long tid, @PathVariable("lid") long lid, @PathVariable("loid") long loid){
 
-        Employee e = employeeRepository.findById(id);
+        Employee e = employeeRepository.findById(id).get();
 
         JobType type = jobTypeRepository.findById(tid);
-        type.setEmployees(null);
         type.setJobs(null);
 
         JobLevel level = jobLevelRepository.findById(lid);
-        level.setEmployees(null);
         level.setJobs(null);
         
         Location loc = locationRepository.findById(loid);
-        loc.setEmployees(null);
         loc.setJobs(null);
 
+        e.setPreferredJob(new Job(type, level, loc));
 
-        e.setType(type);
-        e.setLevel(level);
-        e.setLocation(loc);
-
-        System.out.println(e.getType().getName());
+        System.out.println(e.getPreferredJob().getType().getName());
 
         return e;
 
