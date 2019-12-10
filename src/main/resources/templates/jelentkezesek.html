@@ -8,72 +8,73 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
     <title>ATS</title>
+    <style>
+        .container{
+            max-width: 90%;
+        }
+        .grid-root{
+            display: grid;
+            grid-auto-columns: 15% 85%;
+            margin-top: 40px;
+            grid-column-gap: 30px;
+        }
+
+    </style>
 </head>
 
 
 <body>
     <div layout:fragment="content">
+        <div class="container">
+            <div class="grid-root">
 
-        <div class="container-fluid">
-            <div class="row pt-2">
-
-                <div class="col-3">
-                    <!-- KERESŐ LENYILÓ ELEM -->
-                    <div class="container">
-                        <div class="accordion" id="accordion">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="mb-0">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Keresés</a>
-                                    </h4>
-                                </div>
-                                    <div id="collapse1" class="panel-collapse collapse in">
-                                        <form action="/jelentkezesek" method="get" class="container mySpace">
-                                            <div class="form-group mb2">
-                                                <input type="text" class="form-control" name="firstName" placeholder="Vezetéknév" th:value="${param.firstName}" style="margin:5px"/>
-                                                <input type="text" class="form-control" name="lastName" placeholder="Keresztnév" th:value="${param.lastName}" style="margin:5px"/>
-                                                <input type="text" class="form-control" name="mail" placeholder="Email" th:value="${param.mail}" style="margin:5px"/>
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-4" >
-                                                        <label for="job-name-select" >Pozíció</label>
-                                                        <select class="form-control" name="type">
-                                                            <option th:value="NULL"></option>
-                                                            <option th:each="type : ${types}" th:text="${type.name}" th:value="${type.id}"
-                                                                    th:selected="${#strings.equals(param.type, #strings.toString(type.id))}"></option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-4">
-                                                        <label for="job-level-select">Szint</label>
-                                                        <select class="form-control" name="level">
-                                                            <option th:value="NULL"></option>
-                                                            <option th:each="level : ${levels}" th:text="${level.level}" th:value="${level.id}"
-                                                                    th:selected="${#strings.equals(param.level, #strings.toString(level.id))}"></option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-4">
-                                                        <label for="job-location-select">Telephely</label>
-                                                        <select class="form-control" name="location">
-                                                            <option th:value="NULL"></option>
-                                                            <option th:each="location : ${locations}" th:text="${location.city}" th:value="${location.id}"
-                                                                    th:selected="${#strings.equals(param.location, #strings.toString(location.id))}"></option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div align="center">
-                                                    <input type="submit" value="Keresés" class="btn btn-primary" />
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
+                <form action="/jelentkezesek" method="get" class="container mySpace" style="padding:2px 2px 2px 2px;">
+                    <div class="form-group mb2">
+                        <input type="text" class="form-control" name="firstName" placeholder="Vezetéknév" th:value="${param.firstName}" style="margin-bottom:10px"/>
+                        <input type="text" class="form-control" name="lastName" placeholder="Keresztnév" th:value="${param.lastName}" style="margin-bottom:10px"/>
+                        <input type="text" class="form-control" name="mail" placeholder="Email" th:value="${param.mail}" style="margin-bottom:10px"/>
+                        <div class="form-row" style="display:grid;">
+                            <div class="form-group col-md-4" style="max-width: 100%" >
+                                <label for="job-name-select" >Pozíció</label>
+                                <select class="form-control" name="type">
+                                    <option th:value="NULL"></option>
+                                    <option th:each="type : ${types}" th:text="${type.name}" th:value="${type.id}"
+                                            th:selected="${#strings.equals(param.type, #strings.toString(type.id))}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4" style="max-width: 100%">
+                                <label for="job-level-select">Szint</label>
+                                <select class="form-control" name="level">
+                                    <option th:value="NULL"></option>
+                                    <option th:each="level : ${levels}" th:text="${level.level}" th:value="${level.id}"
+                                            th:selected="${#strings.equals(param.level, #strings.toString(level.id))}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4" style="max-width: 100%">
+                                <label for="job-location-select">Telephely</label>
+                                <select class="form-control" name="location">
+                                    <option th:value="NULL"></option>
+                                    <option th:each="location : ${locations}" th:text="${location.city}" th:value="${location.id}"
+                                            th:selected="${#strings.equals(param.location, #strings.toString(location.id))}"></option>
+                                </select>
                             </div>
                         </div>
+                        <div>
+                            <input type="submit" value="Keresés" class="btn btn-primary" />
+                        </div>
                     </div>
-                </div>
+                </form>
 
-                <div class="col">
+                <div class="" style="grid-column-start: 2;
+                                    grid-column-end: 2;
+                                    margin-left: 30px;
+                                        width: 90%;">
                     <!-- TÁBLÁZAT-->
-                    <table class="table table-hover">
-                        <thead class="thead-dark">
+                    <table class="table table-hover" style="border-collapse: collapse;
+                                                        border-radius: 5px;
+                                                        overflow: hidden;
+                                                    }">
+                        <thead class=""  style="background-color: #3d4849; color: white">
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Vezetéknév</th>
@@ -113,78 +114,75 @@
                         </tbody>
                     </table>
                 </div>
-
-                <!-- ADAT LEKÉRŐ MODAL -->
-                <div class="modal" id="form-modal-applicant" role="dialog" tabindex="-2">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="model-header">
-                                <h5 class="modal-title" style="text-align: center">Jelentkező adatlapja</h5>
-                            </div>
-                            <div class="modal-body">
-                                <form action="/jelentkezesek" id="jelentkezesek-form" method="POST">
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label >Vezetéknév</label>
-                                            <input class="form-control" id="first-name-input" name="firstName" type="text" readonly="true">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>Keresztnév</label>
-                                            <input class="form-control" id="last-name-input" name="lastName" type="text" readonly="true">
-                                        </div>
+            </div>
+            <div class="modal" id="form-modal-applicant" role="dialog" tabindex="-2">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="model-header">
+                            <h5 class="modal-title" style="text-align: center">Jelentkező adatlapja</h5>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/jelentkezesek" id="jelentkezesek-form" method="POST">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label >Vezetéknév</label>
+                                        <input class="form-control" id="first-name-input" name="firstName" type="text" readonly="true">
                                     </div>
-                                    <div class="form-group">
-                                        <label>Születési név</label>
-                                        <input class="form-control" id="birth-name-input" name="birthName" type="text" readonly="true">
+                                    <div class="form-group col-md-6">
+                                        <label>Keresztnév</label>
+                                        <input class="form-control" id="last-name-input" name="lastName" type="text" readonly="true">
                                     </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label >Születési dátum</label>
-                                            <input class="form-control" id="birth-date-input" name="birthDate" type="text" readonly="true">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>Születési hely</label>
-                                            <input class="form-control" id="birthplace-input" name="birthPlace" type="text" readonly="true">
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Születési név</label>
+                                    <input class="form-control" id="birth-name-input" name="birthName" type="text" readonly="true">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label >Születési dátum</label>
+                                        <input class="form-control" id="birth-date-input" name="birthDate" type="text" readonly="true">
                                     </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label>Anyja neve</label>
-                                            <input class="form-control" id="mother-input" name="mother" type="text" readonly="true">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label>Email cím</label>
-                                            <input class="form-control" id="mail-input" name="mail" type="text" readonly="true">
-                                        </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Születési hely</label>
+                                        <input class="form-control" id="birthplace-input" name="birthPlace" type="text" readonly="true">
                                     </div>
-                                    <div class="form-group">
-                                        <label>Telefonszám</label>
-                                        <input class="form-control" id="phone-number-input" name="phoneNumber" type="tel" readonly="true">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>Anyja neve</label>
+                                        <input class="form-control" id="mother-input" name="mother" type="text" readonly="true">
                                     </div>
-                                    <div class="form-group">
-                                        <label>Státusz</label>
-                                        <input class="form-control" id="status-input" name="status" type="text" readonly="true">
+                                    <div class="form-group col-md-6">
+                                        <label>Email cím</label>
+                                        <input class="form-control" id="mail-input" name="mail" type="text" readonly="true">
                                     </div>
-                                    <div class="form-row">
-                                        <div class="form-group col-md-4">
-                                            <label>Pozíció</label>
-                                            <input class="form-control" id="type-input" name="status" type="text" readonly="true">
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label>Szint</label>
-                                            <input class="form-control" id="level-input" name="status" type="text" readonly="true">
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label>Telephely</label>
-                                            <input class="form-control" id="location-input" name="status" type="text" readonly="true">
-                                        </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Telefonszám</label>
+                                    <input class="form-control" id="phone-number-input" name="phoneNumber" type="tel" readonly="true">
+                                </div>
+                                <div class="form-group">
+                                    <label>Státusz</label>
+                                    <input class="form-control" id="status-input" name="status" type="text" readonly="true">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label>Pozíció</label>
+                                        <input class="form-control" id="type-input" name="status" type="text" readonly="true">
                                     </div>
-                                </form>
-                            </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Szint</label>
+                                        <input class="form-control" id="level-input" name="status" type="text" readonly="true">
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label>Telephely</label>
+                                        <input class="form-control" id="location-input" name="status" type="text" readonly="true">
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
 

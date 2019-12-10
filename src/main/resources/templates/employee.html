@@ -28,126 +28,161 @@
             top: 0;
             opacity: 0;
         }
+        .container{
+            max-width: 90%;
+            padding-left: 0px;
+        }
+        .my-grid{
+            display: grid;
+            grid-auto-columns: 15% 85%;
+            margin-top: 40px;
+            grid-column-gap: 30px;
+        }
+        .my-grid-left{
+            grid-column-start: 1;
+            grid-column-end: 1;
+            display: grid
+        }
+        .my-grid-left form{
+            padding:2px 2px 2px 2px; margin-top: 40px;
+        }
+        .my-grid-right{
+            grid-column-start: 2;
+            grid-column-end: 2;
+        }
+        .my-grid-right table{
+            border-collapse: collapse;
+            border-radius: 5px;
+            overflow: hidden
+        }
+        .my-grid-right table thead{
+            background-color: #3d4849; color: white
+        }
     </style>
 </head>
 <body>
 
 <div layout:fragment="content">
     <div class="container">
-        <button class="btn btn-primary" data-target="#form-modal" data-toggle="modal" type="button" data-function="new">Új jelölt felvétele</button>
-        <button class="btn btn-primary" data-target="#registration-modal" data-toggle="modal" type="button">Új jelentkezés létrehozás</button>
+        <div class="my-grid">
+            <div class="my-grid-left">
+                <button class="btn btn-primary" data-target="#form-modal" data-toggle="modal" type="button" data-function="new" style="margin-bottom: 10px" >Új jelölt felvétele</button>
+                <button class="btn btn-primary" data-target="#registration-modal" data-toggle="modal" type="button">Új jelentkezés létrehozás</button>
 
-        <form action="/employee-creator/1" method="get" class="container mySpace">
-            <div class="form-group mb2">
-                <input type="text" class="form-control" name="firstName" placeholder="Vezetéknév" th:value="${param.firstName}"/>
-                <input type="text" class="form-control" name="lastName" placeholder="Keresztnév" th:value="${param.lastName}">
-                <input type="text" class="form-control" name="mail" placeholder="Email" th:value="${param.mail}">
-                <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <label for="job-name-select">Preferált pozíció</label>
-                        <select class="form-control" name="type">
-                            <option th:value="NULL"></option>
-                            <option th:each="type : ${types}" th:text="${type.name}" th:value="${type.id}"
-                                    th:selected="${#strings.equals(param.type, #strings.toString(type.id))}"></option>
-                        </select>
+                <form action="/employee-creator/1" method="get" class="container mySpace">
+                    <div class="form-group mb2">
+                        <input type="text" class="form-control" name="firstName" placeholder="Vezetéknév" th:value="${param.firstName}"  style="margin-bottom: 10px"/>
+                        <input type="text" class="form-control" name="lastName" placeholder="Keresztnév" th:value="${param.lastName}"  style="margin-bottom: 10px">
+                        <input type="text" class="form-control" name="mail" placeholder="Email" th:value="${param.mail}"  style="margin-bottom: 10px">
+                        <div class="form-row"  style="display: grid">
+                            <div class="form-group col-md-4" style="max-width: 100%">
+                                <label for="job-name-select">Preferált pozíció</label>
+                                <select class="form-control" name="type">
+                                    <option th:value="NULL"></option>
+                                    <option th:each="type : ${types}" th:text="${type.name}" th:value="${type.id}"
+                                            th:selected="${#strings.equals(param.type, #strings.toString(type.id))}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4" style="max-width: 100%">
+                                <label for="job-level-select">Preferált szint</label>
+                                <select class="form-control" name="level">
+                                    <option th:value="NULL"></option>
+                                    <option th:each="level : ${levels}" th:text="${level.level}" th:value="${level.id}"
+                                            th:selected="${#strings.equals(param.level, #strings.toString(level.id))}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4" style="max-width: 100%">
+                                <label for="job-location-select">Preferált telephely</label>
+                                <select class="form-control" name="location">
+                                    <option th:value="NULL"></option>
+                                    <option th:each="location : ${locations}" th:text="${location.city}" th:value="${location.id}"
+                                            th:selected="${#strings.equals(param.location, #strings.toString(location.id))}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <input type="submit" value="Keresés" class="btn btn-primary" />
                     </div>
-                    <div class="form-group col-md-4">
-                        <label for="job-level-select">Preferált szint</label>
-                        <select class="form-control" name="level">
-                            <option th:value="NULL"></option>
-                            <option th:each="level : ${levels}" th:text="${level.level}" th:value="${level.id}"
-                                    th:selected="${#strings.equals(param.level, #strings.toString(level.id))}"></option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="job-location-select">Preferált telephely</label>
-                        <select class="form-control" name="location">
-                            <option th:value="NULL"></option>
-                            <option th:each="location : ${locations}" th:text="${location.city}" th:value="${location.id}"
-                                    th:selected="${#strings.equals(param.location, #strings.toString(location.id))}"></option>
-                        </select>
-                    </div>
-                </div>
-                <input type="submit" value="Keresés" class="btn btn-primary" />
+                </form>
             </div>
-        </form>
-        <table class="table table-hover">
-            <thead class="thead-dark">
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Vezetéknév</th>
-                <th scope="col">Keresztnév</th>
-                <th scope="col">Email</th>
-                <th scope="col">Preferált pozíció</th>
-                <th scope="col">Preferált szint</th>
-                <th scope="col">Preferált telephely</th>
-                <th scope="col">Státusz</th>
-                <th scope="col">Műveletek</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="jelolt : ${jelolts}">
-                <td th:text="${jelolt.id}" class="employee-id"></td>
-                <td th:text="${jelolt.firstName}"></td>
-                <td th:text="${jelolt.lastName}"></td>
-                <td th:text="${jelolt.mail}"></td>
-                <td th:text="${jelolt.preferredJob.type}"></td>
-                <td th:text="${jelolt.preferredJob.level}"></td>
-                <td th:text="${jelolt.preferredJob.location}"></td>
-                <td th:text="${jelolt.status}"></td>
-                <td style="white-space: nowrap">
-                    <input class="operation-checkbox" type="checkbox">
-                    <button class="btn btn-primary" data-target="#employee-viewer-modal" data-toggle="modal" data-function="open">Megtekint</button>
-                    <button class="btn btn-warning" data-target="#form-modal" data-toggle="modal" data-function="edit">Szerkesztés</button>
-                    <button class="btn btn-danger" onclick="deleteEmployee(this)">Törlés</button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+            <div class="my-grid-right">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Vezetéknév</th>
+                        <th scope="col">Keresztnév</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Preferált pozíció</th>
+                        <th scope="col">Preferált szint</th>
+                        <th scope="col">Preferált telephely</th>
+                        <th scope="col">Státusz</th>
+                        <th scope="col" style="text-align: center">Műveletek</th>
+                    </thead>
+                    <tbody>
+                    <tr th:each="jelolt : ${jelolts}">
+                        <td th:text="${jelolt.id}" class="employee-id"></td>
+                        <td th:text="${jelolt.firstName}"></td>
+                        <td th:text="${jelolt.lastName}"></td>
+                        <td th:text="${jelolt.mail}"></td>
+                        <td th:text="${jelolt.preferredJob.type}"></td>
+                        <td th:text="${jelolt.preferredJob.level}"></td>
+                        <td th:text="${jelolt.preferredJob.location}"></td>
+                        <td th:text="${jelolt.status}"></td>
+                        <td style="white-space: nowrap">
+                            <input class="operation-checkbox" type="checkbox" style="margin-right: 5px">
+                            <button class="btn btn-primary" data-target="#employee-viewer-modal" data-toggle="modal" data-function="open">Megtekint</button>
+                            <button class="btn btn-warning" data-target="#form-modal" data-toggle="modal" data-function="edit">Szerkesztés</button>
+                            <button class="btn btn-danger" onclick="deleteEmployee(this)">Törlés</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
-        <input type="hidden" th:value="${param.type}">
-        <input type="hidden" th:value="${param.level}">
-        <input type="hidden" th:value="${param.location}">
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <li class="page-item" th:if="${hasPrev}">
-                    <a class="page-link" th:if="${param.firstName != null}"
-                       th:href="@{|/employee-creator/${actualPage - 1}?firstName=${param.firstName}&lastName=${param.lastName}&mail=${param.mail}&type=${param.type}&level=${param.level}&location=${param.location}|}">Vissza</a>
-                    <a class="page-link" th:if="${param.firstName == null}"
-                       th:href="@{|/employee-creator/${actualPage - 1}|}">Vissza</a>
-                </li>
-                <li class="page-item disabled" th:if="${!hasPrev}">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Vissza</a>
-                </li>
-                <th:block th:each="i: ${#numbers.sequence(0, numberOfPages - 1)}">
-                    <li class="page-item" th:classappend="${actualPage == i + 1} ? active : ''">
-                        <a class="page-link" th:if="${param.firstName != null}" th:text="${i + 1}"
-                           th:href="@{|/employee-creator/${i + 1}?firstName=${param.firstName}&lastName=${param.lastName}&mail=${param.mail}&type=${param.type}&level=${param.level}&location=${param.location}|}"></a>
-                        <a class="page-link" th:if="${param.firstName == null}" th:text="${i + 1}"
-                           th:href="@{|/employee-creator/${i + 1}|}"></a>
-                    </li>
-                </th:block>
-                <li class="page-item" th:if="${hasNext}">
-                    <a class="page-link" th:if="${param.firstName != null}"
-                       th:href="@{|/employee-creator/${actualPage + 1}?firstName=${param.firstName}&lastName=${param.lastName}&mail=${param.mail}&type=${param.type}&level=${param.level}&location=${param.location}|}">Következő</a>
-                    <a class="page-link" th:if="${param.firstName == null}"
-                       th:href="@{|/employee-creator/${actualPage + 1}|}">Következő</a>
-                </li>
-                <li class="page-item disabled" th:if="${!hasNext}">
-                    <a class="page-link" href="#">Következő</a>
-                </li>
-            </ul>
-        </nav>
+                <input type="hidden" th:value="${param.type}">
+                <input type="hidden" th:value="${param.level}">
+                <input type="hidden" th:value="${param.location}">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:if="${hasPrev}">
+                            <a class="page-link" th:if="${param.firstName != null}"
+                               th:href="@{|/employee-creator/${actualPage - 1}?firstName=${param.firstName}&lastName=${param.lastName}&mail=${param.mail}&type=${param.type}&level=${param.level}&location=${param.location}|}">Vissza</a>
+                            <a class="page-link" th:if="${param.firstName == null}"
+                               th:href="@{|/employee-creator/${actualPage - 1}|}">Vissza</a>
+                        </li>
+                        <li class="page-item disabled" th:if="${!hasPrev}">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Vissza</a>
+                        </li>
+                        <th:block th:each="i: ${#numbers.sequence(0, numberOfPages - 1)}">
+                            <li class="page-item" th:classappend="${actualPage == i + 1} ? active : ''">
+                                <a class="page-link" th:if="${param.firstName != null}" th:text="${i + 1}"
+                                   th:href="@{|/employee-creator/${i + 1}?firstName=${param.firstName}&lastName=${param.lastName}&mail=${param.mail}&type=${param.type}&level=${param.level}&location=${param.location}|}"></a>
+                                <a class="page-link" th:if="${param.firstName == null}" th:text="${i + 1}"
+                                   th:href="@{|/employee-creator/${i + 1}|}"></a>
+                            </li>
+                        </th:block>
+                        <li class="page-item" th:if="${hasNext}">
+                            <a class="page-link" th:if="${param.firstName != null}"
+                               th:href="@{|/employee-creator/${actualPage + 1}?firstName=${param.firstName}&lastName=${param.lastName}&mail=${param.mail}&type=${param.type}&level=${param.level}&location=${param.location}|}">Következő</a>
+                            <a class="page-link" th:if="${param.firstName == null}"
+                               th:href="@{|/employee-creator/${actualPage + 1}|}">Következő</a>
+                        </li>
+                        <li class="page-item disabled" th:if="${!hasNext}">
+                            <a class="page-link" href="#">Következő</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
     </div>
 
     <div class="modal fade" id="form-modal" role="dialog" tabindex="-2">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="model-header">
-                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button" style="margin-top: 10px; margin-right: 10px;">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h5 class="modal-title">Új jelölt felvétele</h5>
+                    <h5 class="modal-title" style="margin-top: 10px;margin-left: 10px;">Új jelölt felvétele</h5>
                 </div>
                 <div class="modal-body">
                     <form action="/create-employee" id="employee-form" method="POST">
@@ -269,7 +304,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Új jelentkezés</h5>
+                    <h5 class="modal-title" id="exampleModalLabel" >Új jelentkezés</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

@@ -3,30 +3,53 @@
 
 <head>
 	<title>ATS</title>
+	<style>
+		.grid-root{
+			display: grid;
+			grid-template-columns: 89% 1% 10%;
+			margin: 40px 0 10px 0;
+		}
+		.grid-root .searcsi{
+			grid-column-start: 3;
+		}
+		.table-hover{
+			border-collapse: collapse;
+			border-radius: 5px;
+			overflow: hidden;
+		}
+		.table-hover thead{
+			background-color:#3d4849;
+			color:white;
+		}
+		.table-hover form{
+			display: grid;
+			grid-template-columns: 70% 30%;
+			grid-column-gap: 5px;
+		}
+	</style>
 </head>
 
 <body>
 
 <div layout:fragment="content">
 
-
 		<div sec:authorize="hasRole('ROLE_ADMIN')" class="container">
-
 			<div>
-				<form action="/admin" class="container mySpace">
-					<div class="form-group mb2">
+				<form action="/admin">
+					<div class="grid-root">
 						<input type="text" class="form-control" name="name" placeholder="Search User" />
-						<input type="submit" value="Search" class="btn btn-primary" />
+						<input type="submit" value="Search" class="btn btn-primary searcsi" />
 					</div>
 				</form>
-
-				<table class="table table-stripped">
-					<tr>
-						<th>Email</th>
-						<th>Név</th>
-						<th>Szerepkör</th>
-						<th>Szerepkör műveletek</th>
-					</tr>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>Email</th>
+							<th>Név</th>
+							<th>Szerepkör</th>
+							<th>Szerepkör műveletek</th>
+						</tr>
+					</thead>
 					<tr th:each="user:${users}">
 						<td th:text="${user.email}"></td>
 						<td th:text="${user.fullName}"></td>
@@ -41,7 +64,7 @@
 									<option>Szakmaimunkatárs</option>
 									<option>None</option>
 								</select>
-								<button type="submit">Mentés</button>
+								<button type="submit" class="btn btn-primary">Mentés</button>
 							</form>
 						</td>
 					</tr>
