@@ -95,20 +95,16 @@
                             <td th:text="${applicant.firstName}"></td>
                             <td th:text="${applicant.lastName}"></td>
                             <td th:text="${applicant.mail}"></td>
-                            <td th:text="${applicant.type.name}"></td>
-                            <td th:text="${applicant.level.level}"></td>
-                            <td th:text="${applicant.location.city}"></td>
+                            <td th:text="${applicant.type}"></td>
+                            <td th:text="${applicant.level}"></td>
+                            <td th:text="${applicant.location}"></td>
                             <td th:text="${applicant.status}"></td>
-                            <td>
+                            <td style="white-space: nowrap">
+                                <input class="operation-checkbox" type="checkbox" style="margin-right: 5px">
                                 <button type="button" class="btn btn-danger delete-applicant-button">Törlés</button>
-                            </td>
-                            <td>
                                 <button type="button" class="btn btn-link">Új Interjú</button>
-                            </td>
-                            <td>
                                 <button type="button" class="btn btn-warning"
                                         th:onclick="'openModal(\'' +${applicant.id} +'\',\''+${applicant.level.id}+ '\',\''+${applicant.type.id}+'\',\''+${applicant.location.id} +'\')'">Megtekintés</button>
-
                             </td>
                         </tr>
                         </tbody>

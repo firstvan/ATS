@@ -1,0 +1,36 @@
+body{
+    background: url(../img/error.png) no-repeat center center fixed;
+    background-size: auto;
+}
+
+#div1 {
+    border-radius: 25px;
+    padding: 20px;
+    width: justify;
+    height: justify;
+    text-align: center;
+    font-family: Impact, Charcoal, sans-serif;
+    font-size: 50px;
+    letter-spacing: 1.2px;
+    word-spacing: 1.4px;
+    color: #000000;
+    font-weight: 700;
+    text-decoration: none;
+    font-style: normal;
+    font-variant: small-caps;
+    text-transform: none;
+}
+a {
+    display: block;
+    max-width: 300px;
+    margin: auto;
+    background-color: RED;
+    border: none;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 12px;
+}
