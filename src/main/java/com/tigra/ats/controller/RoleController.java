@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -31,13 +33,19 @@ public class RoleController {
 
 	@PostMapping("/update/{email}")
 	public String updateUser(@PathVariable("email") String email, @RequestParam("role") String role, Model model) {
+		Map<String,String> forFront=new HashMap();
+		forFront.put("HR vezető","HRVEZETO");
+		forFront.put("HR munkatárs","HRMUNKATARS");
+		forFront.put("Szakmaivezető","SZAKMAIVEZETO");
+		forFront.put("Szakmaimunkatárs","SZAKMAIMUNKATARS");
+		forFront.put("Semmi jog","NONE");
 		User user = userService.findByEmail(email);
 
 		if(role.equals("None")){
             user.setRole(null);
             userService.save(user);
         }else {
-            Role existRole = userService.findRoleByName("ROLE_"+role);
+            Role existRole = userService.findRoleByName("ROLE_"+forFront.get(role));
             user.setRole(existRole);
         }
 		userService.save(user);
